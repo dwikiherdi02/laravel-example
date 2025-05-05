@@ -11,6 +11,8 @@ layout('layouts.guest');
 form(LoginForm::class);
 
 $login = function () {
+    $this->resetErrorBag();
+
     $this->validate();
 
     $this->form->authenticate();
@@ -31,17 +33,17 @@ $login = function () {
         {{-- <h1 class="h3 mb-3 fw-normal">{{ __('login.sign_in_label') }}</h1> --}}
 
         <div class="form-group">
-            <x-input-label for="email" :value="__('login.email_label')" :isRequired="false" />
+            <x-input-label for="username" :value="__('login.username_label')" :isRequired="false" />
             <x-text-input
-                wire:model="form.email"
-                id="email"
-                type="email"
-                name="email"
+                wire:model="form.username"
+                id="username"
+                type="text"
+                name="username"
                 required autofocus
                 autocomplete="username"
-                placeholder="{{ __('login.email_label') }}"
-                aria-describedby="emailHelp" />
-            <x-input-error id="emailHelp" :messages="$errors->get('form.email')" />
+                placeholder="{{ __('login.username_label') }}"
+                aria-describedby="usernameHelp" />
+            <x-input-error id="usernameHelp" :messages="$errors->get('form.username')" />
         </div>
 
         <div class="form-group">
