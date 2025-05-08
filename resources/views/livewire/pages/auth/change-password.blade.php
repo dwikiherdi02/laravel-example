@@ -53,27 +53,27 @@ $updatePassword = function () {
 <div>
     <form wire:submit="updatePassword">
         <div class="form-group">
-            <x-input-label for="update_password_current_password" :value="__('Current Password')" />
-            <x-text-input wire:model="current_password" id="update_password_current_password" type="password" name="current_password" autocomplete="current-password" placeholder="{{ __('Current Password') }}" aria-describedby="currentPasswordHelp" />
+            <x-input-label for="update_password_current_password" :value="__('change_password.current_password_label')" />
+            <x-text-input wire:model="current_password" id="update_password_current_password" type="password" name="current_password" autocomplete="current-password" placeholder="{{ __('change_password.current_password_label') }}" aria-describedby="currentPasswordHelp" />
             <x-input-error id="currentPasswordHelp" :messages="$errors->get('current_password')" />
         </div>
 
         <div class="form-group">
-            <x-input-label for="update_password_password" :value="__('New Password')" />
+            <x-input-label for="update_password_password" :value="__('change_password.new_password_label')" />
             <x-text-input wire:model="password" id="update_password_password" type="password"
-                name="password" autocomplete="new-password" placeholder="{{ __('New Password') }}"
+                name="password" autocomplete="new-password" placeholder="{{ __('change_password.new_password_label') }}"
                 aria-describedby="newPasswordHelp" />
             <x-input-error id="newPasswordHelp" :messages="$errors->get('password')" />
         </div>
 
         <div class="form-group">
-            <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
-            <x-text-input wire:model="password_confirmation" id="update_password_password_confirmation" type="password" name="password_confirmation" autocomplete="new-password" placeholder="{{ __('Confirm Password') }}" aria-describedby="passwordConfirmationHelp" />
+            <x-input-label for="update_password_password_confirmation" :value="__('change_password.confirm_password_label')" />
+            <x-text-input wire:model="password_confirmation" id="update_password_password_confirmation" type="password" name="password_confirmation" autocomplete="new-password" placeholder="{{ __('change_password.confirm_password_label') }}" aria-describedby="passwordConfirmationHelp" />
             <x-input-error id="passwordConfirmationHelp" :messages="$errors->get('password')" />
         </div>
 
         <button wire:loading.remove class="btn btn-primary w-100 py-2"
-            type="submit">{{ __('Update Password') }}</button>
+            type="submit">{{ __('change_password.update_password_button') }}</button>
 
         <button wire:loading class="btn btn-primary w-100 py-2" disabled>
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

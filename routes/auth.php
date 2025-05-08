@@ -22,7 +22,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Volt::route('change-password', 'pages.auth.change-password')->name('change_password');
 
     Route::middleware(['must_change_password'])->group(function () {
-        Route::view('dashboard', 'dashboard')->name('dashboard');
+        // Route::view('dashboard', 'dashboard')->name('dashboard');
+        Volt::route('dashboard', 'pages.dashboard.index')->name('dashboard');
 
         Route::view('profile', 'profile')->name('profile');
 
