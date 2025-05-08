@@ -28,6 +28,16 @@
     <body>
         <div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">
             <livewire:components.header />
+
+            <div class="app-main">
+                <livewire:components.sidebar />
+
+                <div class="app-main__outer">
+                    <div class="app-main__inner">
+                        {{ $slot }}
+                    </div>
+                </div>
+            </div>
         </div>
 
         <script src="{{ asset('assets/plugins/jquery/3.3.1/jquery.min.js') }}" defer></script>

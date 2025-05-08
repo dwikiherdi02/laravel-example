@@ -10,6 +10,10 @@ state([
     'avatar' => Avatar::create(Auth::user()->name)
         ->setFontFamily('Laravolt')
         ->toBase64(),
+    'avatarSquare' => Avatar::create(Auth::user()->name)
+        ->setFontFamily('Laravolt')
+        ->setShape('square')
+        ->toBase64(),
     'authName' => Auth::user()->name,
 ]);
 
@@ -27,7 +31,7 @@ $logout = function (Logout $logout) {
         <div class="logo-src"></div>
         <div class="header__pane ml-auto">
             <div>
-                <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
+                <button type="button" class="hamburger close-sidebar-btn hamburger--elastic d-block d-md-none" data-class="closed-sidebar">
                     <span class="hamburger-box">
                         <span class="hamburger-inner"></span>
                     </span>
@@ -65,97 +69,43 @@ $logout = function (Logout $logout) {
                                     <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                 </a>
                                 <div tabindex="-1" role="menu" aria-hidden="true" class="rm-pointers dropdown-menu-lg dropdown-menu dropdown-menu-right">
-                                    <div class="dropdown-menu-header">
-                                        <div class="dropdown-menu-header-inner bg-info">
-                                            <div class="menu-header-image opacity-2" style="background-image: url('../assets/images/dropdown-header/city3.jpg');"></div>
-                                            <div class="menu-header-content text-left">
-                                                <div class="widget-content p-0">
-                                                    <div class="widget-content-wrapper">
-                                                        <div class="widget-content-left mr-3">
-                                                            <img width="42" class="rounded-circle"
-                                                                    src="{{ $avatar }}"
-                                                                    alt="">
-                                                        </div>
-                                                        <div class="widget-content-left">
-                                                            <div class="widget-heading">
-                                                                {{ $authName }}
-                                                            </div>
-                                                            <div class="widget-subheading opacity-8">
-                                                                {{-- A short profile description --}}
-                                                                admin
-                                                            </div>
-                                                        </div>
-                                                        <div class="widget-content-right mr-2">
-                                                            <button wire:click="logout" class="btn-pill btn-shadow btn-shine btn btn-focus">Logout
-                                                            </button>
-                                                        </div>
+                                    <div class="dropdown-menu-header mb-0">
+                                        <div class="dropdown-menu-header-inner bg-focus">
+                                            <div class="menu-header-content btn-pane-right">
+                                                <div class="avatar-icon-wrapper mr-2 avatar-icon-xl">
+                                                    <div class="avatar-icon rounded">
+                                                        <img src="{{ $avatarSquare }}"
+                                                            alt="Avatar">
                                                     </div>
+                                                </div>
+                                                <div>
+                                                    <h5 class="menu-header-title">{{ $authName }}</h5>
+                                                    <h6 class="menu-header-subtitle">Admin</h6>
+                                                </div>
+                                                <div class="menu-header-btn-pane">
+                                                    <button wire:click="logout" class="ladda-button btn btn-pill btn-primary" data-style="slide-right"><span class="ladda-label">{{ __('Keluar') }}</span><span class="ladda-spinner"></span></button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="scroll-area-xs" style="height: 150px;">
-                                        <div class="scrollbar-container ps">
-                                            <ul class="nav flex-column">
-                                                <li class="nav-item-header nav-item">Activity
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a href="javascript:void(0);" class="nav-link">Chat
-                                                        <div class="ml-auto badge badge-pill badge-info">8
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a href="javascript:void(0);" class="nav-link">Recover Password
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item-header nav-item">My Account
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a href="javascript:void(0);" class="nav-link">Settings
-                                                        <div class="ml-auto badge badge-success">New
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a href="javascript:void(0);" class="nav-link">Messages
-                                                        <div class="ml-auto badge badge-warning">512
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a href="javascript:void(0);" class="nav-link">Logs
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item-divider mb-0 nav-item"></li>
-                                    </ul>
-                                    <div class="grid-menu grid-menu-2col">
-                                        <div class="no-gutters row">
-                                            <div class="col-sm-6">
-                                                <button class="btn-icon-vertical btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-warning">
-                                                    <i class="pe-7s-chat icon-gradient bg-amy-crisp btn-icon-wrapper mb-2"></i>
-                                                    Message Inbox
-                                                </button>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="p-0 list-group-item">
+                                            <div class="grid-menu grid-menu-2col">
+                                                <div class="no-gutters row">
+                                                    <div class="col-sm-6">
+                                                        <button class="btn-icon-vertical btn-square btn-transition btn btn-outline-link"><i class="lnr-user btn-icon-wrapper btn-icon-lg mb-3"> </i>{{ __('Lihat Profil') }}</button>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <button class="btn-icon-vertical btn-square btn-transition btn btn-outline-link"><i class="lnr-map btn-icon-wrapper btn-icon-lg mb-3"> </i>Sales Reports</button>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <button class="btn-icon-vertical btn-square btn-transition btn btn-outline-link"><i class="lnr-music-note btn-icon-wrapper btn-icon-lg mb-3"> </i>Leads Generated</button>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <button class="btn-icon-vertical btn-square btn-transition btn btn-outline-link"><i class="lnr-heart btn-icon-wrapper btn-icon-lg mb-3"> </i>Successful Tasks</button>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-sm-6">
-                                                <button class="btn-icon-vertical btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
-                                                    <i class="pe-7s-ticket icon-gradient bg-love-kiss btn-icon-wrapper mb-2"></i>
-                                                    <b>Support Tickets</b>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item-divider nav-item">
-                                        </li>
-                                        <li class="nav-item-btn text-center nav-item">
-                                            <button class="btn-wide btn btn-primary btn-sm">
-                                                Open Messages
-                                            </button>
                                         </li>
                                     </ul>
                                 </div>
@@ -166,15 +116,10 @@ $logout = function (Logout $logout) {
                                 {{ $authName }}
                             </div>
                             <div class="widget-subheading">
-                                {{-- VP People Manager --}}
-                                admin
+                                Admin
                             </div>
                         </div>
-                        <div class="widget-content-right header-user-info ml-3">
-                            {{-- <button type="button" class="btn-shadow p-1 btn btn-primary btn-sm show-toastr-example">
-                                <i class="fa text-white fa-calendar pr-1 pl-1"></i>
-                            </button> --}}
-                        </div>
+                        <div class="widget-content-right header-user-info ml-3"></div>
                     </div>
                 </div>
             </div>

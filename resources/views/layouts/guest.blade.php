@@ -14,7 +14,11 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <link rel="stylesheet" href="{{ asset('assets/css/base.min.css') }}">
+        <link rel="preload" href="{{ asset('assets/css/base.min.css') }}" as="style"
+            onload="this.onload=null;this.rel='stylesheet'">
+        <noscript>
+            <link rel="stylesheet" href="{{ asset('assets/css/base.min.css') }}">
+        </noscript>
 
         @stack('styles')
         <style>
@@ -121,10 +125,10 @@
             {{ $slot }}
         </main>
 
-        <script src="{{ asset('assets/plugins/jquery/3.3.1/jquery.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/bootstrap/bootstrap.bundle.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/metismenu/metismenu.js') }}"></script>
-        <script src="{{ asset('assets/js/app.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/jquery/3.3.1/jquery.min.js') }}" defer></script>
+        <script src="{{ asset('assets/plugins/bootstrap/bootstrap.bundle.min.js') }}" defer></script>
+        <script src="{{ asset('assets/plugins/metismenu/metismenu.js') }}" defer></script>
+        <script src="{{ asset('assets/js/app.min.js') }}" defer></script>
         @stack('scripts')
     </body>
 </html>
