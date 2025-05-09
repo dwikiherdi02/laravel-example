@@ -1,0 +1,199 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Menu;
+use Carbon\Carbon;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+
+class MenuSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $menus = [
+            // UMUM
+            [
+                'id' => '018f984f-5c4c-7b79-8b87-2657d2d7c841',
+                'name' => 'Beranda',
+                'name_lang_key' => 'menu.home',
+                'slug' => '/dashboard',
+                'icon' => 'pe-7s-home',
+                'menu_group_id' => 'b0ec98ed-0228-453d-a1f6-7bbee48ecda2',
+                'sort' => 1,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+            [
+                'id' => '018f984f-5c4d-74cb-9341-31a06b55de57',
+                'name' => 'Email',
+                'name_lang_key' => 'menu.email',
+                'slug' => '/email',
+                'icon' => 'pe-7s-mail',
+                'menu_group_id' => 'b0ec98ed-0228-453d-a1f6-7bbee48ecda2',
+                'sort' => 2,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+            [
+                'id' => '018f984f-5c4d-7b7a-a54d-bba9e4d83d03',
+                'name' => 'Daftar Warga',
+                'name_lang_key' => 'menu.residents',
+                'slug' => '/residents',
+                'icon' => 'pe-7s-users',
+                'menu_group_id' => 'b0ec98ed-0228-453d-a1f6-7bbee48ecda2',
+                'sort' => 3,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+            [
+                'id' => '018f984f-5c4d-7ed6-83f5-e7e80adfe98b',
+                'name' => 'Daftar Pengguna',
+                'name_lang_key' => 'menu.users',
+                'slug' => '/users',
+                'icon' => 'pe-7s-id',
+                'menu_group_id' => 'b0ec98ed-0228-453d-a1f6-7bbee48ecda2',
+                'sort' => 4,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+
+            // Kelola Iuran & Biaya
+            [
+                'id' => '018f984f-5c4d-80fa-b27a-67f61ecb5c87',
+                'name' => 'Daftar Iuran',
+                'name_lang_key' => 'menu.contributions',
+                'slug' => '/contributions',
+                'icon' => 'pe-7s-box1',
+                'menu_group_id' => 'cb85dfba-6ac2-4b5b-a012-63bdd379ceb0',
+                'sort' => 5,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+            [
+                'id' => '018f984f-5c4d-8368-b07e-9e7b58fc998f',
+                'name' => 'Tambah Iuran Bulanan',
+                'name_lang_key' => 'meun.add_monthly_contribution',
+                'slug' => '/add-monthly-contribution',
+                'icon' => 'pe-7s-note2',
+                'menu_group_id' => 'cb85dfba-6ac2-4b5b-a012-63bdd379ceb0',
+                'sort' => 6,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+            [
+                'id' => '018f984f-5c4d-860f-92c7-20636b831aa2',
+                'name' => 'Tambah Biaya Pengeluaran',
+                'name_lang_key' => 'menu.add_expense',
+                'slug' => '/add-expense',
+                'icon' => 'pe-7s-credit',
+                'menu_group_id' => 'cb85dfba-6ac2-4b5b-a012-63bdd379ceb0',
+                'sort' => 7,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+
+            // Riwayat
+            [
+                'id' => '018f984f-5c4d-8812-910f-c8c19a51952f',
+                'name' => 'Riwayat Iuran Bulanan',
+                'name_lang_key' => 'menu.monthly_contribution_history',
+                'slug' => '/monthly-contribution-history',
+                'icon' => 'pe-7s-folder',
+                'menu_group_id' => '870509a1-faaf-41d8-a832-53e7a37dbf9a',
+                'sort' => 8,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+            [
+                'id' => '018f984f-5c4d-8a0e-9df5-bd01dc95c683',
+                'name' => 'Riwayat Transaksi',
+                'name_lang_key' => 'menu.transaction_history',
+                'slug' => '/transaction-history',
+                'icon' => 'pe-7s-cash',
+                'menu_group_id' => '870509a1-faaf-41d8-a832-53e7a37dbf9a',
+                'sort' => 9,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+
+            // Laporan
+            [
+                'id' => '018f984f-5c4d-8c67-8107-8bc72712c9d3',
+                'name' => 'Laporan Iuran',
+                'name_lang_key' => 'menu.contribution_report',
+                'slug' => '/contribution-report',
+                'icon' => 'pe-7s-notebook',
+                'menu_group_id' => 'add1f6d1-95f2-4fc7-88cc-9242d61bed2d',
+                'sort' => 10,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => Carbon::now(),
+            ],
+            [
+                'id' => '018f984f-5c4d-8ef6-b8d6-792e7c87163d',
+                'name' => 'Laporan Keuangan',
+                'name_lang_key' => 'menu.financial_report',
+                'slug' => '/financial-report',
+                'icon' => 'pe-7s-wallet',
+                'menu_group_id' => 'add1f6d1-95f2-4fc7-88cc-9242d61bed2d',
+                'sort' => 11,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => Carbon::now(),
+            ],
+
+            // Pengaturan
+            [
+                'id' => '018f984f-5c4d-912d-a2db-00a465da3f17',
+                'name' => 'Profil',
+                'name_lang_key' => 'menu.profile',
+                'slug' => '/profile',
+                'icon' => 'pe-7s-user',
+                'menu_group_id' => '08d1306e-1497-4eb8-bf46-5f27a8900c6e',
+                'sort' => 12,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+            [
+                'id' => '018f984f-5c4d-93a3-b2a0-621a51e847e5',
+                'name' => 'IMAP',
+                'name_lang_key' => 'menu.imap',
+                'slug' => '/imap',
+                'icon' => 'pe-7s-network',
+                'menu_group_id' => '08d1306e-1497-4eb8-bf46-5f27a8900c6e',
+                'sort' => 13,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+            [
+                'id' => '018f984f-5c4d-95d3-aef7-4d16b6d2402f',
+                'name' => 'Template Teks',
+                'name_lang_key' => 'menu.text_template',
+                'slug' => '/text-template',
+                'icon' => 'pe-7s-mail-open-file',
+                'menu_group_id' => '08d1306e-1497-4eb8-bf46-5f27a8900c6e',
+                'sort' => 14,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => null,
+            ],
+        ];
+
+        Menu::insert($menus);
+    }
+}

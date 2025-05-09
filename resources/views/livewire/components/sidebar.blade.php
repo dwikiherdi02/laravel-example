@@ -2,8 +2,6 @@
 
 use function Livewire\Volt\{state};
 
-//
-
 ?>
 
 <div class="app-sidebar sidebar-shadow">
@@ -39,17 +37,18 @@ use function Livewire\Volt\{state};
     </div>    
     <div class="scrollbar-sidebar">
         <div class="app-sidebar__inner">
+            @persist('sidebar')
             <ul class="vertical-nav-menu">
                 <li class="app-sidebar__heading">{{ __('Umum') }}</li>
                 <li>
-                    <a href="#" class="mm-active">
+                    <a href="/dashboard" wire:current="mm-active" wire:navigate.hover>
                         <i class="metismenu-icon pe-7s-home">
                         </i>
                         {{ __('Beranda') }}
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="/email" wire:current="mm-active" wire:navigate.hover>
                         <i class="metismenu-icon pe-7s-mail">
                         </i>
                         {{ __('Email') }}
@@ -86,13 +85,6 @@ use function Livewire\Volt\{state};
                 </li>
                 <li>
                     <a href="#">
-                        <i class="metismenu-icon pe-7s-folder">
-                        </i>
-                        {{ __('Riwayat Iuran Bulanan') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
                         <i class="metismenu-icon pe-7s-credit">
                         </i>
                         {{ __('Tambah Biaya Pengeluaran') }}
@@ -101,11 +93,19 @@ use function Livewire\Volt\{state};
                 <li class="app-sidebar__heading">{{ __('Riwayat') }}</li>
                 <li>
                     <a href="#">
+                        <i class="metismenu-icon pe-7s-folder">
+                        </i>
+                        {{ __('Riwayat Iuran Bulanan') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
                         <i class="metismenu-icon pe-7s-cash">
                         </i>
                         {{ __('Riwayat Transaksi') }}
                     </a>
                 </li>
+                {{-- <li class="app-sidebar__heading">{{  __('Laporan') }}</li>
                 <li>
                     <a href="#">
                         <i class="metismenu-icon pe-7s-notebook">
@@ -119,8 +119,7 @@ use function Livewire\Volt\{state};
                         </i>
                         {{ __('Laporan Keuangan') }}
                     </a>
-                </li>
-
+                </li> --}}
                 <li class="app-sidebar__heading">{{  __('Pengaturan') }}</li>
                 <li>
                     <a href="#">
@@ -144,6 +143,7 @@ use function Livewire\Volt\{state};
                     </a>
                 </li>
             </ul>
+            @endpersist
         </div>
     </div>
 </div>

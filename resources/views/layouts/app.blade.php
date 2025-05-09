@@ -16,11 +16,13 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        {{-- @persist('styles')  --}}
         <link rel="preload" href="{{ asset('assets/css/base.min.css') }}" as="style"
             onload="this.onload=null;this.rel='stylesheet'">
         <noscript>
             <link rel="stylesheet" href="{{ asset('assets/css/base.min.css') }}">
         </noscript>
+        {{-- @endpersist --}}
         {{-- <link rel="stylesheet" href="{{ asset('assets/css/base.min.css') }}"> --}}
 
         @stack('styles')
@@ -42,6 +44,7 @@
             </div>
         </div>
 
+        {{-- @persist('scripts') --}}
         <script src="{{ asset('assets/plugins/jquery/3.3.1/jquery.min.js') }}" defer></script>
         <script src="{{ asset('assets/plugins/bootstrap/bootstrap.bundle.min.js') }}" defer></script>
         <script src="{{ asset('assets/plugins/metismenu/metismenu.js') }}" defer></script>
@@ -51,6 +54,7 @@
         <!--Perfect Scrollbar -->
         <script src="{{ asset('assets/plugins/scrollbar/scrollbar.min.js') }}" defer></script>
         <script src="{{ asset('assets/plugins/scrollbar/scripts-init/scrollbar.min.js') }}" defer></script>
+        {{-- @endpersist --}}
 
         @stack('scripts')
     </body>

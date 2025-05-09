@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Hash;
 use Illuminate\Database\Seeder;
+use Str;
 
 class AdminSeeder extends Seeder
 {
@@ -13,12 +15,37 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        $users = [
+            [
+                'id' => Str::orderedUuid(),
+                'name' => 'Admin',
+                'username' => 'admin',
+                'role_id' => '9ece7992-d2d7-4f56-8c03-3ffdc8db3ef8',
+                'password' => Hash::make(env('DEFAULT_PASSWORD', '12345678')),
+                'is_initial_login' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id' => Str::orderedUuid(),
+                'name' => 'Bendahara',
+                'username' => 'bendahara',
+                'role_id' => '9ece7992-ed89-4bdd-8aaf-6607dfe89bef',
+                'password' => Hash::make(env('DEFAULT_PASSWORD', '12345678')),
+                'is_initial_login' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]
+        ];
+
+        User::insert($users);
+        
+        /* User::create([
             'name' => 'Admin',
             'username' => 'admin',
             'role_id' => '9ece7992-d2d7-4f56-8c03-3ffdc8db3ef8',
             'password' => Hash::make(env('DEFAULT_PASSWORD', '12345678')),
             'is_initial_login' => true,
-        ]);
+        ]); */
     }
 }
