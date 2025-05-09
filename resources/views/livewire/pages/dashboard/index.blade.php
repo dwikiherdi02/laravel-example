@@ -19,13 +19,13 @@ layout('layouts.app');
                     {{-- <div class="page-title-subheading">These boxes are usually for dashboard elements centered around users and profiles.</div> --}}
                 </div>
             </div>
-            <div class="page-title-actions"></div> 
+            <div class="page-title-actions"></div>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-12">
-            
+
         </div>
     </div>
 </div>

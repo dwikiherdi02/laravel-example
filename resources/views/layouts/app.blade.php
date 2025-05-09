@@ -37,6 +37,8 @@
                         {{ $slot }}
                     </div>
                 </div>
+
+                <div class="scrollbar-container"></div>
             </div>
         </div>
 
@@ -44,6 +46,11 @@
         <script src="{{ asset('assets/plugins/bootstrap/bootstrap.bundle.min.js') }}" defer></script>
         <script src="{{ asset('assets/plugins/metismenu/metismenu.js') }}" defer></script>
         <script src="{{ asset('assets/js/app.min.js') }}" defer></script>
+        <script src="{{ asset('assets/js/demo.min.js') }}" defer></script>
+
+        <!--Perfect Scrollbar -->
+        <script src="{{ asset('assets/plugins/scrollbar/scrollbar.min.js') }}" defer></script>
+        <script src="{{ asset('assets/plugins/scrollbar/scripts-init/scrollbar.min.js') }}" defer></script>
 
         @stack('scripts')
     </body>

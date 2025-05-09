@@ -4,18 +4,31 @@ use App\Facades\Avatar;
 
 use App\Livewire\Actions\Logout;
 
-use function Livewire\Volt\{state};
+use function Livewire\Volt\{state, mount};
 
 state([
-    'avatar' => Avatar::create(Auth::user()->name)
+    'avatar' => '',
+    'avatarSquare' => '',
+    'authName' => '',
+    'authRoleName' => '',
+]);
+
+mount(function () {
+    $this->avatar = Avatar::create(Auth::user()->name)
         ->setFontFamily('Laravolt')
-        ->toBase64(),
-    'avatarSquare' => Avatar::create(Auth::user()->name)
+        ->toBase64();
+
+    $this->avatarSquare = Avatar::create(Auth::user()->name)
         ->setFontFamily('Laravolt')
         ->setShape('square')
-        ->toBase64(),
-    'authName' => Auth::user()->name,
-]);
+        ->toBase64();
+
+    $auth = Auth::user();
+
+    $this->authName = $auth->name;
+
+    $this->authRoleName = $auth->role->name;
+});
 
 $logout = function (Logout $logout) {
     $logout();
@@ -31,7 +44,7 @@ $logout = function (Logout $logout) {
         <div class="logo-src"></div>
         <div class="header__pane ml-auto">
             <div>
-                <button type="button" class="hamburger close-sidebar-btn hamburger--elastic d-block d-md-none" data-class="closed-sidebar">
+                <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
                     <span class="hamburger-box">
                         <span class="hamburger-inner"></span>
                     </span>
@@ -80,7 +93,7 @@ $logout = function (Logout $logout) {
                                                 </div>
                                                 <div>
                                                     <h5 class="menu-header-title">{{ $authName }}</h5>
-                                                    <h6 class="menu-header-subtitle">Admin</h6>
+                                                    <h6 class="menu-header-subtitle">{{ $authRoleName }}</h6>
                                                 </div>
                                                 <div class="menu-header-btn-pane">
                                                     <button wire:click="logout" class="ladda-button btn btn-pill btn-primary" data-style="slide-right"><span class="ladda-label">{{ __('Keluar') }}</span><span class="ladda-spinner"></span></button>
@@ -116,7 +129,7 @@ $logout = function (Logout $logout) {
                                 {{ $authName }}
                             </div>
                             <div class="widget-subheading">
-                                Admin
+                                {{ $authRoleName }}
                             </div>
                         </div>
                         <div class="widget-content-right header-user-info ml-3"></div>

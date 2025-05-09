@@ -129,6 +129,7 @@
         <script src="{{ asset('assets/plugins/bootstrap/bootstrap.bundle.min.js') }}" defer></script>
         <script src="{{ asset('assets/plugins/metismenu/metismenu.js') }}" defer></script>
         <script src="{{ asset('assets/js/app.min.js') }}" defer></script>
+        <script src="{{ asset('assets/js/demo.min.js') }}" defer></script>
         @stack('scripts')
     </body>
 </html>
