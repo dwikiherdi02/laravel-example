@@ -101,7 +101,7 @@ $logout = function (Logout $logout) {
                                                     <h6 class="menu-header-subtitle">{{ $authRoleName }}</h6>
                                                 </div>
                                                 <div class="menu-header-btn-pane">
-                                                    <button wire:click="logout" class="ladda-button btn btn-pill btn-primary" data-style="slide-right"><span class="ladda-label">{{ __('Keluar') }}</span><span class="ladda-spinner"></span></button>
+                                                    <button wire:click="logout" class="ladda-button btn btn-pill btn-primary" data-style="slide-right"><span class="ladda-label">{{ __('widget.logout_label') }}</span><span class="ladda-spinner"></span></button>
                                                 </div>
                                             </div>
                                         </div>
