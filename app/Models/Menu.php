@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -29,8 +30,18 @@ class Menu extends Model
         'deleted_at',
     ];
 
-    public function menuGroup(): HasOne 
+    public function menuGroup(): HasOne
     {
         return $this->hasOne(MenuGroup::class, 'id', 'menu_group_id');
+    }
+
+    public function menuRole(): HasOne
+    {
+        return $this->hasOne(MenuRole::class, 'menu_id', 'id');
+    }
+
+    public function menuShortcut(): HasOne
+    {
+        return $this->hasOne(MenuShortcut::class, 'menu_id', 'id');
     }
 }

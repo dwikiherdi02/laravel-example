@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Auth;
 use App\Facades\Avatar;
+use App\Services\ComponentService;
 
 use App\Livewire\Actions\Logout;
 
@@ -11,9 +12,10 @@ state([
     'avatarSquare' => '',
     'authName' => '',
     'authRoleName' => '',
+    'menuShortcut' => [],
 ]);
 
-mount(function () {
+mount(function (ComponentService $service) {
     $this->avatar = Avatar::create(Auth::user()->name)
         ->setFontFamily('Laravolt')
         ->toBase64();
@@ -28,6 +30,8 @@ mount(function () {
     $this->authName = $auth->name;
 
     $this->authRoleName = $auth->role->name;
+
+    $this->menuShortcut = $service->getMenuShortcuts($auth->role_id);
 });
 
 $logout = function (Logout $logout) {
@@ -63,7 +67,7 @@ $logout = function (Logout $logout) {
     </div>
     <div class="app-header__menu">
         <span>
-            <button type="button" class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+            <button type="button" class="btn-icon btn-icon-only btn btn-sm text-primary mobile-toggle-header-nav">
                 <span class="btn-icon-wrapper">
                     <i class="fa fa-ellipsis-v fa-w-6"></i>
                 </span>
@@ -73,6 +77,7 @@ $logout = function (Logout $logout) {
     <div class="app-header__content">
         <div class="app-header-right">
             <div class="header-btn-lg pr-0">
+                @persist('header-widget')
                 <div class="widget-content p-0">
                     <div class="widget-content-wrapper">
                         <div class="widget-content-left">
@@ -105,18 +110,11 @@ $logout = function (Logout $logout) {
                                         <li class="p-0 list-group-item">
                                             <div class="grid-menu grid-menu-2col">
                                                 <div class="no-gutters row">
-                                                    <div class="col-sm-6">
-                                                        <button class="btn-icon-vertical btn-square btn-transition btn btn-outline-link"><i class="lnr-user btn-icon-wrapper btn-icon-lg mb-3"> </i>{{ __('Lihat Profil') }}</button>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <button class="btn-icon-vertical btn-square btn-transition btn btn-outline-link"><i class="lnr-map btn-icon-wrapper btn-icon-lg mb-3"> </i>Sales Reports</button>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <button class="btn-icon-vertical btn-square btn-transition btn btn-outline-link"><i class="lnr-music-note btn-icon-wrapper btn-icon-lg mb-3"> </i>Leads Generated</button>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <button class="btn-icon-vertical btn-square btn-transition btn btn-outline-link"><i class="lnr-heart btn-icon-wrapper btn-icon-lg mb-3"> </i>Successful Tasks</button>
-                                                    </div>
+                                                    @foreach ($menuShortcut as $menu)
+                                                        <div class="col-sm-6">
+                                                            <a href="{{ $menu->slug }}" class="btn-icon-vertical btn-square btn-transition btn btn-outline-link"><i class="{{ $menu->icon }} btn-icon-wrapper btn-icon-lg mb-3"> </i>{{ __($menu->name_lang_key) }}</a>
+                                                        </div>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </li>
@@ -135,6 +133,7 @@ $logout = function (Logout $logout) {
                         <div class="widget-content-right header-user-info ml-3"></div>
                     </div>
                 </div>
+                @endpersist
             </div>
         </div>
     </div>

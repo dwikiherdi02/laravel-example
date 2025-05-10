@@ -1,6 +1,18 @@
 <?php
 
-use function Livewire\Volt\{state};
+use App\Services\ComponentService;
+use Illuminate\Support\Facades\Auth;
+
+use function Livewire\Volt\{state, mount};
+
+state([
+    'sidebars' => [],
+]);
+
+mount(function (ComponentService $service) {
+    $this->sidebars = $service->getSidebars(Auth::user()->role_id);
+
+});
 
 ?>
 
@@ -34,114 +46,23 @@ use function Livewire\Volt\{state};
                 </span>
             </button>
         </span>
-    </div>    
+    </div>
     <div class="scrollbar-sidebar">
         <div class="app-sidebar__inner">
             @persist('sidebar')
             <ul class="vertical-nav-menu">
-                <li class="app-sidebar__heading">{{ __('Umum') }}</li>
-                <li>
-                    <a href="/dashboard" wire:current="mm-active" wire:navigate.hover>
-                        <i class="metismenu-icon pe-7s-home">
-                        </i>
-                        {{ __('Beranda') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="/email" wire:current="mm-active" wire:navigate.hover>
-                        <i class="metismenu-icon pe-7s-mail">
-                        </i>
-                        {{ __('Email') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="metismenu-icon pe-7s-users">
-                        </i>
-                        {{ __('Daftar Warga') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="metismenu-icon pe-7s-id">
-                        </i>
-                        {{ __('Daftar Pengguna') }}
-                    </a>
-                </li>
-                <li class="app-sidebar__heading">{{ __('Kelola Iuran & Biaya') }}</li>
-                <li>
-                    <a href="#">
-                        <i class="metismenu-icon pe-7s-box1">
-                        </i>
-                        {{ __('Daftar Iuran') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="metismenu-icon pe-7s-note2">
-                        </i>
-                        {{ __('Tambah Iuran Bulanan') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="metismenu-icon pe-7s-credit">
-                        </i>
-                        {{ __('Tambah Biaya Pengeluaran') }}
-                    </a>
-                </li>
-                <li class="app-sidebar__heading">{{ __('Riwayat') }}</li>
-                <li>
-                    <a href="#">
-                        <i class="metismenu-icon pe-7s-folder">
-                        </i>
-                        {{ __('Riwayat Iuran Bulanan') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="metismenu-icon pe-7s-cash">
-                        </i>
-                        {{ __('Riwayat Transaksi') }}
-                    </a>
-                </li>
-                {{-- <li class="app-sidebar__heading">{{  __('Laporan') }}</li>
-                <li>
-                    <a href="#">
-                        <i class="metismenu-icon pe-7s-notebook">
-                        </i>
-                        {{ __('Laporan Iuran') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="metismenu-icon pe-7s-wallet">
-                        </i>
-                        {{ __('Laporan Keuangan') }}
-                    </a>
-                </li> --}}
-                <li class="app-sidebar__heading">{{  __('Pengaturan') }}</li>
-                <li>
-                    <a href="#">
-                        <i class="metismenu-icon pe-7s-user">
-                        </i>
-                        {{ __('Profil') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="metismenu-icon pe-7s-network">
-                        </i>
-                        {{ __('IMAP') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="metismenu-icon pe-7s-mail-open-file">
-                        </i>
-                        {{ __('Template Teks') }}
-                    </a>
-                </li>
+                @foreach ($sidebars as $item)
+                    <li class="app-sidebar__heading">{{ __($item->name_lang_key) }}</li>
+                    @foreach ($item->menus as $menu)
+                    <li>
+                        <a href="{{ $menu->slug }}" wire:current="mm-active" wire:navigate.hover>
+                            <i class="metismenu-icon {{ $menu->icon }}">
+                            </i>
+                            {{ __($menu->name_lang_key) }}
+                        </a>
+                    </li>
+                    @endforeach
+                @endforeach
             </ul>
             @endpersist
         </div>

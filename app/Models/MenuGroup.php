@@ -16,7 +16,7 @@ class MenuGroup extends Model
     protected $fillable = [
         'name',
         'name_lang_key',
-        'sort',        
+        'sort',
     ];
 
     protected $hidden = [
@@ -24,7 +24,7 @@ class MenuGroup extends Model
         'updated_at',
     ];
 
-    public function menus(): HasMany 
+    public function menus(): HasMany
     {
         return $this->hasMany(Menu::class, 'menu_group_id', 'id');
     }
