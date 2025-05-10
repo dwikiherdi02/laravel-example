@@ -14,18 +14,20 @@
         <!-- Disable tap highlight on IE -->
         <meta name="msapplication-tap-highlight" content="no">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Laravel') }} | {{ $title ?? '' }}</title>
 
+        @assets
         {{-- @persist('styles')  --}}
         <link rel="preload" href="{{ asset('assets/css/base.min.css') }}" as="style"
             onload="this.onload=null;this.rel='stylesheet'">
         <noscript>
             <link rel="stylesheet" href="{{ asset('assets/css/base.min.css') }}">
         </noscript>
-        {{-- @endpersist --}}
         {{-- <link rel="stylesheet" href="{{ asset('assets/css/base.min.css') }}"> --}}
+        {{-- @endpersist --}}
 
         @stack('styles')
+        @endassets
     </head>
     <body>
         <div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">
@@ -43,7 +45,8 @@
                 <div class="scrollbar-container"></div>
             </div>
         </div>
-
+        
+        {{-- @script --}}
         {{-- @persist('scripts') --}}
         <script src="{{ asset('assets/plugins/jquery/3.3.1/jquery.min.js') }}" defer></script>
         <script src="{{ asset('assets/plugins/bootstrap/bootstrap.bundle.min.js') }}" defer></script>
@@ -57,5 +60,6 @@
         {{-- @endpersist --}}
 
         @stack('scripts')
+        {{-- @endscript --}}
     </body>
 </html>

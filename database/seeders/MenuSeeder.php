@@ -81,7 +81,7 @@ class MenuSeeder extends Seeder
             [
                 'id' => '018f984f-5c4d-8368-b07e-9e7b58fc998f',
                 'name' => 'Tambah Iuran Bulanan',
-                'name_lang_key' => 'meun.add_monthly_contribution',
+                'name_lang_key' => 'menu.add_monthly_contribution',
                 'slug' => '/add-monthly-contribution',
                 'icon' => 'pe-7s-note2',
                 'menu_group_id' => 'cb85dfba-6ac2-4b5b-a012-63bdd379ceb0',

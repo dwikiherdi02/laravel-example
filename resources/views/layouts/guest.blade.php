@@ -12,7 +12,7 @@
         <!-- Disable tap highlight on IE -->
         <meta name="msapplication-tap-highlight" content="no">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Laravel') }} | {{ $title ?? '' }}</title>
 
         <link rel="preload" href="{{ asset('assets/css/base.min.css') }}" as="style"
             onload="this.onload=null;this.rel='stylesheet'">
