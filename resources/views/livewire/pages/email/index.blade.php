@@ -1,28 +1,28 @@
 <?php
 
-use function Livewire\Volt\layout;
+use App\Services\ComponentService;
+
+use function Livewire\Volt\{ layout, state, title };
 
 layout('layouts.app');
 
-//
+state([
+    'title',
+    'icon',
+]);
+
+title(function (ComponentService $service) {
+    $path = '/' . app('request')->uri()->path();
+    $menu = $service->getMenuBySlug($path);
+    $this->title = __($menu->name_lang_key);
+    $this->icon = $menu->icon;
+    return $this->title;
+});
 
 ?>
 
 <div>
-    <div class="app-page-title">
-        <div class="page-title-wrapper">
-            <div class="page-title-heading">
-                <div class="page-title-icon">
-                    <i class="pe-7s-mail icon-gradient bg-happy-itmeo"></i>
-                </div>
-                <div>
-                    {{ __('Email') }}
-                    {{-- <div class="page-title-subheading">These boxes are usually for dashboard elements centered around users and profiles.</div> --}}
-                </div>
-            </div>
-            <div class="page-title-actions"></div>
-        </div>
-    </div>
+    <x-page-heading :title="$title" :icon="$icon"></x-page-heading>
 
     <div class="row">
         <div class="col-md-12">

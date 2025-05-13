@@ -5,9 +5,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 
-use function Livewire\Volt\{layout, state, rules};
+use function Livewire\Volt\{layout, title, state, rules};
 
 layout('layouts.guest');
+
+title(__('change_password.title'));
 
 state([
     'current_password' => '',

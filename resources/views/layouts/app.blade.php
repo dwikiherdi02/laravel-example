@@ -23,6 +23,12 @@
         <noscript>
             <link rel="stylesheet" href="{{ asset('assets/css/base.min.css') }}">
         </noscript>
+
+        <link rel="preload" href="{{ asset('assets/plugins/css-skeletons/css-skeletons.min.css') }}" as="style"
+            onload="this.onload=null;this.rel='stylesheet'">
+        <noscript>
+            <link rel="stylesheet" href="{{ asset('assets/plugins/css-skeletons/css-skeletons.min.css') }}">
+        </noscript>
         {{-- <link rel="stylesheet" href="{{ asset('assets/css/base.min.css') }}"> --}}
         {{-- @endpersist --}}
 
@@ -58,7 +64,6 @@
         <script src="{{ asset('assets/plugins/scrollbar/scrollbar.min.js') }}" defer></script>
         <script src="{{ asset('assets/plugins/scrollbar/scripts-init/scrollbar.min.js') }}" defer></script>
         {{-- @endpersist --}}
-
         @stack('scripts')
         {{-- @endscript --}}
     </body>

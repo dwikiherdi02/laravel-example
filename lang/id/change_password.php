@@ -13,11 +13,7 @@ return [
     |
     */
 
-    // 'current_password_label' => 'Current Password',
-    // 'new_password_label' => 'New Password',
-    // 'confirm_password_label' => 'Confirm Password',
-    // 'update_password_button' => 'Update Password',
-
+    'title' => 'Perbaharui Kata Sandi',
     'current_password_label' => 'Kata Sandi Saat Ini',
     'new_password_label' => 'Kata Sandi Baru',
     'confirm_password_label' => 'Konfirmasi Kata Sandi',
