@@ -24,5 +24,10 @@ class ComponentService
     {
         return $this->menuRepo->getMenuShortcuts($authRoleId);
     }
+
+    public function getMenuBySlug(string $slug = '')
+    {
+        return $this->menuRepo->getMenuBySlug($slug);
+    }
 }
 

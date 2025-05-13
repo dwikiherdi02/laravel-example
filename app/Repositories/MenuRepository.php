@@ -26,5 +26,13 @@ class MenuRepository
             )
             ->get();
     }
+
+    public function getMenuBySlug(string $slug = '')
+    {
+        return $this->model
+            ->select('id', 'name', 'name_lang_key', 'icon', 'slug')
+            ->where('slug', $slug)
+            ->first();
+    }
 }
 
