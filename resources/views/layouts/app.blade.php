@@ -29,6 +29,18 @@
         <noscript>
             <link rel="stylesheet" href="{{ asset('assets/plugins/css-skeletons/css-skeletons.min.css') }}">
         </noscript>
+
+        <link rel="preload" href="{{ asset('assets/plugins/restables/restables.css') }}" as="style"
+            onload="this.onload=null;this.rel='stylesheet'">
+        <noscript>
+            <link rel="stylesheet" href="{{ asset('assets/plugins/restables/restables.css') }}">
+        </noscript>
+
+        <link rel="preload" href="{{ asset('assets/css/mobile-optimised.css') }}" as="style"
+            onload="this.onload=null;this.rel='stylesheet'">
+        <noscript>
+            <link rel="stylesheet" href="{{ asset('assets/css/mobile-optimised.css') }}">
+        </noscript>
         {{-- <link rel="stylesheet" href="{{ asset('assets/css/base.min.css') }}"> --}}
         {{-- @endpersist --}}
 
@@ -63,6 +75,7 @@
         <!--Perfect Scrollbar -->
         <script src="{{ asset('assets/plugins/scrollbar/scrollbar.min.js') }}" defer></script>
         <script src="{{ asset('assets/plugins/scrollbar/scripts-init/scrollbar.min.js') }}" defer></script>
+        <script src="{{ asset('assets/plugins/restables/restables.min.js') }}" defer></script>
         {{-- @endpersist --}}
         @stack('scripts')
         {{-- @endscript --}}

@@ -25,10 +25,11 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'role_id',
+        'resident_id',
         'name',
         // 'email',
         'username',
-        'role_id',
         'password',
         'is_initial_login',
     ];
@@ -59,5 +60,10 @@ class User extends Authenticatable
     public function role(): HasOne
     {
         return $this->hasOne(Role::class, 'id', 'role_id');
+    }
+
+    public function resident(): HasOne
+    {
+        return $this->hasOne(Resident::class, 'id', 'resident_id');
     }
 }

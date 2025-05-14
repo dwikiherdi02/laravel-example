@@ -1,0 +1,13 @@
+table.restables-clone {
+    display: none;
+}
+
+@media (max-width: 991px) {
+    table.restables-origin {
+        display: none;
+    }
+    
+    table.restables-clone {
+        display: table;
+    }
+}
