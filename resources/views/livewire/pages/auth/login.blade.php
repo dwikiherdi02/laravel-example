@@ -35,29 +35,29 @@ $login = function () {
         {{-- <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> --}}
         {{-- <h1 class="h3 mb-3 fw-normal">{{ __('login.sign_in_label') }}</h1> --}}
 
-        <div class="form-group">
-            <x-input-label for="username" :value="__('login.username_label')" :isRequired="false" />
+        <div class="form-label-group">
             <x-text-input
-                wire:model="form.username"
-                id="username"
-                type="text"
-                name="username"
-                required autofocus
-                autocomplete="username"
-                placeholder="{{ __('login.username_label') }}"
-                aria-describedby="usernameHelp" />
+            wire:model="form.username"
+            id="username"
+            type="text"
+            name="username"
+            required autofocus
+            autocomplete="username"
+            placeholder="{{ __('login.username_label') }}"
+            aria-describedby="usernameHelp" />
+            <x-input-label for="username" :value="__('login.username_label')" :isRequired="false" />
             <x-input-error id="usernameHelp" :messages="$errors->get('form.username')" />
         </div>
 
-        <div class="form-group">
-            <x-input-label for="password" :value="__('login.password_label')" :isRequired="false" />
+        <div class="form-label-group">
             <x-text-input
-                wire:model="form.password"
-                id="password"
-                type="password"
-                name="password"
-                placeholder="{{ __('login.password_label') }}"
-                aria-describedby="passwordHelp" />
+            wire:model="form.password"
+            id="password"
+            type="password"
+            name="password"
+            placeholder="{{ __('login.password_label') }}"
+            aria-describedby="passwordHelp" />
+            <x-input-label for="password" :value="__('login.password_label')" :isRequired="false" />
             <x-input-error id="passwordHelp" :messages="$errors->get('form.password')" />
         </div>
 

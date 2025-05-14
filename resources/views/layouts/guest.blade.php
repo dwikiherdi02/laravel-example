@@ -20,6 +20,12 @@
             <link rel="stylesheet" href="{{ asset('assets/css/base.min.css') }}">
         </noscript>
 
+        <link rel="preload" href="{{ asset('assets/css/floating-labels.css') }}" as="style"
+            onload="this.onload=null;this.rel='stylesheet'">
+        <noscript>
+            <link rel="stylesheet" href="{{ asset('assets/css/floating-labels.css') }}">
+        </noscript>
+
         @stack('styles')
         <style>
             html,
