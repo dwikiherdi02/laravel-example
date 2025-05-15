@@ -44,8 +44,7 @@
         {{-- <link rel="stylesheet" href="{{ asset('assets/css/base.min.css') }}"> --}}
         {{-- @endpersist --}}
 
-        @stack('styles')
-        @endassets
+        {{-- @stack('styles') --}}
     </head>
     <body>
         <div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">
@@ -63,6 +62,8 @@
                 <div class="scrollbar-container"></div>
             </div>
         </div>
+
+        @stack("modals")
         
         {{-- @script --}}
         {{-- @persist('scripts') --}}
@@ -75,9 +76,9 @@
         <!--Perfect Scrollbar -->
         <script src="{{ asset('assets/plugins/scrollbar/scrollbar.min.js') }}" defer></script>
         <script src="{{ asset('assets/plugins/scrollbar/scripts-init/scrollbar.min.js') }}" defer></script>
-        <script src="{{ asset('assets/plugins/restables/restables.min.js') }}" defer></script>
+        {{-- <script src="{{ asset('assets/plugins/restables/restables.min.js') }}" defer></script> --}}
         {{-- @endpersist --}}
-        @stack('scripts')
+        {{-- @stack('scripts') --}}
         {{-- @endscript --}}
     </body>
 </html>

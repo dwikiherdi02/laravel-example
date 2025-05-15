@@ -43,13 +43,30 @@ $loadData = action(function () {
     <div class="filter-card mb-3 card">
         <div class="card-header d-flex justify-content-between align-items-center px-3">
             <div class="float-left">
-                <button type="button" class="btn-icon btn-icon-only btn btn-primary" data-toggle="collapse" href="#filter-collapse">
-                    <i class="pe-7s-filter btn-icon-wrapper"></i>
-                </button>
+                {{-- <div class="btn-group" role="group" aria-label="pagination"> --}}
+                    <button type="button" class="btn-icon btn-icon-only btn btn-primary" data-toggle="collapse" href="#filter-collapse">
+                        <i class="pe-7s-filter btn-icon-wrapper"></i>
+                    </button>
+                    
+                    <button 
+                        type="button" 
+                        class="d-none d-md-inline-block btn-icon btn btn-success"
+                        data-toggle="modal" data-target="#exampleModalCenter">
+                        <i class="pe-7s-plus btn-icon-wrapper"></i>
+                        {{ __('label.add') }}
+                    </button>
+
+                    <button 
+                        type="button"
+                        class="d-inline-block d-md-none btn-icon btn-icon-only btn btn-success"
+                        data-toggle="modal" data-target="#exampleModalCenter">
+                        <i class="pe-7s-plus btn-icon-wrapper"> </i>
+                    </button>
+                {{-- </div> --}}
             </div>
             <div class="float-right">
                 <small class="font-weight-bold text-primary">1-10 / 2,000</small>
-                <div class="btn-group" role="group" aria-label="sort">
+                <div class="btn-group" role="group" aria-label="pagination">
                     <button type="button" class="btn-icon btn-icon-only btn btn-link">
                         <i class="fa fa-angle-left btn-icon-wrapper"></i>
                     </button>
@@ -64,7 +81,7 @@ $loadData = action(function () {
         </div>
     </div>
 
-    <div class="mb-3 card" data-device="desktop">
+    <div class="mb-3 card">
         <div class="card-body">
             <div class="table-responsive">
                 <table class="mb-0 table">
@@ -78,51 +95,20 @@ $loadData = action(function () {
                             <th class="text-black-50 border-0">{{ __('resident.unique_code_table_label') }}</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody wire:init="loadData">
                         @if($isLoading)
                             {{-- <x-tbody-onload :rows="5" :cols="6" /> --}}
                             <x-tbody-onload :cols="6" />
                         @else
-                            <tr>
-                                <td>-</td>
-                                {{-- <td>1</td> --}}
-                                <td>BLOK 1</td>
-                                <td>NAMA 1</td>
-                                <td>0213456789</td>
-                                <td>20</td>
-                            </tr>
-                            <tr>
-                                <td>-</td>
-                                {{-- <td>2</td> --}}
-                                <td>BLOK 2</td>
-                                <td>NAMA 2</td>
-                                <td>0213456789</td>
-                                <td>21</td>
-                            </tr>
-                            <tr>
-                                <td>-</td>
-                                {{-- <td>3</td> --}}
-                                <td>BLOK 3</td>
-                                <td>NAMA 3</td>
-                                <td>0213456789</td>
-                                <td>22</td>
-                            </tr>
-                            <tr>
-                                <td>-</td>
-                                {{-- <td>4</td> --}}
-                                <td>BLOK 4</td>
-                                <td>NAMA 4</td>
-                                <td>0213456789</td>
-                                <td>23</td>
-                            </tr>
-                            <tr>
-                                <td>-</td>
-                                {{-- <td>5</td> --}}
-                                <td>BLOK 5</td>
-                                <td>NAMA 5</td>
-                                <td>0213456789</td>
-                                <td>24</td>
-                            </tr>
+                            @if (count($table->data) > 0)
+                                
+                            @else
+                                <tr>
+                                    <td colspan="6" class="text-center">
+                                        {{ __('label.datatable_not_found') }} 
+                                    </td>
+                                </tr>
+                            @endif 
                         @endif                    
                     </tbody>
                 </table>
