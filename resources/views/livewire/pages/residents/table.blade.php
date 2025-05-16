@@ -14,7 +14,6 @@ state([
         'next' => 2,
         'maxPage' => 0,
         'total' => 0,
-        'totalFiltered' => 0,
         'data' => []
     ],
 
@@ -23,54 +22,46 @@ state([
 
 placeholder('components.table-onload');
 
-on(['loadData', 'toPage']);
+on(['loadData']);
 
-$loadData = action(function () {
-    info('load data residents');
+$loadData = action(function ($page = null) {
+    if ($page != null) {
+        $this->table->page = $page;
+        $this->table->prev = $page - 1 == 0 ? 0 : $page - 1;
+        $this->table->next = $page + 1;
+    }
+
+    if ($page != 0 || $page <= $this->table->maxPage) {
+        $this->load();
+    }
+});
+
+$load = function () {
+    info('load data residents from load function');
     $this->isLoading = true;
     
     sleep(2);
 
     $this->table->total = 15;
-    $this->table->totalFiltered = 15;
-    $this->table->maxPage = ceil($this->table->totalFiltered / $this->table->perpage);
+    $this->table->maxPage = ceil($this->table->total / $this->table->perpage);
 
     $this->isLoading = false;
     $this->generateRowsNumber();
-});
-
-$toPage = action(function ($page) {
-    $this->isLoading = true;
-    $this->table->page = $page;
-    $this->table->prev = $page - 1 == 0 ? 0 : $page - 1;
-    $this->table->next = $page + 1;
-    if ($page != 0 || $page <= $this->table->maxPage) {
-        $this->dispatch('loadData');
-    }
-});
+};
 
 $generateRowsNumber = function () {
-    if ($this->table->totalFiltered == 0) {
+    if ($this->table->total == 0) {
         $this->rowsNumber = 0;
         return;
     }
 
     $start = ($this->table->page * $this->table->perpage) - $this->table->perpage + 1;
     $end = $this->table->page * $this->table->perpage;
-    if ($end > $this->table->totalFiltered) {
-        $end = $this->table->totalFiltered;
+    if ($end > $this->table->total) {
+        $end = $this->table->total;
     }
     $this->rowsNumber = $start . ' - ' . $end;
-}
-
-// $setDeviceType = action(function ($type) {
-//     info('set device type: ' . $type);
-//     $this->device = $type;
-//     $this->isLoading = true;
-//     sleep(2);
-//     // $this->isLoading = false;
-//     $this->dispatch('loadData');
-// });
+};
 
 ?>
 
@@ -98,7 +89,7 @@ $generateRowsNumber = function () {
                     </button>
             </div>
             <div class="float-right">
-                <small class="font-weight-bold text-primary">{{ $rowsNumber }} / {{ $table->totalFiltered }}</small>
+                <small class="font-weight-bold text-primary">{{ $rowsNumber }} / {{ $table->total }}</small>
                 <div class="btn-group" role="group" aria-label="pagination">
                     <button wire:click="$dispatch('toPage', {'page': {{ $table->prev }}})" type="button" class="btn-icon btn-icon-only btn btn-link" @if ($table->prev == 0) disabled @endif>
                         <i class="fa fa-angle-left btn-icon-wrapper"></i>
@@ -177,3 +168,15 @@ $generateRowsNumber = function () {
     } */
 </script>
 @endscript --}}
+
+@script
+<script>
+    $(document).ready(function () {
+        $wire.on('toPage', (event) => {
+            $wire.set('isLoading', true).then(() => {
+                $wire.dispatch('loadData', { page: event.page });
+            });
+        });
+    });
+</script>
+@endscript
