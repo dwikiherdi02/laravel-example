@@ -1,8 +1,9 @@
 <?php
 
 return [
-    'add_label' => 'Tambah Warga',
-    'tablelist' => 'Tabel Daftar Warga',
+    'add_label' => 'Tambah Data Warga',
+    'view_label' => 'Lihat Data Warga',
+    'edit_label' => 'Ubah Data Warga',
 
 
     'name_table_label' => 'Nama',

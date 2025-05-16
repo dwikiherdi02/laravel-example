@@ -1,29 +1,65 @@
 <?php
 
-// use function Livewire\Volt\{state};
+use function Livewire\Volt\{state, on, action};
 
-//
+state(['type', 'animate']);
+
+on(['openModalResident', 'closeModalResident']);
+
+$openModalResident = action(function ($type) {
+    info('open modal resident');
+    $this->type = $type;
+    $this->animate = 'animate__animated animate__fadeInRight animate__faster';
+    // $this->dispatch('openModalResidentJs', type: $this->type, test: 'haha');
+    $this->dispatch('openModalResidentJs');
+});
+
+$closeModalResident = action(function () {
+    info('close modal resident');
+    $this->type = '';
+    $this->animate = 'animate__animated animate__fadeOutRight animate__faster';
+    // $this->dispatch('closeModalResidentJs');
+});
 
 ?>
 
 <div>
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal modal-fullscreen fade" id="modal-resident" tabindex="-1" role="dialog" aria-labelledby="modal-resident-title" aria-hidden="true" data-animate-in="animate__animated animate__fadeInRight animate__faster" data-animate-out="animate__animated animate__fadeOutRight animate__faster">
+        <div class="modal-dialog modal-dialog-centered shadow-none {{ $animate }}" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+                @switch($type)
+                    @case('add')
+                        <livewire:pages.residents.modal.add lazy />
+                        @break
+                    @case('view')
+                        <livewire:pages.residents.modal.view lazy />
+                        @break
+                    @case('edit')
+                        <livewire:pages.residents.modal.edit lazy />
+                        @break
+                    @default        
+                @endswitch
             </div>
         </div>
     </div>
 </div>
+
+@script
+<script>
+    $(function () {
+        $wire.on('openModalResidentJs', (event) => {
+            console.log(event);
+            $('#modal-resident').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
+        });
+    
+        $wire.on('closeModalResidentJs', () => {
+            $('#modal-resident').modal('hide');
+            $wire.dispatch('closeModalResident');
+        });
+    });
+</script>
+@endscript

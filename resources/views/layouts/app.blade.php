@@ -41,6 +41,18 @@
         <noscript>
             <link rel="stylesheet" href="{{ asset('assets/css/mobile-optimised.css') }}">
         </noscript>
+
+        <link rel="preload" href="{{ asset('assets/plugins/animatecss/animate.min.css') }}" as="style"
+            onload="this.onload=null;this.rel='stylesheet'">
+        <noscript>
+            <link rel="stylesheet" href="{{ asset('assets/plugins/animatecss/animate.min.css') }}">
+        </noscript>
+
+        <link rel="preload" href="{{ asset('assets/css/custom-bs.css') }}" as="style"
+            onload="this.onload=null;this.rel='stylesheet'">
+        <noscript>
+            <link rel="stylesheet" href="{{ asset('assets/css/custom-bs.css') }}">
+        </noscript>
         {{-- <link rel="stylesheet" href="{{ asset('assets/css/base.min.css') }}"> --}}
         {{-- @endpersist --}}
 
@@ -76,6 +88,7 @@
         <!--Perfect Scrollbar -->
         <script src="{{ asset('assets/plugins/scrollbar/scrollbar.min.js') }}" defer></script>
         <script src="{{ asset('assets/plugins/scrollbar/scripts-init/scrollbar.min.js') }}" defer></script>
+        <script src="{{ asset('assets/js/general.js') }}" defer></script>
         {{-- <script src="{{ asset('assets/plugins/restables/restables.min.js') }}" defer></script> --}}
         {{-- @endpersist --}}
         {{-- @stack('scripts') --}}

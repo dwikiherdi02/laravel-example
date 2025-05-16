@@ -8,7 +8,7 @@ layout('layouts.app');
 
 state([
     'title',
-    'icon'
+    'icon',
 ]);
 
 title(function (ComponentService $service) {
@@ -32,7 +32,7 @@ title(function (ComponentService $service) {
         </div> --}}
     </x-page-heading>
     <div class="row">
-        <div wire:loading.remove class="col-md-12">
+        <div class="col-md-12">
             <livewire:pages.residents.table />
         </div>
     </div>
