@@ -176,9 +176,16 @@ $generatePage = function () {
                                         <i class="fa fa-ellipsis-h"></i>
                                     </button>
                                     <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-                                        <button type="button" tabindex="0" class="dropdown-item">Ubah</button>
+                                        {{-- <button type="button" tabindex="0" class="dropdown-item">Ubah</button>
                                         <div tabindex="-1" class="dropdown-divider"></div>
-                                        <button type="button" tabindex="0" class="dropdown-item">Hapus</button>
+                                        <button type="button" tabindex="0" class="dropdown-item">Hapus</button> --}}
+                                        <button type="button" tabindex="0" class="dropdown-item">
+                                            <i class="dropdown-icon lnr-pencil"></i><span>Ubah</span>
+                                        </button>
+                                        <div tabindex="-1" class="dropdown-divider"></div>
+                                        <button type="button" tabindex="0" class="dropdown-item">
+                                            <i class="dropdown-icon lnr-trash"></i><span>Hapus</span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
