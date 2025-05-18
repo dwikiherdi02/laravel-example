@@ -8,6 +8,28 @@ function generateTextareaAutosize() {
     $('textarea.autosize-input').textareaAutoSize();
 }
 
+function initShowMore(selector = '.show-more-container', maxHeight = 60, showMoreText = 'Show more', showLessText = showMoreText) {
+    $(selector).each(function() {
+        var $container = $(this);
+        var $text = $container.find('.show-more-text');
+        var $link = $container.find('.show-more-link');
+
+        // Reset state
+        $text.css('max-height', maxHeight + 'px');
+        $link.text(showMoreText);
+
+        $link.off('click').on('click', function() {
+            if ($text.css('max-height') === maxHeight + 'px') {
+                $text.css('max-height', 'none');
+                $link.text(showLessText);
+            } else {
+                $text.css('max-height', maxHeight + 'px');
+                $link.text(showMoreText);
+            }
+        });
+    });
+}
+
 function generateScrollbar() {
     if ($(".scrollbar-container")[0]) {
 
@@ -68,4 +90,6 @@ $( document ).ready(function() {
     $(".input-mask-trigger").inputmask();
 
     $('textarea.autosize-input').textareaAutoSize();
+
+    initShowMore();
 });

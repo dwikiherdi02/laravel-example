@@ -33,7 +33,7 @@ title(function (ComponentService $service) {
     </x-page-heading>
     <div class="row">
         <div class="col-md-12">
-            <livewire:pages.residents.table />
+            <livewire:pages.residents.list />
         </div>
     </div>
 
@@ -42,3 +42,31 @@ title(function (ComponentService $service) {
         <livewire:pages.residents.modal />
     @endpush
 </div>
+
+{{-- @script
+<script>
+    /* $(document).ready(function () {
+        emitDeviceType();
+    });
+
+    $(window).on('resize', function () {
+        emitDeviceType();
+    });
+
+    function emitDeviceType() {
+        let device = 'desktop';
+        const width = window.innerWidth;
+
+        // if (width <= 768) {
+        //     device = 'mobile';
+        // } else if (width <= 1024) {
+        //     device = 'tablet';
+        // }
+        if (width <= 768) {
+            device = 'mobile';
+        }
+        console.log('device type: ' + device);
+        // Livewire.dispatch('setDeviceType', { type: device })
+    } */
+</script>
+@endscript --}}
