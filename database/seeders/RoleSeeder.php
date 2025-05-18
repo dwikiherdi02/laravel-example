@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enum\RoleEnum;
 use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -15,19 +16,19 @@ class RoleSeeder extends Seeder
     {
         $roles = [
             [
-                'id' => '9ece7992-d2d7-4f56-8c03-3ffdc8db3ef8',
+                'id' => RoleEnum::Admin->value,
                 'name' => 'Admin',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'id' => '9ece7992-ed89-4bdd-8aaf-6607dfe89bef',
+                'id' => RoleEnum::Bendahara->value,
                 'name' => 'Bendahara',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'id' => '9ece7992-ed91-4d1d-9e7f-66b38b0b7520',
+                'id' => RoleEnum::Warga->value,
                 'name' => 'Warga',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()

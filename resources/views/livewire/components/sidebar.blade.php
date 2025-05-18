@@ -10,7 +10,7 @@ state([
 ]);
 
 mount(function (ComponentService $service) {
-    $this->sidebars = $service->getSidebars(Auth::user()->role_id);
+    $this->sidebars = $service->getSidebars(auth_role());
 
 });
 

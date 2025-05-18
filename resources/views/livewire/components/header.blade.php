@@ -31,7 +31,7 @@ mount(function (ComponentService $service) {
 
     $this->authRoleName = $auth->role->name;
 
-    $this->menuShortcut = $service->getMenuShortcuts($auth->role_id);
+    $this->menuShortcut = $service->getMenuShortcuts(auth_role());
 });
 
 $logout = function (Logout $logout) {

@@ -30,17 +30,17 @@
             <link rel="stylesheet" href="{{ asset('assets/plugins/css-skeletons/css-skeletons.min.css') }}">
         </noscript>
 
-        <link rel="preload" href="{{ asset('assets/plugins/restables/restables.css') }}" as="style"
+        {{-- <link rel="preload" href="{{ asset('assets/plugins/restables/restables.css') }}" as="style"
             onload="this.onload=null;this.rel='stylesheet'">
         <noscript>
             <link rel="stylesheet" href="{{ asset('assets/plugins/restables/restables.css') }}">
-        </noscript>
+        </noscript> --}}
 
-        <link rel="preload" href="{{ asset('assets/css/mobile-optimised.css') }}" as="style"
+        {{-- <link rel="preload" href="{{ asset('assets/css/mobile-optimised.css') }}" as="style"
             onload="this.onload=null;this.rel='stylesheet'">
         <noscript>
             <link rel="stylesheet" href="{{ asset('assets/css/mobile-optimised.css') }}">
-        </noscript>
+        </noscript> --}}
 
         <link rel="preload" href="{{ asset('assets/plugins/animatecss/animate.min.css') }}" as="style"
             onload="this.onload=null;this.rel='stylesheet'">
@@ -76,7 +76,7 @@
         </div>
 
         @stack("modals")
-        
+
         {{-- @script --}}
         {{-- @persist('scripts') --}}
         <script src="{{ asset('assets/plugins/jquery/3.3.1/jquery.min.js') }}" defer></script>
@@ -87,7 +87,17 @@
 
         <!--Perfect Scrollbar -->
         <script src="{{ asset('assets/plugins/scrollbar/scrollbar.min.js') }}" defer></script>
-        <script src="{{ asset('assets/plugins/scrollbar/scripts-init/scrollbar.min.js') }}" defer></script>
+        {{-- <script src="{{ asset('assets/plugins/scrollbar/scripts-init/scrollbar.min.js') }}" defer></script> --}}
+
+        <!--Input Mask -->
+        <script src="{{ asset('assets/plugins/input-mask/input-mask.min.js') }}" defer></script>
+        {{-- <script src="{{ asset('assets/plugins/input-mask/scripts-init/input-mask.js') }}" defer></script> --}}
+
+        <!--Textarea Autosize -->
+        <script src="{{ asset('assets/plugins/textarea-autosize/textarea-autosize.min.js') }}" defer></script>
+        {{-- <script src="{{ asset('assets/plugins/textarea-autosize/scripts-init/textarea-autosize.js') }}" defer></script> --}}
+
+        <!--General -->
         <script src="{{ asset('assets/js/general.js') }}" defer></script>
         {{-- <script src="{{ asset('assets/plugins/restables/restables.min.js') }}" defer></script> --}}
         {{-- @endpersist --}}

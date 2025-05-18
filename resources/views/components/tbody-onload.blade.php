@@ -10,7 +10,7 @@
     </tr>
 @endfor --}}
 <tr>
-    <td colspan="{{ $cols }}" class="text-center"> 
+    <td colspan="{{ $cols }}" class="text-center border-0"> 
         {{-- <div class="d-flex justify-content-center">
             <div class="spinner-border spinner-border-sm text-primary" role="status">
                 <span class="sr-only">Loading...</span>

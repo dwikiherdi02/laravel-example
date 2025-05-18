@@ -14,11 +14,13 @@ $openModalResident = action(function ($type) {
     $this->dispatch('openModalResidentJs');
 });
 
-$closeModalResident = action(function () {
+$closeModalResident = action(function ($reloadTable = false) {
     info('close modal resident');
     $this->type = '';
     $this->animate = 'animate__animated animate__fadeOutRight animate__faster';
-    // $this->dispatch('closeModalResidentJs');
+    if ($reloadTable) {
+        $this->dispatch('toPageResident', page: 1);
+    }
 });
 
 ?>
@@ -37,7 +39,7 @@ $closeModalResident = action(function () {
                     @case('edit')
                         <livewire:pages.residents.modal.edit lazy />
                         @break
-                    @default        
+                    @default
                 @endswitch
             </div>
         </div>
@@ -48,17 +50,22 @@ $closeModalResident = action(function () {
 <script>
     $(function () {
         $wire.on('openModalResidentJs', (event) => {
-            console.log(event);
             $('#modal-resident').modal({
                 backdrop: 'static',
                 keyboard: false,
                 show: true
             });
+
+            window.dispatchEvent(new Event('residentModalOpened'));
         });
-    
-        $wire.on('closeModalResidentJs', () => {
+
+        $wire.on('closeModalResidentJs', (event) => {
             $('#modal-resident').modal('hide');
-            $wire.dispatch('closeModalResident');
+            let reloadTable = false;
+            if (event && event.reloadTable) {
+                reloadTable = event.reloadTable;
+            }
+            $wire.dispatch('closeModalResident', { reloadTable: reloadTable });
         });
     });
 </script>

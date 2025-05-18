@@ -2,13 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Enum\RoleEnum;
 use App\Models\User;
 use Carbon\Carbon;
 use Hash;
 use Illuminate\Database\Seeder;
 use Str;
 
-class AdminSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -20,7 +21,7 @@ class AdminSeeder extends Seeder
                 'id' => Str::orderedUuid(),
                 'name' => 'Admin',
                 'username' => 'admin',
-                'role_id' => '9ece7992-d2d7-4f56-8c03-3ffdc8db3ef8',
+                'role_id' => RoleEnum::Admin,
                 'resident_id' => null,
                 'password' => Hash::make(env('DEFAULT_PASSWORD', '12345678')),
                 'is_initial_login' => true,
@@ -31,7 +32,7 @@ class AdminSeeder extends Seeder
                 'id' => Str::orderedUuid(),
                 'name' => 'Bendahara',
                 'username' => 'bendahara',
-                'role_id' => '9ece7992-ed89-4bdd-8aaf-6607dfe89bef',
+                'role_id' => RoleEnum::Bendahara,
                 'resident_id' => null,
                 'password' => Hash::make(env('DEFAULT_PASSWORD', '12345678')),
                 'is_initial_login' => true,
@@ -41,7 +42,7 @@ class AdminSeeder extends Seeder
         ];
 
         User::insert($users);
-        
+
         /* User::create([
             'name' => 'Admin',
             'username' => 'admin',

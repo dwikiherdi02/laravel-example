@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Services;
+
+use App\Dto\ResidentDto;
+use App\Dto\UserDto;
+use App\Enum\RoleEnum;
+use App\Repositories\ResidentRepository;
+use App\Repositories\UserRepository;
+use Hash;
+use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Facades\Hash;
+// use Illuminate\Support\Facades\Lang;
+use Illuminate\Validation\ValidationException;
+
+class ResidentService
+{
+    function __construct(
+        protected ResidentRepository $residentRepo,
+        protected UserRepository $userRepo,
+    ) {
+        //
+    }
+
+
+    public function createResident(ResidentDto $data)
+    {
+        DB::beginTransaction();
+        try {
+            $resident = $this->residentRepo->create($data->toArray());
+
+            $username = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $resident->housing_block));
+            if ($this->userRepo->findByUsername($username) != null) {
+
+                throw ValidationException::withMessages([
+                    'housing_block' => trans('resident.housing_block_username_error'),
+                ]);
+            }
+
+            $user = UserDto::from([
+                'role_id' => RoleEnum::Warga,
+                'resident_id' => $resident->id,
+                'name' => $resident->name,
+                'username' => $username,
+                'password' => Hash::make(env('DEFAULT_PASSWORD', '12345678')),
+                'is_initial_login' => true,
+            ]);
+
+            $this->userRepo->create($user->toArray());
+            DB::commit();
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            throw $e;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
+            throw new \Exception(trans('resident.save_error'));
+        }
+    }
+
+}
