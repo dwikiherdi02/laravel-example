@@ -20,4 +20,5 @@ return [
     // error message
     'save_error' => 'Gagal menyimpan data, silahkan coba lagi.',
     'housing_block_username_error' => 'Nama Pengguna dari nomor rumah sudah terdaftar, silahkan gunakan nomor rumah lain.',
+    'resident_not_found_error' => 'Data warga tidak ditemukan. silahkan coba lagi atau hubungi admin.'
 ];

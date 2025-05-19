@@ -23,11 +23,6 @@ class ResidentService
         //
     }
 
-    public function findResidentById(string $id): ?ResidentDto
-    {
-        return $this->residentRepo->findById($id);
-    }
-    
     public function createResident(ResidentDto $data)
     {
         DB::beginTransaction();
@@ -66,6 +61,43 @@ class ResidentService
     public function listResidents(ListFilterDto $filter)
     {
         return $this->residentRepo->list($filter);
+    }
+
+    public function findResidentById(string $id): ?ResidentDto
+    {
+        $resident = $this->residentRepo->findById($id);
+        
+        if ($resident) {
+            return ResidentDto::from($resident);
+        }
+        
+        return null;
+    }
+
+    public function updateResident(ResidentDto $data)
+    {
+        $resident = $resident = $this->residentRepo->findById($data->id);
+        
+        if ($resident == null) {
+            throw new \Exception(trans('resident.resident_not_found_error'));
+        }
+
+        DB::beginTransaction();
+        try {
+            $resident->name = $data->name;
+            $resident->phone_number = $data->phone_number;
+            $resident->address = $data->address;
+            $resident->save();
+
+            DB::commit();
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            throw $e;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
+            throw new \Exception(trans('resident.save_error'));
+        }
     }
 
 }

@@ -14,18 +14,18 @@ class ResidentRepository
     ) {
     }
 
-    public function findById(string $id): ?ResidentDto
+    public function findById(string $id): ?Resident
     {
         $resident = $this->model->find($id);
         if ($resident) {
-            return ResidentDto::from($resident);
+            return $resident;
         }
         return null;
     }
 
-    public function create(array $data): ResidentDto
+    public function create(array $data): Resident
     {
-        return ResidentDto::from($this->model->create($data));
+        return $this->model->create($data);
     }
 
     public function list(ListFilterDto $filter): ListDto

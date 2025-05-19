@@ -10,7 +10,7 @@ state([
     // 'device' => 'desktop',
 
     'list' => (object) [
-        'perpage' => 10,
+        'perpage' => 2,
         'npage' => (object) [
             'prev' => 0,
             'current' => 1,
@@ -171,7 +171,7 @@ $generatePage = function () {
                                             <i class="fa fa-ellipsis-h"></i>
                                         </button>
                                         <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-                                            <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-edit" data-id="">
+                                            <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-edit" data-id="{{ $item->id }}">
                                                 <i class="dropdown-icon lnr-pencil"></i><span>{{ __('label.edit') }}</span>
                                             </button>
                                             <div tabindex="-1" class="dropdown-divider"></div>

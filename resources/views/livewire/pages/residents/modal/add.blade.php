@@ -90,7 +90,7 @@ $createResident = function (ResidentService $service) {
 
                 <div class="form-group col-12 col-md-6 mb-3">
                     <x-input-label for="phone_number" :value="__('resident.phone_number_label')" :isRequired="true" />
-                    <x-text-input wire:model="phone_number" id="phone_number" class="input-mask-trigger" type="text" name="phone_number" placeholder="+6287781234567" aria-describedby="phoneNumberHelp" />
+                    <x-text-input wire:model="phone_number" id="phone_number" class="input-mask-trigger" type="text" name="phone_number" placeholder="087781234567" aria-describedby="phoneNumberHelp" />
                     <x-input-error id="phoneNumberHelp" :messages="$errors->get('phone_number')" />
                 </div>
 

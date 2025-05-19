@@ -13,18 +13,18 @@ class UserRepository
         //
     }
 
-    function findByUsername(string $username): ?UserDto
+    function findByUsername(string $username): ?User
     {
         $user = $this->model->where('username', $username)->first();
         if ($user) {
-            return UserDto::from($user);
+            return $user;
         }
         return null;
     }
 
-    function create(array $data): UserDto
+    function create(array $data): User
     {
-        return UserDto::from($this->model->create($data));
+        return $this->model->create($data);
     }
 }
 
