@@ -1,47 +1,47 @@
 <?php
 
-use function Livewire\Volt\{placeholder, state, on, action};
+use App\Dto\ListDto\ListFilterDto;
+use App\Services\ResidentService;
+
+use function Livewire\Volt\{state, on, action};
 
 state([
     'isLoading' => true,
     // 'device' => 'desktop',
 
-    'table' => (object) [
-        'filter' => '',
+    'list' => (object) [
         'perpage' => 10,
-        'prev' => 0,
-        'page' => 1,
-        'next' => 2,
-        'maxPage' => 0,
         'npage' => (object) [
             'prev' => 0,
             'current' => 1,
             'next' => 2,
             'max' => 0,
         ],
-        'total' => 0,
+        'search' => (object) [
+            'general' => '',
+        ],
         'data' => [],
+        'total' => 0,
     ],
 
     'page' => 0,
+    'isFilter' => false,
 ]);
-
-placeholder('components.table-onload');
 
 on(['loadDataResidents', 'toPageResident']);
 
 $loadDataResidents = action(function ($page = null) {
     if ($page != null) {
-        // $this->table->page = $page;
-        // $this->table->prev = $page - 1 == 0 ? 0 : $page - 1;
-        // $this->table->next = $page + 1;
+        // $this->list->page = $page;
+        // $this->list->prev = $page - 1 == 0 ? 0 : $page - 1;
+        // $this->list->next = $page + 1;
 
-        $this->table->npage->current = $page;
-        $this->table->npage->prev = $page - 1 == 0 ? 0 : $page - 1;
-        $this->table->npage->next = $page + 1;
+        $this->list->npage->current = $page;
+        $this->list->npage->prev = $page - 1 == 0 ? 0 : $page - 1;
+        $this->list->npage->next = $page + 1;
     }
 
-    if ($page != 0 || $page <= $this->table->npage->max) {
+    if ($page != 0 || $page <= $this->list->npage->max) {
         $this->load();
     }
 });
@@ -55,25 +55,33 @@ $load = function () {
     info('load data residents from load function');
     $this->isLoading = true;
 
-    sleep(2);
+    // sleep(2);
+    $filter = ListFilterDto::fromState($this->list);
 
-    $this->table->total = 15;
-    $this->table->npage->max = ceil($this->table->total / $this->table->perpage);
+    $service = app(ResidentService::class);
+
+    $collection = $service->listResidents($filter);
+
+    // dd($collection->data);
+
+    $this->list->data = $collection->data;
+    $this->list->total = $collection->total;
+    $this->list->npage->max = ceil($this->list->total / $this->list->perpage);
 
     $this->isLoading = false;
     $this->generatePage();
 };
 
 $generatePage = function () {
-    if ($this->table->total == 0) {
+    if ($this->list->total == 0) {
         $this->page = 0;
         return;
     }
 
-    $start = $this->table->npage->current * $this->table->perpage - $this->table->perpage + 1;
-    $end = $this->table->npage->current * $this->table->perpage;
-    if ($end > $this->table->total) {
-        $end = $this->table->total;
+    $start = $this->list->npage->current * $this->list->perpage - $this->list->perpage + 1;
+    $end = $this->list->npage->current * $this->list->perpage;
+    if ($end > $this->list->total) {
+        $end = $this->list->total;
     }
     $this->page = $start . ' - ' . $end;
 };
@@ -102,35 +110,40 @@ $generatePage = function () {
                 </button>
             </div>
             <div class="float-right">
-                <small class="font-weight-bold text-primary">{{ $page }} / {{ $table->total }}</small>
+                <small class="font-weight-bold text-primary">{{ $page }} / {{ $list->total }}</small>
                 <div class="btn-group" role="group" aria-label="pagination">
-                    {{-- <button wire:click="$dispatch('toPageResidentJs', {'page': {{ $table->npage->prev }}})" type="button"
-                        class="btn-icon btn-icon-only btn btn-link" @if ($table->npage->prev == 0) disabled @endif>
-                        <i class="fa fa-angle-left btn-icon-wrapper"></i>
-                    </button> --}}
-                    {{-- <button wire:click="$dispatch('toPageResidentJs', {'page': {{ $table->npage->next }}})" type="button"
-                        class="btn-icon btn-icon-only btn btn-link" @if ($table->npage->next > $table->npage->max) disabled @endif>
-                        <i class="fa fa-angle-right btn-icon-wrapper"></i>
-                    </button> --}} 
                     <button 
                         type="button"
                         class="btn-page btn-icon btn-icon-only btn btn-link" 
-                        data-page="{{ $table->npage->prev }}"
-                        @if ($table->npage->prev == 0) disabled @endif>
+                        data-page="{{ $list->npage->prev }}"
+                        @if ($list->npage->prev == 0) disabled @endif>
                         <i class="fa fa-angle-left btn-icon-wrapper"></i>
                     </button>
                     <button
                         type="button"
                         class="btn-page btn-icon btn-icon-only btn btn-link"
-                        data-page="{{ $table->npage->next }}"
-                        @if ($table->npage->next > $table->npage->max) disabled @endif>
+                        data-page="{{ $list->npage->next }}"
+                        @if ($list->npage->next > $list->npage->max) disabled @endif>
                         <i class="fa fa-angle-right btn-icon-wrapper"></i>
                     </button>
                 </div>
             </div>
         </div>
-        <div class="card-body collapse" id="filter-collapse">
-
+        <div class="card-body collapse @if($isFilter) show @endif" id="filter-collapse">
+            <div class="row">
+                <div class="col-12 mb-2">
+                    <x-text-input 
+                        id="search" 
+                        type="text" 
+                        value="{{ $list->search->general }}"
+                        placeholder="{{  __('label.search_placeholder') }}" />
+                </div>
+                <div class="col-12">
+                    <button id="btn-search" class="mb-2 mr-2 btn btn-dark w-100">
+                        {{ __('label.search') }}
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -138,107 +151,58 @@ $generatePage = function () {
         @if($isLoading)
             <x-loading :fullscreen="false" class="p-3" />
         @else
-            {{-- @if (count($table->data) > 0) --}}
+            @if (count($list->data) > 0)
                 <ul class="list-group list-group-flush">
-                    {{-- <li class="list-group-item">
-                        <div class="widget-content p-0">
-                            <div class="widget-content-wrapper">
-                                <div class="widget-content-left">
-                                    <div class="widget-heading">BJ 11</div>
-                                    <div class="widget-subheading"><small>Dwiki Herdiansyah / +6287782320192</small></div>
-                                    <p class="text-justify">
-                                        Non eiusmod sunt nostrud reprehenderit Lorem. Pariatur et labore sint pariatur laboris. Aliquip anim elit tempor ipsum officia minim anim. Magna nisi deserunt laborum laboris ad exercitation adipisicing elit officia Lorem. Incididunt est elit anim tempor eu ea amet anim excepteur culpa nisi cupidatat. Officia deserunt nisi laboris enim incididunt.
+                    @foreach ($list->data as $item)
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <div class="text-left w-75">
+                                    <p class="h6 text-dark my-0">
+                                        {{ __('resident.housing_block_short_label') }}:
+                                        {{ $item->housing_block }}
                                     </p>
+                                    {{-- <small class="text-muted">{{ $item->name }} | {{ $item->phone_number }} | {{ __('resident.unique_code_short_label') .': '. $item->unique_code }}</small> --}}
                                 </div>
-                                <div class="widget-content-left mr-3"></div>
-                                <div class="widget-content-right">
-                                    <button class="border-0 btn-transition btn btn-outline-warning">
-                                        <i class="fa fa-pen"></i>
-                                    </button>
-                                    <button class="border-0 btn-transition btn btn-outline-danger">
-                                        <i class="fa fa-trash-alt"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </li> --}}
-                    <li class="list-group-item">
-                        <div class="d-flex justify-content-between mb-3">
-                            <div class="text-left w-75">
-                                <p class="h6 text-dark my-0">Blok: BJ 11</p>
-                                <small class="text-muted">Dwiki Herdiansyah / +6287782320192</small>
-                            </div>
-                            <div class="text-right w-25 align-self-start">
-                                <div class="d-inline-block dropdown">
-                                    <button type="button"
-                                        aria-haspopup="true" data-toggle="dropdown" aria-expanded="false"
-                                        class="border-0 btn-transition btn btn-sm btn-link">
-                                        <i class="fa fa-ellipsis-h"></i>
-                                    </button>
-                                    <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-                                        {{-- <button type="button" tabindex="0" class="dropdown-item">Ubah</button>
-                                        <div tabindex="-1" class="dropdown-divider"></div>
-                                        <button type="button" tabindex="0" class="dropdown-item">Hapus</button> --}}
-                                        <button type="button" tabindex="0" class="dropdown-item">
-                                            <i class="dropdown-icon lnr-pencil"></i><span>Ubah</span>
+                                <div class="text-right w-25 align-self-start">
+                                    <div class="d-inline-block dropdown">
+                                        <button type="button"
+                                            aria-haspopup="true" data-toggle="dropdown" aria-expanded="false"
+                                            class="border-0 btn-transition btn btn-sm btn-link">
+                                            <i class="fa fa-ellipsis-h"></i>
                                         </button>
-                                        <div tabindex="-1" class="dropdown-divider"></div>
-                                        <button type="button" tabindex="0" class="dropdown-item">
-                                            <i class="dropdown-icon lnr-trash"></i><span>Hapus</span>
-                                        </button>
+                                        <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                                            <button type="button" tabindex="0" class="dropdown-item">
+                                                <i class="dropdown-icon lnr-pencil"></i><span>{{ __('label.edit') }}</span>
+                                            </button>
+                                            <div tabindex="-1" class="dropdown-divider"></div>
+                                            <button type="button" tabindex="0" class="dropdown-item">
+                                                <i class="dropdown-icon lnr-trash"></i><span>{{ __('label.delete') }}</span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="show-more-container" x-data="{ open: false }">
-                            <p class="text-secondary text-justify my-0 show-more-text" :style="open ? 'max-height:none;overflow:visible;' : 'max-height:60px;overflow:hidden;'">
-                                Non eiusmod sunt nostrud reprehenderit Lorem. Pariatur et labore sint pariatur laboris. Aliquip anim elit tempor ipsum officia minim anim. Magna nisi deserunt laborum laboris ad exercitation adipisicing elit officia Lorem. Incididunt est elit anim tempor eu ea amet anim excepteur culpa nisi cupidatat. Officia deserunt nisi laboris enim incididunt.
+                            <p class="text-muted" style="font-size: 0.9em;">
+                                {{ $item->name }} | {{ $item->phone_number }} | {{ __('resident.unique_code_short_label') . ': ' . $item->unique_code }}
                             </p>
-                            <a href="javascript:void(0);" 
-                            class="show-more-link text-primary text-decoration-none"
-                            style="font-size: 0.9em;"
-                            x-text="open ? 'Sembunyikan' : 'Selengkapnya'"
-                            x-on:click="open = !open">Selengkapnya</a>                  
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="d-flex justify-content-between mb-3">
-                            <div class="text-left w-75">
-                                <p class="h6 text-dark my-0">Blok: BJ 12</p>
-                                <small class="text-muted">Fajar Eka Putra / +6287782320194</small>
-                            </div>
-                            <div class="text-right w-25 align-self-start">
-                                <div class="d-inline-block dropdown">
-                                    <button type="button"
-                                        aria-haspopup="true" data-toggle="dropdown" aria-expanded="false"
-                                        class="border-0 btn-transition btn btn-sm btn-link">
-                                        <i class="fa fa-ellipsis-h"></i>
-                                    </button>
-                                    <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-                                        <button type="button" tabindex="0" class="dropdown-item">Ubah</button>
-                                        <div tabindex="-1" class="dropdown-divider"></div>
-                                        <button type="button" tabindex="0" class="dropdown-item">Hapus</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="show-more-container" x-data="{ open: false }">
-                            <p class="text-secondary text-justify my-0 show-more-text" :style="open ? 'max-height:none;overflow:visible;' : 'max-height:60px;overflow:hidden;'">
-                                Non eiusmod sunt nostrud reprehenderit Lorem. Pariatur et labore sint pariatur laboris. Aliquip anim elit tempor ipsum officia minim anim. Magna nisi deserunt laborum laboris ad exercitation adipisicing elit officia Lorem. Incididunt est elit anim tempor eu ea amet anim excepteur culpa nisi cupidatat. Officia deserunt nisi laboris enim incididunt.
-                            </p>
-                            <a href="javascript:void(0);" 
-                            class="show-more-link text-primary text-decoration-none"
-                            style="font-size: 0.9em;"
-                            x-text="open ? 'Sembunyikan' : 'Selengkapnya'"
-                            x-on:click="open = !open">Selengkapnya</a>                  
-                        </div>
-                    </li>
+                            {{-- <div class="show-more-container" x-data="{ open: false }">
+                                <p class="text-secondary text-justify my-0 show-more-text" :style="open ? 'max-height:none;overflow:visible;' : 'max-height:20px;overflow:hidden;'">
+                                    {{ $item->address }}
+                                </p>
+                                <a href="javascript:void(0);" 
+                                class="show-more-link text-primary text-decoration-none"
+                                style="font-size: 0.9em;"
+                                x-text="open ? '{{ __('label.show_less') }}' : '{{ __('label.show_more') }}'"
+                                x-on:click="open = !open">{{ __('label.show_more') }}</a>                  
+                            </div> --}}
+                        </li>
+                    @endforeach
                 </ul>
-            {{-- @else
+            @else
                 <div class="card-body text-center">
-                    {{ __('label.datatable_not_found') }}
+                    {{ __('label.data_not_found') }}
                 </div>
-            @endif --}}
+            @endif
         @endif
     </div>
 </div>
@@ -275,6 +239,19 @@ $generatePage = function () {
             window.addEventListener('residentModalOpened', function handler() {
                 $btn.prop("disabled", false);
                 window.removeEventListener('residentModalOpened', handler);
+            });
+        });
+
+        $("#btn-search").on("click", () => {
+            let search = $("#search").val();
+            $wire.set('isLoading', true).then(() => {
+                if (search != "") {
+                    $wire.set('isFilter', true);
+                } else {
+                    $wire.set('isFilter', false);
+                }
+                $wire.set('list.search.general', search);
+                $wire.dispatch('loadDataResidents');
             });
         });
     </script>

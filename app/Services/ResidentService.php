@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Dto\ListDto\ListFilterDto;
 use App\Dto\ResidentDto;
 use App\Dto\UserDto;
 use App\Enum\RoleEnum;
@@ -56,6 +57,11 @@ class ResidentService
             report($e);
             throw new \Exception(trans('resident.save_error'));
         }
+    }
+
+    public function listResidents(ListFilterDto $filter)
+    {
+        return $this->residentRepo->list($filter);
     }
 
 }

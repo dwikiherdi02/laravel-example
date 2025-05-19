@@ -6,12 +6,9 @@ return [
     'view_label' => 'Lihat Data Warga',
     'edit_label' => 'Ubah Data Warga',
 
-    // table
-    'name_table_label' => 'Nama',
-    'housing_block_table_label' => 'Blok Perumahan',
-    'phone_number_table_label' => 'Nomor Telepon',
-    'address_table_label' => 'Alamat',
-    'unique_code_table_label' => 'Kode Unik',
+    // list
+    'housing_block_short_label' => 'Blok',
+    'unique_code_short_label' => 'Nomor Unik',
 
     // form
     'housing_block_label' => 'Nomor Rumah (Blok)',
