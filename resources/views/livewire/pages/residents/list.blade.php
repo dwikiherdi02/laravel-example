@@ -178,7 +178,7 @@ $generatePage = function () {
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-muted" style="font-size: 0.9em;">
+                            <p class="text-muted mb-0" style="font-size: 0.9em;">
                                 {{ $item->name }} | {{ $item->phone_number }} | {{ __('resident.unique_code_short_label') . ': ' . $item->unique_code }}
                             </p>
                             {{-- <div class="show-more-container" x-data="{ open: false }">
