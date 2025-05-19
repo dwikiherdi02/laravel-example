@@ -16,8 +16,9 @@
 
         <title>{{ config('app.name', 'Laravel') }} | {{ $title ?? '' }}</title>
 
-        @assets
-        {{-- @persist('styles')  --}}
+        {{-- @assets --}}
+        @persist('styles') 
+        {{-- <link rel="stylesheet" href="{{ asset('assets/css/base.min.css') }}"> --}}
         <link rel="preload" href="{{ asset('assets/css/base.min.css') }}" as="style"
             onload="this.onload=null;this.rel='stylesheet'">
         <noscript>
@@ -53,12 +54,19 @@
         <noscript>
             <link rel="stylesheet" href="{{ asset('assets/css/custom-bs.css') }}">
         </noscript>
-        {{-- <link rel="stylesheet" href="{{ asset('assets/css/base.min.css') }}"> --}}
-        {{-- @endpersist --}}
+        @endpersist
 
         {{-- @stack('styles') --}}
+
+        <style>
+            #loading-page { position: fixed; z-index: 9999; inset: 0; background: #fff; display: flex; align-items: center; justify-content: center; transition: opacity 0.7s cubic-bezier(.4,0,.2,1); opacity: 1; } #loading-page.fade-out { opacity: 0; pointer-events: none; } #loading-page .loading-logo { width: 120px; max-width: 60vw; height: auto; animation: pulse 1.2s infinite alternate; } @keyframes pulse { 0% { transform: scale(1); filter: brightness(1); } 100% { transform: scale(1.08); filter: brightness(1.15);} } 
+        </style>
     </head>
     <body>
+        <div id="loading-page">
+            <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" class="loading-logo">
+        </div>
+
         <div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">
             <livewire:components.header />
 
@@ -78,7 +86,7 @@
         @stack("modals")
 
         {{-- @script --}}
-        {{-- @persist('scripts') --}}
+        @persist('scripts')
         <script src="{{ asset('assets/plugins/jquery/3.3.1/jquery.min.js') }}" defer></script>
         <script src="{{ asset('assets/plugins/bootstrap/bootstrap.bundle.min.js') }}" defer></script>
         <script src="{{ asset('assets/plugins/metismenu/metismenu.js') }}" defer></script>
@@ -99,9 +107,15 @@
 
         <!--General -->
         <script src="{{ asset('assets/js/general.js') }}" defer></script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() { const loadingPage = document.getElementById('loading-page'); const appContainer = document.querySelector('.app-container'); if (loadingPage && appContainer) { appContainer.style.display = 'none'; window.addEventListener('load', function() { setTimeout(() => { appContainer.style.display = 'block'; loadingPage.classList.add('fade-out'); setTimeout(() => { loadingPage.remove(); }, 800); }, 3000); }); } });
+        </script>
+
         {{-- <script src="{{ asset('assets/plugins/restables/restables.min.js') }}" defer></script> --}}
-        {{-- @endpersist --}}
+        @endpersist
         {{-- @stack('scripts') --}}
         {{-- @endscript --}}
+
     </body>
 </html>

@@ -2,13 +2,14 @@
 
 use function Livewire\Volt\{state, on, action};
 
-state(['type', 'animate']);
+state(['type', 'id', 'animate']);
 
 on(['openModalResident', 'closeModalResident']);
 
-$openModalResident = action(function ($type) {
+$openModalResident = action(function ($type, $id = null) {
     info('open modal resident');
     $this->type = $type;
+    $this->id = $id;
     $this->animate = 'animate__animated animate__fadeInRight animate__faster';
     // $this->dispatch('openModalResidentJs', type: $this->type, test: 'haha');
     $this->dispatch('openModalResidentJs');
@@ -33,11 +34,8 @@ $closeModalResident = action(function ($reloadTable = false) {
                     @case('add')
                         <livewire:pages.residents.modal.add lazy />
                         @break
-                    @case('view')
-                        <livewire:pages.residents.modal.view lazy />
-                        @break
                     @case('edit')
-                        <livewire:pages.residents.modal.edit lazy />
+                        <livewire:pages.residents.modal.edit :id="$id" lazy />
                         @break
                     @default
                 @endswitch

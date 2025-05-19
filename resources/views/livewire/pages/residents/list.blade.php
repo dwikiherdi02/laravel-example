@@ -161,17 +161,21 @@ $generatePage = function () {
                                 </div>
                                 <div class="text-right w-25 align-self-start">
                                     <div class="d-inline-block dropdown">
-                                        <button type="button"
-                                            aria-haspopup="true" data-toggle="dropdown" aria-expanded="false"
-                                            class="border-0 btn-transition btn btn-sm btn-link">
+                                        <button 
+                                            wire:ignore.self
+                                            type="button"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true" 
+                                            aria-expanded="false"
+                                            class="border-0 btn-transition btn btn-sm btn-link btn-act">
                                             <i class="fa fa-ellipsis-h"></i>
                                         </button>
                                         <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-                                            <button type="button" tabindex="0" class="dropdown-item">
+                                            <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-edit" data-id="">
                                                 <i class="dropdown-icon lnr-pencil"></i><span>{{ __('label.edit') }}</span>
                                             </button>
                                             <div tabindex="-1" class="dropdown-divider"></div>
-                                            <button type="button" tabindex="0" class="dropdown-item">
+                                            <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-delete" data-id="{{ $item->id }}">
                                                 <i class="dropdown-icon lnr-trash"></i><span>{{ __('label.delete') }}</span>
                                             </button>
                                         </div>
@@ -248,6 +252,24 @@ $generatePage = function () {
                 }
                 $wire.set('list.search.general', search);
                 $wire.dispatch('loadDataResidents');
+            });
+        });
+
+        $(document).on("click", ".btn-act", (e) => {
+            let $btn = $(e.currentTarget);
+            $btn.dropdown("show");
+        });
+
+        $(document).on("click", ".btn-edit", (e) => {
+            let $btn = $(e.currentTarget);
+            $(".btn-act").dropdown("hide");
+            let id = $btn.data("id");
+            $btn.prop("disabled", true);
+            $wire.dispatch('openModalResident', { type: 'edit', id: id });
+            // Enable tombol setelah event custom dari modal
+            window.addEventListener('residentModalOpened', function handler() {
+                $btn.prop("disabled", false);
+                window.removeEventListener('residentModalOpened', handler);
             });
         });
     </script>

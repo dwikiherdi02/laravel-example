@@ -23,7 +23,11 @@ class ResidentService
         //
     }
 
-
+    public function findResidentById(string $id): ?ResidentDto
+    {
+        return $this->residentRepo->findById($id);
+    }
+    
     public function createResident(ResidentDto $data)
     {
         DB::beginTransaction();

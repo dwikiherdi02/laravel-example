@@ -55,7 +55,7 @@ mount(function (ComponentService $service) {
                     <li class="app-sidebar__heading">{{ __($item->name_lang_key) }}</li>
                     @foreach ($item->menus as $menu)
                     <li>
-                        <a href="{{ $menu->slug }}" wire:current="mm-active" wire:navigate>
+                        <a href="{{ $menu->slug }}" wire:current="mm-active">
                             <i class="metismenu-icon {{ $menu->icon }}">
                             </i>
                             {{ __($menu->name_lang_key) }}
