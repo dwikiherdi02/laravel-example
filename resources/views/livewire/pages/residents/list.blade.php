@@ -32,10 +32,6 @@ on(['loadDataResidents', 'toPageResident']);
 
 $loadDataResidents = action(function ($page = null) {
     if ($page != null) {
-        // $this->list->page = $page;
-        // $this->list->prev = $page - 1 == 0 ? 0 : $page - 1;
-        // $this->list->next = $page + 1;
-
         $this->list->npage->current = $page;
         $this->list->npage->prev = $page - 1 == 0 ? 0 : $page - 1;
         $this->list->npage->next = $page + 1;
