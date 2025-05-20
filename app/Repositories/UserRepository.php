@@ -13,6 +13,15 @@ class UserRepository
         //
     }
 
+    function findById(string $id): ?User
+    {
+        $user = $this->model->find($id);
+        if ($user) {
+            return $user;
+        }
+        return null;
+    }
+
     function findByUsername(string $username): ?User
     {
         $user = $this->model->where('username', $username)->first();

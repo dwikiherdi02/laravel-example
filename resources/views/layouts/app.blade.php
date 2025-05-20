@@ -7,8 +7,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport"
             content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
-        {{--
-        <meta name="viewport" content="width=device-width, initial-scale=1"> --}}
+        {{-- <meta name="viewport" content="width=device-width, initial-scale=1"> --}}
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <!-- Disable tap highlight on IE -->
@@ -16,8 +15,7 @@
 
         <title>{{ config('app.name', 'Laravel') }} | {{ $title ?? '' }}</title>
 
-        {{-- @assets --}}
-        @persist('styles') 
+        {{-- @persist('styles')  --}}
         {{-- <link rel="stylesheet" href="{{ asset('assets/css/base.min.css') }}"> --}}
         <link rel="preload" href="{{ asset('assets/css/base.min.css') }}" as="style"
             onload="this.onload=null;this.rel='stylesheet'">
@@ -49,14 +47,20 @@
             <link rel="stylesheet" href="{{ asset('assets/plugins/animatecss/animate.min.css') }}">
         </noscript>
 
+        <link rel="preload" href="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.css') }}" as="style"
+            onload="this.onload=null;this.rel='stylesheet'">
+        <noscript>
+            <link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.css') }}">
+        </noscript>
+
         <link rel="preload" href="{{ asset('assets/css/custom-bs.css') }}" as="style"
             onload="this.onload=null;this.rel='stylesheet'">
         <noscript>
             <link rel="stylesheet" href="{{ asset('assets/css/custom-bs.css') }}">
         </noscript>
-        @endpersist
+        {{-- @endpersist --}}
 
-        {{-- @stack('styles') --}}
+        @stack('styles')
 
         <style>
             #loading-page { position: fixed; z-index: 9999; inset: 0; background: #fff; display: flex; align-items: center; justify-content: center; transition: opacity 0.7s cubic-bezier(.4,0,.2,1); opacity: 1; } #loading-page.fade-out { opacity: 0; pointer-events: none; } #loading-page .loading-logo { width: 120px; max-width: 60vw; height: auto; animation: pulse 1.2s infinite alternate; } @keyframes pulse { 0% { transform: scale(1); filter: brightness(1); } 100% { transform: scale(1.08); filter: brightness(1.15);} } 
@@ -85,8 +89,7 @@
 
         @stack("modals")
 
-        {{-- @script --}}
-        @persist('scripts')
+        {{-- @persist('scripts') --}}
         <script src="{{ asset('assets/plugins/jquery/3.3.1/jquery.min.js') }}" defer></script>
         <script src="{{ asset('assets/plugins/bootstrap/bootstrap.bundle.min.js') }}" defer></script>
         <script src="{{ asset('assets/plugins/metismenu/metismenu.js') }}" defer></script>
@@ -104,6 +107,9 @@
         <!--Textarea Autosize -->
         <script src="{{ asset('assets/plugins/textarea-autosize/textarea-autosize.min.js') }}" defer></script>
         {{-- <script src="{{ asset('assets/plugins/textarea-autosize/scripts-init/textarea-autosize.js') }}" defer></script> --}}
+        
+        <!-- Sweetalert2 -->
+        <script src="{{ asset('assets/plugins/sweetalert2/sweetalert2.all.min.js') }}" defer></script>
 
         <!--General -->
         <script src="{{ asset('assets/js/general.js') }}" defer></script>
@@ -113,9 +119,7 @@
         </script>
 
         {{-- <script src="{{ asset('assets/plugins/restables/restables.min.js') }}" defer></script> --}}
-        @endpersist
-        {{-- @stack('scripts') --}}
-        {{-- @endscript --}}
-
+        {{-- @endpersist --}}
+        @stack('scripts')
     </body>
 </html>

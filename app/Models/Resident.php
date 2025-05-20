@@ -30,6 +30,18 @@ class Resident extends Model
         'deleted_at',
     ];
 
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::deleting(function (Resident $resident) {
+            // $resident->user()->delete(); // delete user first (if exists)
+            $resident->unique_code = null;
+            $resident->save(); // Simpan perubahan unique_code sebelum soft delete
+        });
+    }
+
     public function user(): HasOne
     {
         return $this->hasOne(User::class, 'resident_id', 'id');

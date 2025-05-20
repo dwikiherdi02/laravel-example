@@ -40,7 +40,7 @@ rules([
 
 mount(function (ResidentService $service) {
     if ($this->id != null) {
-        $resident = $service->findResidentById($this->id);
+        $resident = $service->findById($this->id);
         $this->id = $resident->id;
         $this->housing_block = $resident->housing_block;
         $this->name = $resident->name;
@@ -60,7 +60,7 @@ $updateResident = function (ResidentService $service) {
 
         $data = ResidentDto::from($validated);
 
-        $service->updateResident($data);
+        $service->update($data);
 
         $this->dispatch('closeModalResidentJs', reloadTable: true);
     } catch (ValidationException $e) {

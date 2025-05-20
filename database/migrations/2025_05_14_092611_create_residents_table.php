@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('housing_block', 10);
             $table->string('phone_number', 15);
             $table->text('address')->nullable();
-            $table->integer('unique_code')->unique();
+            $table->integer('unique_code')->nullable()->unique();
             $table->timestamps();
             $table->softDeletes();
         });

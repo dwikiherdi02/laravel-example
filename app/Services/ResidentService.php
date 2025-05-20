@@ -23,7 +23,7 @@ class ResidentService
         //
     }
 
-    public function createResident(ResidentDto $data)
+    public function create(ResidentDto $data)
     {
         DB::beginTransaction();
         try {
@@ -58,12 +58,12 @@ class ResidentService
         }
     }
 
-    public function listResidents(ListFilterDto $filter)
+    public function list(ListFilterDto $filter)
     {
         return $this->residentRepo->list($filter);
     }
 
-    public function findResidentById(string $id): ?ResidentDto
+    public function findById(string $id): ?ResidentDto
     {
         $resident = $this->residentRepo->findById($id);
         
@@ -74,7 +74,7 @@ class ResidentService
         return null;
     }
 
-    public function updateResident(ResidentDto $data)
+    public function update(ResidentDto $data)
     {
         $resident = $resident = $this->residentRepo->findById($data->id);
         
@@ -100,4 +100,29 @@ class ResidentService
         }
     }
 
+    public function delete(string $id)
+    {
+        $resident = $resident = $this->residentRepo->findById($id);
+        
+        if ($resident == null) {
+            throw new \Exception(trans('resident.resident_not_found_error'));
+        }
+
+        DB::beginTransaction();
+        try {
+            // $resident->user()->delete();
+            $user = $this->userRepo->findById($resident->user->id);
+            if ($user) {
+                $user->delete();
+            }
+            
+            $resident->delete();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
+            throw new \Exception(trans('resident.delete_error'));
+        }
+    }
 }

@@ -59,6 +59,14 @@ class User extends Authenticatable
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::deleting(function (User $user) {
+            $user->username = $user->username.'_deletedat_' . now()->format('YmdHis');
+            $user->save(); // Simpan perubahan unique_code sebelum soft delete
+        });
+    }
+
     /**
      * The attributes that are mass assignable or accessible on the User model.
      *

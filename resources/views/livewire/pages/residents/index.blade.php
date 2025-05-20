@@ -45,6 +45,15 @@ title(function (ComponentService $service) {
 
 {{-- @script
 <script>
+    $(function() {
+            // $wire.on('toPageResidentJs', (event) => {
+            //     $wire.set('isLoading', true).then(() => {
+            //         $wire.dispatch('loadDataResidents', { page: event.page });
+            //     });
+            // });
+            // initShowMore('.show-more-container', 60, 'Selengkapnya', 'Sembunyikan');
+    });
+    
     /* $(document).ready(function () {
         emitDeviceType();
     });

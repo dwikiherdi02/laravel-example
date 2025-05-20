@@ -45,7 +45,7 @@ $createResident = function (ResidentService $service) {
 
         $data = ResidentDto::from($validated);
 
-        $service->createResident($data);
+        $service->create($data);
 
         $this->dispatch('closeModalResidentJs', reloadTable: true);
     } catch (ValidationException $e) {

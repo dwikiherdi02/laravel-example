@@ -1,3 +1,77 @@
+// constants
+const swalConfirmOpt = {
+    // title: null,
+    text: "",
+    confirmButtonText: "Ok",
+    cancelButtonText: "Batal",
+}
+
+const swalConfirmWithTitle = Swal.mixin({
+    showConfirmButton: true,
+    showCancelButton: true,
+    customClass: {
+        popup: "p-0",
+        title: "swal2-title-custom m-1 pt-4 pb-0",
+        htmlContainer: "border-bottom pt-0 pb-4",
+        // actions: "row m-0 w-100",
+        // confirmButton: "btn btn-lg btn-link font-weight-bolder text-decoration-none col-6 m-0 py-3 rounded-0",
+        // cancelButton: "btn btn-lg btn-link font-weight-normal text-decoration-none col-6 m-0 py-3 rounded-0 border-right",
+        actions: "d-flex justify-content-between m-0 w-100",
+        confirmButton: "btn btn-lg btn-link font-weight-bolder text-uppercase text-decoration-none w-50 m-0 py-3 rounded-0",
+        cancelButton: "btn btn-lg btn-link font-weight-normal text-uppercase text-decoration-none w-50 m-0 py-3 rounded-0 border-right",
+        loader: "mx-auto"
+    },
+    buttonsStyling: false,
+    reverseButtons: true,
+});
+
+const swalConfirmWithoutTitle = Swal.mixin({
+    showConfirmButton: true,
+    showCancelButton: true,
+    customClass: {
+        popup: "p-0",
+        htmlContainer: "border-bottom py-4",
+        // actions: "row m-0 w-100",
+        // confirmButton: "btn btn-lg btn-link font-weight-bolder text-decoration-none col-6 m-0 py-3 rounded-0",
+        // cancelButton: "btn btn-lg btn-link font-weight-normal text-decoration-none col-6 m-0 py-3 rounded-0 border-right"
+        actions: "d-flex justify-content-between m-0 w-100",
+        confirmButton: "btn btn-lg btn-link font-weight-bolder text-uppercase text-decoration-none w-50 m-0 py-3 rounded-0",
+        cancelButton: "btn btn-lg btn-link font-weight-normal text-uppercase text-decoration-none w-50 m-0 py-3 rounded-0 border-right",
+        loader: "mx-auto"
+    },
+    buttonsStyling: false,
+    reverseButtons: true,
+});
+
+const swalInfomWithTitle = Swal.mixin({
+    showConfirmButton: true,
+    showCancelButton: false,
+    customClass: {
+        popup: "p-0",
+        title: "swal2-title-custom m-1 pt-4 pb-0",
+        htmlContainer: "border-bottom pt-0 pb-4",
+        actions: "d-flex justify-content-between m-0 w-100",
+        confirmButton: "btn btn-lg btn-link font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0",
+        loader: "mx-auto"
+    },
+    buttonsStyling: false,
+    reverseButtons: true,
+});
+
+const swalInfomWithoutTitle = Swal.mixin({
+    showConfirmButton: true,
+    showCancelButton: false,
+    customClass: {
+        popup: "p-0",
+        htmlContainer: "border-bottom py-4",
+        actions: "d-flex justify-content-between m-0 w-100",
+        confirmButton: "btn btn-lg btn-link font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0",
+        loader: "mx-auto"
+    },
+    buttonsStyling: false,
+    reverseButtons: true,
+});
+
 // function
 function generateInputMask() {
     // https://robinherbots.github.io/Inputmask/#/documentation
@@ -40,6 +114,24 @@ function generateScrollbar() {
                 minScrollbarLength: 20
             });
         });
+    }
+}
+
+function showConfirmAlert(opt = {}) {
+    const options = { ...swalConfirmOpt, ...opt };
+    if (options.title === undefined) {
+        return swalConfirmWithoutTitle.fire(options);
+    } else {
+        return swalConfirmWithTitle.fire(options);
+    }
+}
+
+function showInfoAlert(opt = {}) {
+    const options = { ...swalConfirmOpt, ...opt };
+    if (options.title === undefined) {
+        return swalInfomWithoutTitle.fire(options);
+    } else {
+        return swalInfomWithTitle.fire(options);
     }
 }
 

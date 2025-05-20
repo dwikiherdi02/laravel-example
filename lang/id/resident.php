@@ -19,6 +19,10 @@ return [
 
     // error message
     'save_error' => 'Gagal menyimpan data, silahkan coba lagi.',
+    'delete_error' => 'Gagal menghapus data, silahkan coba lagi atau hubungi admin.',
     'housing_block_username_error' => 'Nama Pengguna dari nomor rumah sudah terdaftar, silahkan gunakan nomor rumah lain.',
-    'resident_not_found_error' => 'Data warga tidak ditemukan. silahkan coba lagi atau hubungi admin.'
+    'resident_not_found_error' => 'Data warga tidak ditemukan. silahkan coba lagi atau hubungi admin.',
+
+    // alert
+    'text_delete_alert' => 'Dengan menghapus data ini, Anda juga akan menghapus data pengguna terkait.',
 ];

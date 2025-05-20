@@ -10,7 +10,7 @@ state([
     // 'device' => 'desktop',
 
     'list' => (object) [
-        'perpage' => 2,
+        'perpage' => 10,
         'npage' => (object) [
             'prev' => 0,
             'current' => 1,
@@ -28,7 +28,7 @@ state([
     'isFilter' => false,
 ]);
 
-on(['loadDataResidents', 'toPageResident']);
+on(['loadDataResidents', 'toPageResident', 'deleteResident']);
 
 $loadDataResidents = action(function ($page = null) {
     if ($page != null) {
@@ -47,6 +47,21 @@ $toPageResident = action(function ($page = null) {
     $this->dispatch('loadDataResidents', page: $page);
 });
 
+$deleteResident = action(function ($id) {
+    try {
+        $service = app(ResidentService::class);
+        $service->delete($id);
+        
+        $this->isLoading = true;
+        
+        $this->dispatch('residentDeletedJs', isSuccess: true);
+    
+        $this->dispatch('loadDataResidents', page: 1);
+    } catch (\Exception $e) {
+        $this->dispatch('residentDeletedJs', isSuccess: false, message: $e->getMessage());
+    }
+});
+
 $load = function () {
     info('load data residents from load function');
     $this->isLoading = true;
@@ -56,7 +71,7 @@ $load = function () {
 
     $service = app(ResidentService::class);
 
-    $collection = $service->listResidents($filter);
+    $collection = $service->list($filter);
 
     // dd($collection->data);
 
@@ -210,15 +225,6 @@ $generatePage = function () {
 @script
     <script>
         // jquery handler
-        $(function() {
-            // $wire.on('toPageResidentJs', (event) => {
-            //     $wire.set('isLoading', true).then(() => {
-            //         $wire.dispatch('loadDataResidents', { page: event.page });
-            //     });
-            // });
-            // initShowMore('.show-more-container', 60, 'Selengkapnya', 'Sembunyikan');
-        });
-
         $("#btn-filter-collapse").on("click", () => {
             $("#filter-collapse").collapse("toggle");
         });
@@ -271,6 +277,38 @@ $generatePage = function () {
                 $btn.prop("disabled", false);
                 window.removeEventListener('residentModalOpened', handler);
             });
+        });
+
+        $(document).on("click", ".btn-delete", (e) => {
+            let $btn = $(e.currentTarget);
+            let id = $btn.data("id");
+
+            showConfirmAlert({
+                title: "{{  __('label.alert_title') }}",
+                text: "{{ __('resident.text_delete_alert') }}",
+                // text: "Yakin ingin menghapus data ini?",
+                confirmButtonText: "{{ __('label.button_delete_confirm') }}",
+                cancelButtonText: "{{ __('label.button_cancel') }}",
+                showLoaderOnConfirm: true,
+                preConfirm: () => {
+                    return new Promise((resolve) => {
+                        $wire.dispatch('deleteResident', { id: id });
+                        window.addEventListener('residentDeletedJs', function handler(e) {
+                            resolve({ isSuccess: e.detail.isSuccess, message: e.detail.message ?? "" });
+                            window.removeEventListener('residentDeletedJs', handler);
+                        });
+                    });
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed && !result.value.isSuccess) {
+                    showInfoAlert({
+                        text: result.value.message,
+                        confirmButtonText: "{{ __('label.button_ok') }}",
+                    });
+                }
+            });
+            
         });
     </script>
 @endscript

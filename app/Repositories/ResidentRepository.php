@@ -23,11 +23,6 @@ class ResidentRepository
         return null;
     }
 
-    public function create(array $data): Resident
-    {
-        return $this->model->create($data);
-    }
-
     public function list(ListFilterDto $filter): ListDto
     {
         $query = $this->model->select([
@@ -68,5 +63,10 @@ class ResidentRepository
             'data' => $residents,
             'total' => $total,
         ]);
+    }
+
+    public function create(array $data): Resident
+    {
+        return $this->model->create($data);
     }
 }

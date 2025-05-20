@@ -38,3 +38,10 @@ input::-webkit-inner-spin-button {
 input.form-number[type=number] {
     -moz-appearance: textfield;
 }
+
+/* Sweetalert2 */
+.swal2-title-custom {
+    font-size: 1.2rem !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+}

@@ -12,7 +12,16 @@ return [
     'show_less' => 'Sembumyikan',
     'search' => 'Cari',
     'search_placeholder' => 'Cari...',
+    
+    // button
+    'button_ok' => 'Oke',
+    'button_cancel' => 'Batal',
+    'button_delete_confirm' => 'Ya, Hapus!',
+    
+    // alert
+    'alert_title' => 'Hapus Data',
 
+    // datatable
     'datatable_not_found' => 'Tidak ada data',
     'datatable_loading' => 'Memuat data...',
 ];
