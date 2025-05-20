@@ -15,13 +15,10 @@ $openModalResident = action(function ($type, $id = null) {
     $this->dispatch('openModalResidentJs');
 });
 
-$closeModalResident = action(function ($reloadTable = false) {
+$closeModalResident = action(function () {
     info('close modal resident');
     $this->type = '';
     $this->animate = 'animate__animated animate__fadeOutRight animate__faster';
-    if ($reloadTable) {
-        $this->dispatch('toPageResident', page: 1);
-    }
 });
 
 ?>
@@ -56,14 +53,18 @@ $closeModalResident = action(function ($reloadTable = false) {
 
             window.dispatchEvent(new Event('residentModalOpened'));
         });
-
+        
         $wire.on('closeModalResidentJs', (event) => {
-            $('#modal-resident').modal('hide');
-            let reloadTable = false;
-            if (event && event.reloadTable) {
-                reloadTable = event.reloadTable;
+            if (event && event.reloadTable == true) {
+                window.dispatchEvent(new Event('reloadDataResident'));
+                setTimeout(() => {
+                    $('#modal-resident').modal('hide');
+                    $wire.dispatch('closeModalResident');
+                }, 500);
+            } else {
+                $('#modal-resident').modal('hide');
+                $wire.dispatch('closeModalResident');
             }
-            $wire.dispatch('closeModalResident', { reloadTable: reloadTable });
         });
     });
 </script>

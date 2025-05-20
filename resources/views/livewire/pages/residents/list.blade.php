@@ -310,5 +310,13 @@ $generatePage = function () {
             });
             
         });
+
+        // Javascript handler
+        window.addEventListener('reloadDataResident', function handler() {
+            $wire.set('isLoading', true).then(() => {
+                $wire.dispatch('loadDataResidents', { page: 1 });
+                // window.removeEventListener('reloadDataResident', handler);
+            });
+        });
     </script>
 @endscript
