@@ -60,11 +60,12 @@
         </noscript>
         {{-- @endpersist --}}
 
-        @stack('styles')
-
         <style>
             #loading-page { position: fixed; z-index: 9999; inset: 0; background: #fff; display: flex; align-items: center; justify-content: center; transition: opacity 0.7s cubic-bezier(.4,0,.2,1); opacity: 1; } #loading-page.fade-out { opacity: 0; pointer-events: none; } #loading-page .loading-logo { width: 120px; max-width: 60vw; height: auto; animation: pulse 1.2s infinite alternate; } @keyframes pulse { 0% { transform: scale(1); filter: brightness(1); } 100% { transform: scale(1.08); filter: brightness(1.15);} } 
         </style>
+        
+        @stack('styles')
+
     </head>
     <body>
         <div id="loading-page">
