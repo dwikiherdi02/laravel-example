@@ -66,18 +66,18 @@ class ResidentService
     public function findById(string $id): ?ResidentDto
     {
         $resident = $this->residentRepo->findById($id);
-        
+
         if ($resident) {
             return ResidentDto::from($resident);
         }
-        
+
         return null;
     }
 
     public function update(ResidentDto $data)
     {
         $resident = $resident = $this->residentRepo->findById($data->id);
-        
+
         if ($resident == null) {
             throw new \Exception(trans('resident.resident_not_found_error'));
         }
@@ -102,20 +102,14 @@ class ResidentService
 
     public function delete(string $id)
     {
-        $resident = $resident = $this->residentRepo->findById($id);
-        
+        $resident = $this->residentRepo->findById($id);
+
         if ($resident == null) {
             throw new \Exception(trans('resident.resident_not_found_error'));
         }
 
         DB::beginTransaction();
         try {
-            // $resident->user()->delete();
-            $user = $this->userRepo->findById($resident->user->id);
-            if ($user) {
-                $user->delete();
-            }
-            
             $resident->delete();
 
             DB::commit();

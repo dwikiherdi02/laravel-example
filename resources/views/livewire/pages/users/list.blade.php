@@ -1,7 +1,7 @@
 <?php
 
 use App\Dto\ListDto\ListFilterDto;
-use App\Services\ResidentService;
+use App\Services\UserService;
 
 use function Livewire\Volt\{state, on, action};
 
@@ -18,6 +18,7 @@ state([
         ],
         'search' => (object) [
             'general' => '',
+            'role' => '',
         ],
         'data' => [],
         'total' => 0,
@@ -27,9 +28,9 @@ state([
     'isFilter' => false,
 ]);
 
-on(['loadDataResidents', 'toPageResident', 'deleteResident']);
+on(['loadDataUsers', 'toPageUser', 'deleteUser']);
 
-$loadDataResidents = action(function ($page = null) {
+$loadDataUsers = action(function ($page = null) {
     if ($page != null) {
         $this->list->npage->current = $page;
         $this->list->npage->prev = $page - 1 == 0 ? 0 : $page - 1;
@@ -41,23 +42,23 @@ $loadDataResidents = action(function ($page = null) {
     }
 });
 
-$toPageResident = action(function ($page = null) {
+$toPageUser = action(function ($page = null) {
     $this->isLoading = true;
-    $this->dispatch('loadDataResidents', page: $page);
+    $this->dispatch('loadDataUsers', page: $page);
 });
 
-$deleteResident = action(function ($id) {
+$deleteUser = action(function ($id) {
     try {
-        $service = app(ResidentService::class);
+        $service = app(UserService::class);
         $service->delete($id);
-        
+
         $this->isLoading = true;
-        
-        $this->dispatch('residentDeletedJs', isSuccess: true);
-    
-        $this->dispatch('loadDataResidents', page: 1);
+
+        $this->dispatch('userDeletedJs', isSuccess: true);
+
+        $this->dispatch('loadDataUsers', page: 1);
     } catch (\Exception $e) {
-        $this->dispatch('residentDeletedJs', isSuccess: false, message: $e->getMessage());
+        $this->dispatch('userDeletedJs', isSuccess: false, message: $e->getMessage());
     }
 });
 
@@ -68,7 +69,7 @@ $load = function () {
     // sleep(2);
     $filter = ListFilterDto::fromState($this->list);
 
-    $service = app(ResidentService::class);
+    $service = app(UserService::class);
 
     $collection = $service->list($filter);
 
@@ -106,25 +107,25 @@ $generatePage = function () {
                     <i class="pe-7s-filter btn-icon-wrapper"></i>
                 </button>
 
-                <button
+                {{-- <button
                     type="button"
                     class="d-none d-md-inline-block btn-icon btn btn-success btn-add">
                     <i class="pe-7s-plus btn-icon-wrapper"></i>
                     {{ __('label.add') }}
                 </button>
 
-                <button 
-                    type="button" 
+                <button
+                    type="button"
                     class="d-inline-block d-md-none btn-icon btn-icon-only btn btn-success btn-add">
                     <i class="pe-7s-plus btn-icon-wrapper"> </i>
-                </button>
+                </button> --}}
             </div>
             <div class="float-right">
                 <small class="font-weight-bold text-primary">{{ $page }} / {{ $list->total }}</small>
                 <div class="btn-group" role="group" aria-label="pagination">
-                    <button 
+                    <button
                         type="button"
-                        class="btn-page btn-icon btn-icon-only btn btn-link" 
+                        class="btn-page btn-icon btn-icon-only btn btn-link"
                         data-page="{{ $list->npage->prev }}"
                         @if ($list->npage->prev == 0) disabled @endif>
                         <i class="fa fa-angle-left btn-icon-wrapper"></i>
@@ -142,9 +143,9 @@ $generatePage = function () {
         <div class="card-body collapse @if($isFilter) show @endif" id="filter-collapse">
             <div class="row">
                 <div class="col-12 mb-2">
-                    <x-text-input 
-                        id="search" 
-                        type="text" 
+                    <x-text-input
+                        id="search"
+                        type="text"
                         value="{{ $list->search->general }}"
                         placeholder="{{  __('label.search_placeholder') }}" />
                 </div>
@@ -157,8 +158,8 @@ $generatePage = function () {
         </div>
     </div>
 
-    {{-- <div wire:init="loadDataResidents" class="mb-3 card"> --}}
-    <div class="mb-3 card">
+    <div wire:init="loadDataUsers" class="mb-3 card">
+    {{-- <div class="mb-3 card"> --}}
         @if($isLoading)
             <x-loading :fullscreen="false" class="p-3" />
         @else
@@ -169,47 +170,41 @@ $generatePage = function () {
                             <div class="d-flex justify-content-between">
                                 <div class="text-left w-75">
                                     <p class="h6 text-dark my-0">
-                                        {{ __('resident.housing_block_short_label') }}:
-                                        {{ $item->housing_block }}
+                                        {{ $item->name }} ({{ $item->role->name }})
                                     </p>
-                                    {{-- <small class="text-muted">{{ $item->name }} | {{ $item->phone_number }} | {{ __('resident.unique_code_short_label') .': '. $item->unique_code }}</small> --}}
                                 </div>
                                 <div class="text-right w-25 align-self-start">
                                     <div class="d-inline-block dropdown">
-                                        <button 
+                                        <button
                                             wire:ignore.self
                                             type="button"
                                             data-toggle="dropdown"
-                                            aria-haspopup="true" 
+                                            aria-haspopup="true"
                                             aria-expanded="false"
                                             class="border-0 btn-transition btn btn-sm btn-link btn-act">
                                             <i class="fa fa-ellipsis-h"></i>
                                         </button>
                                         <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-                                            <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-edit" data-id="{{ $item->id }}">
-                                                <i class="dropdown-icon lnr-pencil"></i><span>{{ __('label.edit') }}</span>
+                                            <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-detail" data-id="{{ $item->id }}">
+                                                <i class="dropdown-icon lnr-eye"></i><span>{{ __('Detail Pengguna') }}</span>
                                             </button>
+                                            <div tabindex="-1" class="dropdown-divider"></div>
+                                            <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-reset-password" data-id="{{ $item->id }}">
+                                                <i class="dropdown-icon lnr-undo"></i><span>{{ __('Atur Ulang Sandi') }}</span>
+                                            </button>
+                                            {{-- @if(!$item->is_protected) --}}
                                             <div tabindex="-1" class="dropdown-divider"></div>
                                             <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-delete" data-id="{{ $item->id }}">
                                                 <i class="dropdown-icon lnr-trash"></i><span>{{ __('label.delete') }}</span>
                                             </button>
+                                            {{-- @endif --}}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <p class="text-muted mb-0" style="font-size: 0.9em;">
-                                {{ $item->name }} | {{ $item->phone_number }} | {{ __('resident.unique_code_short_label') . ': ' . $item->unique_code }}
+                                {{ __('Nama Pengguna') }}: {{ $item->username }}
                             </p>
-                            {{-- <div class="show-more-container" x-data="{ open: false }">
-                                <p class="text-secondary text-justify my-0 show-more-text" :style="open ? 'max-height:none;overflow:visible;' : 'max-height:20px;overflow:hidden;'">
-                                    {{ $item->address }}
-                                </p>
-                                <a href="javascript:void(0);" 
-                                class="show-more-link text-primary text-decoration-none"
-                                style="font-size: 0.9em;"
-                                x-text="open ? '{{ __('label.show_less') }}' : '{{ __('label.show_more') }}'"
-                                x-on:click="open = !open">{{ __('label.show_more') }}</a>                  
-                            </div> --}}
                         </li>
                     @endforeach
                 </ul>
@@ -232,7 +227,7 @@ $generatePage = function () {
         $(".btn-page").on("click", (e) => {
             let page = $(e.currentTarget).data("page");
             $wire.set('isLoading', true).then(() => {
-                $wire.dispatch('loadDataResidents', { page: page });
+                $wire.dispatch('loadDataUsers', { page: page });
             });
         });
 
@@ -257,7 +252,7 @@ $generatePage = function () {
                     $wire.set('isFilter', false);
                 }
                 $wire.set('list.search.general', search);
-                $wire.dispatch('loadDataResidents');
+                $wire.dispatch('loadDataUsers');
             });
         });
 
@@ -266,36 +261,22 @@ $generatePage = function () {
             $btn.dropdown("show");
         });
 
-        $(document).on("click", ".btn-edit", (e) => {
-            let $btn = $(e.currentTarget);
-            $(".btn-act").dropdown("hide");
-            let id = $btn.data("id");
-            $btn.prop("disabled", true);
-            $wire.dispatch('openModalResident', { type: 'edit', id: id });
-            // Enable tombol setelah event custom dari modal
-            window.addEventListener('residentModalOpened', function handler() {
-                $btn.prop("disabled", false);
-                window.removeEventListener('residentModalOpened', handler);
-            });
-        });
-
         $(document).on("click", ".btn-delete", (e) => {
             let $btn = $(e.currentTarget);
             let id = $btn.data("id");
 
             showConfirmAlert({
                 title: "{{  __('label.alert_title') }}",
-                text: "{{ __('resident.text_delete_alert') }}",
-                // text: "Yakin ingin menghapus data ini?",
+                text: "Menghapus pengguna ini akan menghapus semua data yang terkait dengan pengguna ini. Apakah Anda yakin?",
                 confirmButtonText: "{{ __('label.button_delete_confirm') }}",
                 cancelButtonText: "{{ __('label.button_cancel') }}",
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
                     return new Promise((resolve) => {
-                        $wire.dispatch('deleteResident', { id: id });
-                        window.addEventListener('residentDeletedJs', function handler(e) {
+                        $wire.dispatch('deleteUser', { id: id });
+                        window.addEventListener('userDeletedJs', function handler(e) {
                             resolve({ isSuccess: e.detail.isSuccess, message: e.detail.message ?? "" });
-                            window.removeEventListener('residentDeletedJs', handler);
+                            window.removeEventListener('userDeletedJs', handler);
                         });
                     });
                 },
@@ -308,15 +289,7 @@ $generatePage = function () {
                     });
                 }
             });
-            
-        });
 
-        // Javascript handler
-        window.addEventListener('reloadDataResident', function handler() {
-            $wire.set('isLoading', true).then(() => {
-                $wire.dispatch('loadDataResidents', { page: 1 });
-                // window.removeEventListener('reloadDataResident', handler);
-            });
         });
     </script>
 @endscript

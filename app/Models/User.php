@@ -33,6 +33,7 @@ class User extends Authenticatable
         'username',
         'password',
         'is_initial_login',
+        'is_protected',
     ];
 
     /**
@@ -62,7 +63,7 @@ class User extends Authenticatable
     protected static function booted(): void
     {
         static::deleting(function (User $user) {
-            $user->username = $user->username.'_deletedat_' . now()->format('YmdHis');
+            $user->username = $user->username . '_deletedat_' . now()->format('YmdHis');
             $user->save(); // Simpan perubahan unique_code sebelum soft delete
         });
     }

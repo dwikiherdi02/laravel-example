@@ -25,6 +25,7 @@ class UserSeeder extends Seeder
                 'resident_id' => null,
                 'password' => Hash::make(env('DEFAULT_PASSWORD', '12345678')),
                 'is_initial_login' => true,
+                'is_protected' => true,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
@@ -36,6 +37,7 @@ class UserSeeder extends Seeder
                 'resident_id' => null,
                 'password' => Hash::make(env('DEFAULT_PASSWORD', '12345678')),
                 'is_initial_login' => true,
+                'is_protected' => true,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]

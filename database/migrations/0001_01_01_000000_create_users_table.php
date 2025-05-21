@@ -22,6 +22,7 @@ return new class extends Migration {
             // $table->string('email')->unique();
             $table->string('username')->unique();
             $table->boolean('is_initial_login')->default(true);
+            $table->boolean('is_protected')->default(false);
             // $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

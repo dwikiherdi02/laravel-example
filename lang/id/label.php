@@ -12,14 +12,17 @@ return [
     'show_less' => 'Sembumyikan',
     'search' => 'Cari',
     'search_placeholder' => 'Cari...',
-    
+
     // button
     'button_ok' => 'Oke',
     'button_cancel' => 'Batal',
     'button_delete_confirm' => 'Ya, Hapus!',
-    
+
     // alert
     'alert_title' => 'Hapus Data',
+
+    // error
+    'delete_error' => 'Gagal menghapus data, silahkan coba lagi atau hubungi admin.',
 
     // datatable
     'datatable_not_found' => 'Tidak ada data',
