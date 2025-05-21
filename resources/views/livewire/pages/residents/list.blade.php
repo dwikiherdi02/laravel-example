@@ -51,11 +51,11 @@ $deleteResident = action(function ($id) {
     try {
         $service = app(ResidentService::class);
         $service->delete($id);
-        
+
         $this->isLoading = true;
-        
+
         $this->dispatch('residentDeletedJs', isSuccess: true);
-    
+
         $this->dispatch('loadDataResidents', page: 1);
     } catch (\Exception $e) {
         $this->dispatch('residentDeletedJs', isSuccess: false, message: $e->getMessage());
@@ -114,8 +114,8 @@ $generatePage = function () {
                     {{ __('label.add') }}
                 </button>
 
-                <button 
-                    type="button" 
+                <button
+                    type="button"
                     class="d-inline-block d-md-none btn-icon btn-icon-only btn btn-success btn-add">
                     <i class="pe-7s-plus btn-icon-wrapper"> </i>
                 </button>
@@ -123,9 +123,9 @@ $generatePage = function () {
             <div class="float-right">
                 <small class="font-weight-bold text-primary">{{ $page }} / {{ $list->total }}</small>
                 <div class="btn-group" role="group" aria-label="pagination">
-                    <button 
+                    <button
                         type="button"
-                        class="btn-page btn-icon btn-icon-only btn btn-link" 
+                        class="btn-page btn-icon btn-icon-only btn btn-link"
                         data-page="{{ $list->npage->prev }}"
                         @if ($list->npage->prev == 0) disabled @endif>
                         <i class="fa fa-angle-left btn-icon-wrapper"></i>
@@ -143,9 +143,9 @@ $generatePage = function () {
         <div class="card-body collapse @if($isFilter) show @endif" id="filter-collapse">
             <div class="row">
                 <div class="col-12 mb-2">
-                    <x-text-input 
-                        id="search" 
-                        type="text" 
+                    <x-text-input
+                        id="search"
+                        type="text"
                         value="{{ $list->search->general }}"
                         placeholder="{{  __('label.search_placeholder') }}" />
                 </div>
@@ -176,11 +176,11 @@ $generatePage = function () {
                                 </div>
                                 <div class="text-right w-25 align-self-start">
                                     <div class="d-inline-block dropdown">
-                                        <button 
+                                        <button
                                             wire:ignore.self
                                             type="button"
                                             data-toggle="dropdown"
-                                            aria-haspopup="true" 
+                                            aria-haspopup="true"
                                             aria-expanded="false"
                                             class="border-0 btn-transition btn btn-sm btn-link btn-act">
                                             <i class="fa fa-ellipsis-h"></i>
@@ -204,11 +204,11 @@ $generatePage = function () {
                                 <p class="text-secondary text-justify my-0 show-more-text" :style="open ? 'max-height:none;overflow:visible;' : 'max-height:20px;overflow:hidden;'">
                                     {{ $item->address }}
                                 </p>
-                                <a href="javascript:void(0);" 
+                                <a href="javascript:void(0);"
                                 class="show-more-link text-primary text-decoration-none"
                                 style="font-size: 0.9em;"
                                 x-text="open ? '{{ __('label.show_less') }}' : '{{ __('label.show_more') }}'"
-                                x-on:click="open = !open">{{ __('label.show_more') }}</a>                  
+                                x-on:click="open = !open">{{ __('label.show_more') }}</a>
                             </div> --}}
                         </li>
                     @endforeach
@@ -229,8 +229,9 @@ $generatePage = function () {
             $("#filter-collapse").collapse("toggle");
         });
 
-        $(".btn-page").on("click", (e) => {
-            let page = $(e.currentTarget).data("page");
+        $(document).on("click", ".btn-page", (e) => {
+            // let page = $(e.currentTarget).data("page");
+            let page = $(e.currentTarget).attr("data-page");
             $wire.set('isLoading', true).then(() => {
                 $wire.dispatch('loadDataResidents', { page: page });
             });
@@ -284,8 +285,8 @@ $generatePage = function () {
             let id = $btn.data("id");
 
             showConfirmAlert({
-                title: "{{  __('label.alert_title') }}",
-                text: "{{ __('resident.text_delete_alert') }}",
+                title: "{{  __('label.alert_title_delete') }}",
+                text: "{{ __('resident.alert_text_delete') }}",
                 // text: "Yakin ingin menghapus data ini?",
                 confirmButtonText: "{{ __('label.button_delete_confirm') }}",
                 cancelButtonText: "{{ __('label.button_cancel') }}",
@@ -308,7 +309,7 @@ $generatePage = function () {
                     });
                 }
             });
-            
+
         });
 
         // Javascript handler

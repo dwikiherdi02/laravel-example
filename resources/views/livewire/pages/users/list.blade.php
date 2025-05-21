@@ -29,9 +29,9 @@ state([
     'isFilter' => false,
 ]);
 
-on(['loadDataUsers', 'toPageUser', 'deleteUser']);
+on(['loadDataUsers', 'toPageUser', 'deleteUser', 'resetUserPassword']);
 
-$loadDataUsers = action(function ($page = null) {
+$loadDataUsers = action(function (?int $page = null) {
     if ($page != null) {
         $this->list->npage->current = $page;
         $this->list->npage->prev = $page - 1 == 0 ? 0 : $page - 1;
@@ -43,12 +43,12 @@ $loadDataUsers = action(function ($page = null) {
     }
 });
 
-$toPageUser = action(function ($page = null) {
+$toPageUser = action(function (?int $page = null) {
     $this->isLoading = true;
     $this->dispatch('loadDataUsers', page: $page);
 });
 
-$deleteUser = action(function ($id) {
+$deleteUser = action(function (string $id) {
     try {
         $service = app(UserService::class);
         $service->delete($id);
@@ -60,6 +60,19 @@ $deleteUser = action(function ($id) {
         $this->dispatch('loadDataUsers', page: 1);
     } catch (\Exception $e) {
         $this->dispatch('userDeletedJs', isSuccess: false, message: $e->getMessage());
+    }
+});
+
+$resetUserPassword = action(function (string $id) {
+    try {
+        $service = app(UserService::class);
+        $message = $service->resetPassword($id);
+
+        $this->dispatch('userPasswordResetJs', isSuccess: true, message: $message);
+
+        $this->dispatch('loadDataUsers', page: 1);
+    } catch (\Exception $e) {
+        $this->dispatch('userPasswordResetJs', isSuccess: false, message: $e->getMessage());
     }
 });
 
@@ -165,7 +178,6 @@ $generatePage = function () {
     </div>
 
     <div wire:init="loadDataUsers" class="mb-3 card">
-    {{-- <div class="mb-3 card"> --}}
         @if($isLoading)
             <x-loading :fullscreen="false" class="p-3" />
         @else
@@ -175,7 +187,9 @@ $generatePage = function () {
                         <li class="list-group-item px-3">
                             <div class="d-flex">
                                 <div class="avatar-icon-wrapper pr-1">
+                                    @persist('userAvatar')
                                     <div class="avatar-icon"><img src="{{ $item->avatar }}" alt=""></div>
+                                    @endpersist
                                 </div>
                                 <div class="text-left w-100">
                                     <p class="h6 text-dark my-0">
@@ -198,11 +212,11 @@ $generatePage = function () {
                                         </button>
                                         <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
                                             <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-detail" data-id="{{ $item->id }}">
-                                                <i class="dropdown-icon lnr-eye"></i><span>{{ __('Detail Pengguna') }}</span>
+                                                <i class="dropdown-icon lnr-eye"></i><span>{{ __('user.button_detail_user') }}</span>
                                             </button>
                                             <div tabindex="-1" class="dropdown-divider"></div>
                                             <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-reset-password" data-id="{{ $item->id }}">
-                                                <i class="dropdown-icon lnr-undo"></i><span>{{ __('Atur Ulang Sandi') }}</span>
+                                                <i class="dropdown-icon lnr-undo"></i><span>{{ __('user.button_reset_user_password') }}</span>
                                             </button>
                                             @if(!$item->is_protected)
                                             <div tabindex="-1" class="dropdown-divider"></div>
@@ -233,8 +247,10 @@ $generatePage = function () {
             $("#filter-collapse").collapse("toggle");
         });
 
-        $(".btn-page").on("click", (e) => {
-            let page = $(e.currentTarget).data("page");
+        $(document).on("click", ".btn-page", function (e) {
+            // let page = $(e.currentTarget).data("page");
+            let page = $(this).attr("data-page"); // ambil langsung dari attribute, bukan dari cache jQuery
+            console.log("page: ", page);
             $wire.set('isLoading', true).then(() => {
                 $wire.dispatch('loadDataUsers', { page: page });
             });
@@ -275,8 +291,8 @@ $generatePage = function () {
             let id = $btn.data("id");
 
             showConfirmAlert({
-                title: "{{  __('label.alert_title') }}",
-                text: "Menghapus pengguna ini akan menghapus semua data yang terkait dengan pengguna ini. Apakah Anda yakin?",
+                title: "{{  __('label.alert_title_delete') }}",
+                text: "{{  __('user.alert_text_delete') }}",
                 confirmButtonText: "{{ __('label.button_delete_confirm') }}",
                 cancelButtonText: "{{ __('label.button_cancel') }}",
                 showLoaderOnConfirm: true,
@@ -306,22 +322,29 @@ $generatePage = function () {
             let id = $btn.data("id");
 
             showConfirmAlert({
-                title: "Atur Ulang Sandi",
-                text: "Mengatur ulang sandi akan mengubah sandi pengguna ini menjadi kata sandi Default. Apakah Anda yakin?",
-                confirmButtonText: "Ya, Atur Ulang",
+                title: "{{ __('user.alert_title_reset_password') }}",
+                text: "{{ __('user.alert_text_reset_password') }}",
+                confirmButtonText: "{{ __('user.button_confirm_reset_password') }}",
                 cancelButtonText: "{{ __('label.button_cancel') }}",
-                // showLoaderOnConfirm: true,
-                // preConfirm: () => {
-                //     return new Promise((resolve) => {
-                //         $wire.dispatch('deleteUser', { id: id });
-                //         window.addEventListener('userDeletedJs', function handler(e) {
-                //             resolve({ isSuccess: e.detail.isSuccess, message: e.detail.message ?? "" });
-                //             window.removeEventListener('userDeletedJs', handler);
-                //         });
-                //     });
-                // },
-                // allowOutsideClick: () => !Swal.isLoading()
-            })
+                showLoaderOnConfirm: true,
+                preConfirm: () => {
+                    return new Promise((resolve) => {
+                        $wire.dispatch('resetUserPassword', { id: id });
+                        window.addEventListener('userPasswordResetJs', function handler(e) {
+                            resolve({ isSuccess: e.detail.isSuccess, message: e.detail.message ?? "" });
+                            window.removeEventListener('userPasswordResetJs', handler);
+                        });
+                    });
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed && result.value.message != "") {
+                    showInfoAlert({
+                        html: result.value.message,
+                        confirmButtonText: "{{ __('label.button_ok') }}",
+                    });
+                }
+            });
         });
     </script>
 @endscript

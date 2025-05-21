@@ -19,10 +19,10 @@ return [
     'button_delete_confirm' => 'Ya, Hapus!',
 
     // alert
-    'alert_title' => 'Hapus Data',
+    'alert_title_delete' => 'Hapus Data',
 
     // error
-    'delete_error' => 'Gagal menghapus data, silahkan coba lagi atau hubungi admin.',
+    'error_delete' => 'Gagal menghapus data, silahkan coba lagi atau hubungi admin.',
 
     // datatable
     'datatable_not_found' => 'Tidak ada data',

@@ -33,7 +33,7 @@ class ResidentService
             if ($this->userRepo->findByUsername($username) != null) {
 
                 throw ValidationException::withMessages([
-                    'housing_block' => trans('resident.housing_block_username_error'),
+                    'housing_block' => trans('resident.error_housing_block_username'),
                 ]);
             }
 
@@ -54,7 +54,7 @@ class ResidentService
         } catch (\Exception $e) {
             DB::rollBack();
             report($e);
-            throw new \Exception(trans('resident.save_error'));
+            throw new \Exception(trans('resident.error_save'));
         }
     }
 
@@ -79,7 +79,7 @@ class ResidentService
         $resident = $resident = $this->residentRepo->findById($data->id);
 
         if ($resident == null) {
-            throw new \Exception(trans('resident.resident_not_found_error'));
+            throw new \Exception(trans('resident.error_resident_not_found'));
         }
 
         DB::beginTransaction();
@@ -96,7 +96,7 @@ class ResidentService
         } catch (\Exception $e) {
             DB::rollBack();
             report($e);
-            throw new \Exception(trans('resident.save_error'));
+            throw new \Exception(trans('resident.error_save'));
         }
     }
 
@@ -105,7 +105,7 @@ class ResidentService
         $resident = $this->residentRepo->findById($id);
 
         if ($resident == null) {
-            throw new \Exception(trans('resident.resident_not_found_error'));
+            throw new \Exception(trans('resident.error_resident_not_found'));
         }
 
         DB::beginTransaction();
@@ -116,7 +116,7 @@ class ResidentService
         } catch (\Exception $e) {
             DB::rollBack();
             report($e);
-            throw new \Exception(trans('resident.delete_error'));
+            throw new \Exception(trans('resident.error_delete'));
         }
     }
 }

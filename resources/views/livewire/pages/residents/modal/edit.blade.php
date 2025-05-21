@@ -126,7 +126,7 @@ $updateResident = function (ResidentService $service) {
         @else
         <div class="d-flex justify-content-center align-items-center" style="height: 82vh;">
             <div class="text-center w-100">
-                <p class="h6">{{ __('resident.resident_not_found_error') }}</p>
+                <p class="h6">{{ __('resident.error_resident_not_found') }}</p>
             </div>
         </div>
         @endif

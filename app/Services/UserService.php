@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Dto\ListDto\ListFilterDto;
 use App\Repositories\UserRepository;
+use Hash;
 use Illuminate\Support\Facades\DB;
 
 class UserService
@@ -23,11 +24,11 @@ class UserService
     {
         $user = $this->userRepo->findById($id);
         if ($user == null) {
-            throw new \Exception('Data pengguna tidak ditemukan. silahkan coba lagi atau hubungi admin.');
+            throw new \Exception(trans('user.error_user_notfound'));
         }
 
         if ($user->is_protected) {
-            throw new \Exception('Data pengguna tidak dapat dihapus karena diproteksi ole sistem.');
+            throw new \Exception(trans('user.error_user_is_protected'));
         }
 
         DB::beginTransaction();
@@ -38,7 +39,32 @@ class UserService
         } catch (\Exception $e) {
             DB::rollBack();
             report($e);
-            throw new \Exception(trans('label.delete_error'));
+            throw new \Exception(trans('label.error_delete'));
+        }
+    }
+
+    public function resetPassword(string $id)
+    {
+        $user = $this->userRepo->findById($id);
+        if ($user == null) {
+            throw new \Exception(trans('user.error_user_notfound'));
+        }
+
+        DB::beginTransaction();
+        try {
+            $defaultPassword = env('DEFAULT_PASSWORD', '12345678');
+
+            $user->password = Hash::make($defaultPassword);
+            $user->is_initial_login = true;
+            $user->save();
+
+            DB::commit();
+
+            return trans('user.success_reset_password', ['password' => $defaultPassword]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
+            throw new \Exception(trans('user.error_reset_password'));
         }
     }
 }
