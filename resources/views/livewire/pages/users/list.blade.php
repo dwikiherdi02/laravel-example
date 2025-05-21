@@ -167,11 +167,12 @@ $generatePage = function () {
                 <ul class="list-group list-group-flush">
                     @foreach ($list->data as $item)
                         <li class="list-group-item">
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between mb-2">
                                 <div class="text-left w-75">
                                     <p class="h6 text-dark my-0">
-                                        {{ $item->name }} ({{ $item->role->name }})
+                                        {{ $item->name }}
                                     </p>
+                                    <small class="text-muted">{{ $item->username }}</small>
                                 </div>
                                 <div class="text-right w-25 align-self-start">
                                     <div class="d-inline-block dropdown">
@@ -202,9 +203,9 @@ $generatePage = function () {
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-muted mb-0" style="font-size: 0.9em;">
-                                {{ __('Nama Pengguna') }}: {{ $item->username }}
-                            </p>
+                            <div class="mb-2 mr-2 badge badge-focus">
+                                {{ $item->role->name }}
+                            </div>
                         </li>
                     @endforeach
                 </ul>
