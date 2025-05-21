@@ -1,6 +1,7 @@
 <?php
 
 use App\Dto\ListDto\ListFilterDto;
+use App\Facades\Avatar;
 use App\Services\UserService;
 
 use function Livewire\Volt\{state, on, action};
@@ -74,6 +75,11 @@ $load = function () {
     $collection = $service->list($filter);
 
     // dd($collection->data);
+
+    $collection->data = $collection->data->map(function ($item) {
+        $item->avatar = Avatar::create($item->name)->toBase64();
+        return $item;
+    });
 
     $this->list->data = $collection->data;
     $this->list->total = $collection->total;
@@ -166,13 +172,18 @@ $generatePage = function () {
             @if (count($list->data) > 0)
                 <ul class="list-group list-group-flush">
                     @foreach ($list->data as $item)
-                        <li class="list-group-item">
-                            <div class="d-flex justify-content-between mb-2">
-                                <div class="text-left w-75">
+                        <li class="list-group-item px-3">
+                            <div class="d-flex">
+                                <div class="avatar-icon-wrapper pr-1">
+                                    <div class="avatar-icon"><img src="{{ $item->avatar }}" alt=""></div>
+                                </div>
+                                <div class="text-left w-100">
                                     <p class="h6 text-dark my-0">
                                         {{ $item->name }}
                                     </p>
-                                    <small class="text-muted">{{ $item->username }}</small>
+                                    <div class="badge badge-focus fs-9">
+                                        {{ $item->role->name }}
+                                    </div>
                                 </div>
                                 <div class="text-right w-25 align-self-start">
                                     <div class="d-inline-block dropdown">
@@ -202,9 +213,6 @@ $generatePage = function () {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="mb-2 mr-2 badge badge-focus">
-                                {{ $item->role->name }}
                             </div>
                         </li>
                     @endforeach
@@ -291,6 +299,29 @@ $generatePage = function () {
                 }
             });
 
+        });
+
+        $(document).on("click", ".btn-reset-password", (e) => {
+            let $btn = $(e.currentTarget);
+            let id = $btn.data("id");
+
+            showConfirmAlert({
+                title: "Atur Ulang Sandi",
+                text: "Mengatur ulang sandi akan mengubah sandi pengguna ini menjadi kata sandi Default. Apakah Anda yakin?",
+                confirmButtonText: "Ya, Atur Ulang",
+                cancelButtonText: "{{ __('label.button_cancel') }}",
+                // showLoaderOnConfirm: true,
+                // preConfirm: () => {
+                //     return new Promise((resolve) => {
+                //         $wire.dispatch('deleteUser', { id: id });
+                //         window.addEventListener('userDeletedJs', function handler(e) {
+                //             resolve({ isSuccess: e.detail.isSuccess, message: e.detail.message ?? "" });
+                //             window.removeEventListener('userDeletedJs', handler);
+                //         });
+                //     });
+                // },
+                // allowOutsideClick: () => !Swal.isLoading()
+            })
         });
     </script>
 @endscript

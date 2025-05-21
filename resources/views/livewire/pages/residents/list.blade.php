@@ -165,7 +165,7 @@ $generatePage = function () {
             @if (count($list->data) > 0)
                 <ul class="list-group list-group-flush">
                     @foreach ($list->data as $item)
-                        <li class="list-group-item">
+                        <li class="list-group-item px-3">
                             <div class="d-flex justify-content-between">
                                 <div class="text-left w-75">
                                     <p class="h6 text-dark my-0">
