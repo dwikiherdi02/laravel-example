@@ -192,12 +192,12 @@ $generatePage = function () {
                                             <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-reset-password" data-id="{{ $item->id }}">
                                                 <i class="dropdown-icon lnr-undo"></i><span>{{ __('Atur Ulang Sandi') }}</span>
                                             </button>
-                                            {{-- @if(!$item->is_protected) --}}
+                                            @if(!$item->is_protected)
                                             <div tabindex="-1" class="dropdown-divider"></div>
                                             <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-delete" data-id="{{ $item->id }}">
                                                 <i class="dropdown-icon lnr-trash"></i><span>{{ __('label.delete') }}</span>
                                             </button>
-                                            {{-- @endif --}}
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

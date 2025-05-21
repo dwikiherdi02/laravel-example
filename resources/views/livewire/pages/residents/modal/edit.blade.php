@@ -77,7 +77,7 @@ $updateResident = function (ResidentService $service) {
 <div>
     <div class="modal-header bg-transparent border-0">
         <h5 class="modal-title" id="modal-resident-title">{{ __('resident.edit_label') }}</h5>
-        <button wire:click="$dispatch('closeModalResidentJs')" type="button" class="close" aria-label="Close">
+        <button wire:click="$dispatch('closeModalResidentJs')" wire:target="updateResident" wire:loading.attr="disabled" type="button" class="close" aria-label="Close">
         <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -126,20 +126,20 @@ $updateResident = function (ResidentService $service) {
         @else
         <div class="d-flex justify-content-center align-items-center" style="height: 82vh;">
             <div class="text-center w-100">
-                <p class="h5">{{ __('resident.resident_not_found_error') }}</p>
+                <p class="h6">{{ __('resident.resident_not_found_error') }}</p>
             </div>
         </div>
         @endif
     </div>
-    <div class="modal-footer bg-transparent border-0 d-flex justify-content-between">
+    <div class="modal-footer bg-transparent d-flex justify-content-between w-100 px-0 pb-0 border-0">
         @if($id != null)
-            <button wire:click="$dispatch('closeModalResidentJs')" type="button" class="btn btn-lg btn-transition btn btn-outline-danger w-100">{{ __('label.cancel') }}</button>
-            <button wire:loading.remove type="submit" form="resident-form" class="btn btn-lg btn-primary w-100">{{ __('label.save') }}</button>
-            <button wire:loading class="btn btn-lg btn-primary w-100">
+            <button wire:click="$dispatch('closeModalResidentJs')" wire:target="updateResident" wire:loading.attr="disabled" type="button" class="btn btn-lg btn-danger font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0">{{ __('label.cancel') }}</button>
+            <button wire:loading.remove type="submit" form="resident-form" class="btn btn-lg btn-primary font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0">{{ __('label.save') }}</button>
+            <button wire:loading class="btn btn-lg btn-primary font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0">
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             </button>
         @else
-            <button wire:click="$dispatch('closeModalResidentJs')" type="button" class="btn btn-lg btn-transition btn btn-outline-danger w-100">{{ __('label.cancel') }}</button>
+            <button wire:click="$dispatch('closeModalResidentJs')" type="button" class="btn btn-lg btn-danger font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0">{{ __('label.cancel') }}</button>
         @endif
     </div>
 </div>
