@@ -5,6 +5,7 @@ return [
     'add' => 'Tambah',
     'save' => 'Simpan',
     'cancel' => 'Batal',
+    'close' => 'Tutup',
     'edit' => 'Ubah',
     'delete' => 'Hapus',
     'data_not_found' => 'Data tidak ditemukan',

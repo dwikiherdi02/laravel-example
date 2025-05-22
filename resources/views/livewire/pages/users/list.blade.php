@@ -7,7 +7,7 @@ use App\Services\UserService;
 use function Livewire\Volt\{state, on, action};
 
 state([
-    'isLoading' => false,
+    'isLoading' => true,
 
     'list' => (object) [
         'perpage' => 10,
@@ -247,15 +247,6 @@ $generatePage = function () {
             $("#filter-collapse").collapse("toggle");
         });
 
-        $(document).on("click", ".btn-page", function (e) {
-            // let page = $(e.currentTarget).data("page");
-            let page = $(this).attr("data-page"); // ambil langsung dari attribute, bukan dari cache jQuery
-            console.log("page: ", page);
-            $wire.set('isLoading', true).then(() => {
-                $wire.dispatch('loadDataUsers', { page: page });
-            });
-        });
-
         $(".btn-add").on("click", () => {
             // alert("add button clicked");
             let $btn = $(".btn-add");
@@ -281,10 +272,36 @@ $generatePage = function () {
             });
         });
 
+        $(document).on("click", ".btn-page", function (e) {
+            // let page = $(e.currentTarget).data("page");
+            let page = $(this).attr("data-page"); // ambil langsung dari attribute, bukan dari cache jQuery
+            console.log("page: ", page);
+            $wire.set('isLoading', true).then(() => {
+                $wire.dispatch('loadDataUsers', { page: page });
+            });
+        });
+
         $(document).on("click", ".btn-act", (e) => {
             let $btn = $(e.currentTarget);
             $btn.dropdown("show");
         });
+
+        $(document).on("click", ".btn-detail", (e) => {
+            let $btn = $(e.currentTarget);
+            let id = $btn.data("id");
+
+            $('#modal-user').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
+
+            window.dispatchEvent(
+                new CustomEvent(
+                    'fetchModalUserContentJs',
+                    { detail: { type: 'detail', id: id } }
+                ));
+        })
 
         $(document).on("click", ".btn-delete", (e) => {
             let $btn = $(e.currentTarget);

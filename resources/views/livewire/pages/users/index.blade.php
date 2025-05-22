@@ -29,4 +29,28 @@ title(function (ComponentService $service) {
             <livewire:pages.users.list />
         </div>
     </div>
+
+    @push('modals')
+        <div class="modal modal-fullscreen px-0 fade" id="modal-user" tabindex="-1" role="dialog"
+            aria-labelledby="modal-resident-title" aria-hidden="true"
+            data-animate-in="animate__animated animate__fadeInRight animate__faster"
+            data-animate-out="animate__animated animate__fadeOutRight animate__faster">
+            <div class="modal-dialog modal-dialog-centered shadow-none" role="document">
+                <div class="modal-content overflow-hidden">
+                    <livewire:pages.users.modal-content />
+                </div>
+            </div>
+        </div>
+    @endpush
 </div>
+
+@script
+    <script>
+        $(function () {
+            $("#modal-user").on("hidden.bs.modal", function (e) {
+                console.log('close modal');
+                window.dispatchEvent(new CustomEvent('fetchModalUserContentJs'));
+            });
+        });
+    </script>
+@endscript

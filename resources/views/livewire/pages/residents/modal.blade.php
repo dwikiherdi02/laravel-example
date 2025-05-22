@@ -24,9 +24,9 @@ $closeModalResident = action(function () {
 ?>
 
 <div>
-    <div class="modal modal-fullscreen fade" id="modal-resident" tabindex="-1" role="dialog" aria-labelledby="modal-resident-title" aria-hidden="true" data-animate-in="animate__animated animate__fadeInRight animate__faster" data-animate-out="animate__animated animate__fadeOutRight animate__faster">
+    <div class="modal modal-fullscreen px-0 fade" id="modal-resident" tabindex="-1" role="dialog" aria-labelledby="modal-resident-title" aria-hidden="true" data-animate-in="animate__animated animate__fadeInRight animate__faster" data-animate-out="animate__animated animate__fadeOutRight animate__faster">
         <div class="modal-dialog modal-dialog-centered shadow-none {{ $animate }}" role="document">
-            <div class="modal-content">
+            <div class="modal-content overflow-hidden">
                 @switch($type)
                     @case('add')
                         <livewire:pages.residents.modal.add lazy />
@@ -53,7 +53,7 @@ $closeModalResident = action(function () {
 
             window.dispatchEvent(new Event('residentModalOpened'));
         });
-        
+
         $wire.on('closeModalResidentJs', (event) => {
             if (event && event.reloadTable == true) {
                 window.dispatchEvent(new Event('reloadDataResident'));
