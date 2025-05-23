@@ -66,6 +66,13 @@ class User extends Authenticatable
             $user->username = $user->username . '_deletedat_' . now()->format('YmdHis');
             $user->save(); // Simpan perubahan unique_code sebelum soft delete
         });
+
+        static::saving(function (User $user) {
+            if ($user->isDirty('name') && $user->resident_id != null) {
+                $user->resident->name = $user->name;
+                $user->resident->save(); // Simpan perubahan nama pada user
+            }
+        });
     }
 
     /**

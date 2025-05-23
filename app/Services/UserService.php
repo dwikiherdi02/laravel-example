@@ -3,6 +3,9 @@
 namespace App\Services;
 
 use App\Dto\ListDto\ListFilterDto;
+use App\Dto\ResidentDto;
+use App\Dto\RoleDto;
+use App\Dto\UserDto;
 use App\Repositories\UserRepository;
 use Hash;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +16,25 @@ class UserService
         protected UserRepository $userRepo,
     ) {
         //
+    }
+
+    public function findById(string $id): ?UserDto
+    {
+        $user = $this->userRepo->findById($id);
+        if ($user) {
+            return UserDto::from([
+                'id' => $user->id,
+                'role_id' => $user->role_id,
+                'resident_id' => $user->resident_id,
+                'name' => $user->name,
+                'username' => $user->username,
+                'is_initial_login' => $user->is_initial_login,
+                'is_protected' => $user->is_protected,
+                'role' => $user->role != null ? RoleDto::from($user->role) : null,
+                'resident' => $user->resident != null ? ResidentDto::from($user->resident) : null,
+            ]);
+        }
+        return null;
     }
 
     public function list(ListFilterDto $filter)

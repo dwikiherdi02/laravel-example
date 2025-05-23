@@ -41,6 +41,22 @@ class Resident extends Model
             $resident->unique_code = null;
             $resident->save(); // Simpan perubahan unique_code sebelum soft delete
         });
+
+        // static::updating(function (Resident $resident) {
+        //     dd('updating resident', $resident->getDirty());
+            
+        //     if ($resident->isDirty('name')) {
+        //         $resident->user->name = $resident->name;
+        //         $resident->user->save(); // Simpan perubahan nama pada user
+        //     }
+        // });
+
+        static::saving(function (Resident $resident) {
+            if ($resident->isDirty('name')) {
+                $resident->user->name = $resident->name;
+                $resident->user->save(); // Simpan perubahan nama pada user
+            }
+        });
     }
 
     public function user(): HasOne

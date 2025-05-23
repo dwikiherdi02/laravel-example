@@ -77,7 +77,7 @@ $resetUserPassword = action(function (string $id) {
 });
 
 $load = function () {
-    info('load data residents from load function');
+    info('load data users');
     $this->isLoading = true;
 
     // sleep(2);
