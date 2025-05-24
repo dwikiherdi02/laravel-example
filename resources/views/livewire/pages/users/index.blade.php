@@ -53,7 +53,7 @@ title(function (ComponentService $service) {
     <script>
         $(function () {
             $("#modal-user").on("hidden.bs.modal", function (e) {
-                // console.log('close modal');
+                /* window.dispatchEvent(new Event('reloadDataUserJs')); */
                 window.dispatchEvent(new CustomEvent('fetchModalUserContentJs'));
             });
         });

@@ -19,6 +19,10 @@ $setState = action(function (?string $type = null, ?string $id = null) {
 
 <div>
     @switch($type)
+        @case('add')
+            <livewire:pages.users.modal-content.add lazy />
+            @break
+
         @case('detail')
             <livewire:pages.users.modal-content.detail :id="$id" lazy />
             @break

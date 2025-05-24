@@ -2,6 +2,8 @@
 
 return [
     // label
+    'label_add_user' => 'Tambah Pengguna',
+    'label_detail_user' => 'Detail Pengguna',
     'label_name' => 'Nama',
     'label_username' => 'Nama Pengguna',
     'label_assigned_role' => 'Sebagai',

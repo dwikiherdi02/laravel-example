@@ -27,7 +27,7 @@ mount(function (ComponentService $service) {
         :id="$id"
         class="{{ $class }}"
         >
-        <option value="">-- {{ __('label.widget_select_role_placeholder') }} --</option>
+        <option value="">{{ __('label.widget_select_role_placeholder') }}</option>
         @foreach ($opt as $item)
             <option value="{{ $item->id }}">{{ $item->name }}</option>
         @endforeach

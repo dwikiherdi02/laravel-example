@@ -126,18 +126,20 @@ $generatePage = function () {
                     <i class="pe-7s-filter btn-icon-wrapper"></i>
                 </button>
 
-                {{-- <button
+                <button
                     type="button"
-                    class="d-none d-md-inline-block btn-icon btn btn-success btn-add">
+                    class="d-none d-md-inline-block btn-icon btn btn-success btn-add"
+                    data-refresh="true">
                     <i class="pe-7s-plus btn-icon-wrapper"></i>
                     {{ __('label.add') }}
                 </button>
 
                 <button
                     type="button"
-                    class="d-inline-block d-md-none btn-icon btn-icon-only btn btn-success btn-add">
+                    class="d-inline-block d-md-none btn-icon btn-icon-only btn btn-success btn-add"
+                    data-refresh="true">
                     <i class="pe-7s-plus btn-icon-wrapper"> </i>
-                </button> --}}
+                </button>
             </div>
             <div class="float-right">
                 <small class="font-weight-bold text-primary">{{ $page }} / {{ $list->total }}</small>
@@ -247,6 +249,7 @@ $generatePage = function () {
     <script>
         // jquery handler
         $(function () {
+            // $(".select2").select2("destroy");
             $(".select2").select2({
                 theme: 'bootstrap4',
                 width: '100%',
@@ -260,15 +263,17 @@ $generatePage = function () {
         });
 
         $(".btn-add").on("click", () => {
-            // alert("add button clicked");
-            let $btn = $(".btn-add");
-            $btn.prop("disabled", true);
-            $wire.dispatch('openModalResident', { type: 'add' });
-            // Enable tombol setelah event custom dari modal
-            window.addEventListener('residentModalOpened', function handler() {
-                $btn.prop("disabled", false);
-                window.removeEventListener('residentModalOpened', handler);
+            $('#modal-user').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
             });
+
+            window.dispatchEvent(
+                new CustomEvent(
+                    'fetchModalUserContentJs',
+                    { detail: { type: 'add' } }
+                ));
         });
 
         $("#btn-search").on("click", () => {
@@ -377,5 +382,19 @@ $generatePage = function () {
                 }
             });
         });
+    
+        /* window.addEventListener("reloadDataUserJs", function (e) {
+            $wire.set('isLoading', true).then(() => {
+                $("#search").val("");
+                $("#search-role").val(null).trigger('change');
+
+                $wire.set('list.search.general', '');
+                $wire.set('list.search.role', '');
+                $wire.set('isFilter', false).then(() => {
+                    $wire.dispatch('loadDataUsers', { page: 1 });
+                });
+
+            });
+        }); */
     </script>
 @endscript

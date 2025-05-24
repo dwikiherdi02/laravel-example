@@ -20,7 +20,7 @@ mount(function (UserService $service) {
 
 <div>
     <div class="modal-header bg-transparent border-0">
-        <h5 class="modal-title" id="modal-resident-title">{{ __('Detail Pengguna') }}</h5>
+        <h5 class="modal-title" id="modal-resident-title">{{ __('user.label_detail_user') }}</h5>
         <button type="button" class="close" aria-label="Close" data-dismiss="modal">
             <span aria-hidden="true">&times;</span>
         </button>
