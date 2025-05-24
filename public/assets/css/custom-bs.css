@@ -50,32 +50,49 @@ input.form-number[type=number] {
 .fs-1 {
     font-size: 2.5rem !important; 
 }
+
 .fs-2 {
     font-size: 2rem !important; 
 }
+
 .fs-3 {
     font-size: 1.75rem !important; 
 }
+
 .fs-4 {
     font-size: 1.5rem !important; 
 }
+
 .fs-5 {
     font-size: 1.25rem !important; 
 }
+
 .fs-6 {
     font-size: 1rem !important; 
 }
+
 .fs-7 {
     font-size: 0.875rem !important; 
 }
+
 .fs-8 {
     font-size: 0.75rem !important; 
 }
+
 .fs-9 {
     font-size: 0.625rem !important; 
 }
+
 .fs-10 {
     font-size: 0.5rem !important; 
+}
+
+.pl-4p5, .px-4p5 {
+    padding-left: 2rem !important;
+}
+
+.pr-4p5, .px-4p5 {
+    padding-right: 2rem !important;
 }
 
 

@@ -69,6 +69,10 @@ class UserRepository
             });
         }
 
+        if ($filter->search->role) {
+            $query->where('role_id', $filter->search->role);
+        }
+
         $query = $query->orderBy('created_at', 'desc');
 
         // Clone query untuk total count

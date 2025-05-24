@@ -2,20 +2,21 @@
 
 return [
     // modal title
-    'add_label' => 'Tambah Data Warga',
-    'view_label' => 'Lihat Data Warga',
-    'edit_label' => 'Ubah Data Warga',
+    'label_add' => 'Tambah Data Warga',
+    'label_view' => 'Lihat Data Warga',
+    'label_edit' => 'Ubah Data Warga',
 
     // list
-    'housing_block_short_label' => 'Blok',
-    'unique_code_short_label' => 'Nomor Unik',
+    'short_label_housing_block' => 'Blok',
+    'short_label_unique_code' => 'Nomor Unik',
+    'short_label_name' => 'Nama',
 
     // form
-    'housing_block_label' => 'Nomor Rumah (Blok)',
-    'name_label' => 'Nama Warga',
-    'phone_number_label' => 'Nomor Telepon',
-    'unique_code_label' => 'Nomor Unik (Untuk Pembayaran)',
-    'address_label' => 'Alamat Rumah',
+    'label_housing_block' => 'Nomor Rumah (Blok)',
+    'label_name' => 'Nama Warga',
+    'label_phone_number' => 'Nomor Ponsel',
+    'label_unique_code' => 'Nomor Unik (Untuk Pembayaran)',
+    'label_address' => 'Alamat Rumah',
 
     // error message
     'error_save' => 'Gagal menyimpan data, silahkan coba lagi.',

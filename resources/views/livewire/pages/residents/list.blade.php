@@ -169,10 +169,10 @@ $generatePage = function () {
                             <div class="d-flex justify-content-between">
                                 <div class="text-left w-75">
                                     <p class="h6 text-dark my-0">
-                                        {{ __('resident.housing_block_short_label') }}:
+                                        {{ __('resident.short_label_housing_block') }}:
                                         {{ $item->housing_block }}
                                     </p>
-                                    {{-- <small class="text-muted">{{ $item->name }} | {{ $item->phone_number }} | {{ __('resident.unique_code_short_label') .': '. $item->unique_code }}</small> --}}
+                                    {{-- <small class="text-muted">{{ $item->name }} | {{ $item->phone_number }} | {{ __('resident.short_label_unique_code') .': '. $item->unique_code }}</small> --}}
                                 </div>
                                 <div class="text-right w-25 align-self-start">
                                     <div class="d-inline-block dropdown">
@@ -198,7 +198,7 @@ $generatePage = function () {
                                 </div>
                             </div>
                             <p class="text-muted mb-0" style="font-size: 0.9em;">
-                                {{ $item->name }} | {{ $item->phone_number }} | {{ __('resident.unique_code_short_label') . ': ' . $item->unique_code }}
+                                {{ $item->name }} | {{ $item->phone_number }} | {{ __('resident.short_label_unique_code') . ': ' . $item->unique_code }}
                             </p>
                             {{-- <div class="show-more-container" x-data="{ open: false }">
                                 <p class="text-secondary text-justify my-0 show-more-text" :style="open ? 'max-height:none;overflow:visible;' : 'max-height:20px;overflow:hidden;'">

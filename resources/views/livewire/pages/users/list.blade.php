@@ -168,6 +168,9 @@ $generatePage = function () {
                         value="{{ $list->search->general }}"
                         placeholder="{{  __('label.search_placeholder') }}" />
                 </div>
+                <div class="col-12 mb-2">
+                    <livewire:components.widget.list-role :id="'search-role'" :class="'select2'" />
+                </div>
                 <div class="col-12">
                     <button id="btn-search" class="mb-2 mr-2 btn btn-dark w-100">
                         {{ __('label.search') }}
@@ -243,6 +246,15 @@ $generatePage = function () {
 @script
     <script>
         // jquery handler
+        $(function () {
+            $(".select2").select2({
+                theme: 'bootstrap4',
+                width: '100%',
+                // placeholder: "{{ __('Pilih Peran') }}",
+                // allowClear: true,
+            });            
+        });
+
         $("#btn-filter-collapse").on("click", () => {
             $("#filter-collapse").collapse("toggle");
         });
@@ -261,13 +273,15 @@ $generatePage = function () {
 
         $("#btn-search").on("click", () => {
             let search = $("#search").val();
+            let searchRole = $("#search-role").val();
             $wire.set('isLoading', true).then(() => {
-                if (search != "") {
+                if (search != "" || searchRole != "") {
                     $wire.set('isFilter', true);
                 } else {
                     $wire.set('isFilter', false);
                 }
                 $wire.set('list.search.general', search);
+                $wire.set('list.search.role', searchRole);
                 $wire.dispatch('loadDataUsers');
             });
         });

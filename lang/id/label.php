@@ -25,7 +25,6 @@ return [
     // error
     'error_delete' => 'Gagal menghapus data, silahkan coba lagi atau hubungi admin.',
 
-    // datatable
-    'datatable_not_found' => 'Tidak ada data',
-    'datatable_loading' => 'Memuat data...',
+    // widgets
+    'widget_select_role_placeholder' => 'Pilih peran',
 ];

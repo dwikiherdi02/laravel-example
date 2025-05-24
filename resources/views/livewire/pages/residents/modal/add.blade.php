@@ -61,7 +61,7 @@ $createResident = function (ResidentService $service) {
 
 <div>
     <div class="modal-header bg-transparent border-0">
-        <h5 class="modal-title" id="modal-resident-title">{{ __('resident.add_label') }}</h5>
+        <h5 class="modal-title" id="modal-resident-title">{{ __('resident.label_add') }}</h5>
         <button wire:click="$dispatch('closeModalResidentJs')" wire:target="createResident" wire:loading.attr="disabled" type="button" class="close" aria-label="Close">
         <span aria-hidden="true">&times;</span>
         </button>
@@ -76,32 +76,32 @@ $createResident = function (ResidentService $service) {
         <form id="resident-form" wire:submit="createResident">
             <div class="row">
                 <div class="form-group col-12 col-md-6 mb-3">
-                    <x-input-label for="housing_block" :value="__('resident.housing_block_label')" :isRequired="true" />
+                    <x-input-label for="housing_block" :value="__('resident.label_housing_block')" :isRequired="true" />
                     <x-text-input wire:model="housing_block" id="housing_block" type="text" name="housing_block" aria-describedby="housingBlockHelp" />
                     <x-input-error id="housingBlockHelp" :messages="$errors->get('housing_block')" />
                 </div>
 
                 <div class="form-group col-12 col-md-6 mb-3">
-                    <x-input-label for="name" :value="__('resident.name_label')" :isRequired="true" />
+                    <x-input-label for="name" :value="__('resident.label_name')" :isRequired="true" />
                     <x-text-input wire:model="name" id="name" type="text" name="name"
                         aria-describedby="nameHelp" />
                     <x-input-error id="nameHelp" :messages="$errors->get('name')" />
                 </div>
 
                 <div class="form-group col-12 col-md-6 mb-3">
-                    <x-input-label for="phone_number" :value="__('resident.phone_number_label')" :isRequired="true" />
+                    <x-input-label for="phone_number" :value="__('resident.label_phone_number')" :isRequired="true" />
                     <x-text-input wire:model="phone_number" id="phone_number" class="input-mask-trigger" type="text" name="phone_number" placeholder="087781234567" aria-describedby="phoneNumberHelp" />
                     <x-input-error id="phoneNumberHelp" :messages="$errors->get('phone_number')" />
                 </div>
 
                 <div class="form-group col-12 col-md-6 mb-3">
-                    <x-input-label for="unique_code" :value="__('resident.unique_code_label')" :isRequired="true" />
+                    <x-input-label for="unique_code" :value="__('resident.label_unique_code')" :isRequired="true" />
                     <x-text-input wire:model="unique_code" id="unique_code" class="form-number text-right" type="number" name="unique_code" aria-describedby="uniqueCodeHelp" />
                     <x-input-error id="uniqueCodeHelp" :messages="$errors->get('unique_code')" />
                 </div>
 
                 <div class="form-group col-12 mb-3">
-                    <x-input-label for="address" :value="__('resident.address_label')" />
+                    <x-input-label for="address" :value="__('resident.label_address')" />
                     <x-text-area wire:model="address" rows="1" id="address" class="autosize-input" style="max-height: 200px;" />
                     <x-input-error id="addressHelp" :messages="$errors->get('address')" />
                 </div>

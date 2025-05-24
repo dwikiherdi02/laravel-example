@@ -1,9 +1,10 @@
 <?php
 
 return [
-    // modal title
-    'label_add' => 'Tambah Pengguna',
-    'label_view' => 'Lihat Data Pengguna',
+    // label
+    'label_name' => 'Nama',
+    'label_username' => 'Nama Pengguna',
+    'label_assigned_role' => 'Sebagai',
 
     // error message
     'error_user_notfound' => 'Data pengguna tidak ditemukan. silahkan coba lagi atau hubungi admin.',

@@ -22,6 +22,11 @@ title(function (ComponentService $service) {
 
 ?>
 
+@push('styles')
+    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}"> --}}
+    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2-bootstrap4.min.css') }}"> --}}
+@endpush
+
 <div>
     <x-page-heading :title="$title" :icon="$icon" />
     <div class="row">
@@ -48,9 +53,13 @@ title(function (ComponentService $service) {
     <script>
         $(function () {
             $("#modal-user").on("hidden.bs.modal", function (e) {
-                console.log('close modal');
+                // console.log('close modal');
                 window.dispatchEvent(new CustomEvent('fetchModalUserContentJs'));
             });
         });
     </script>
 @endscript
+
+@push('scripts')
+    <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}" defer></script>
+@endpush
