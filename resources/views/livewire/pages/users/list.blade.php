@@ -254,15 +254,7 @@ $generatePage = function () {
 @script
     <script>
         // jquery handler
-        $(function () {
-            // $(".select2").select2("destroy");
-            /* $(".select2").select2({
-                theme: 'bootstrap4',
-                width: '100%',
-                // placeholder: "{{ __('Pilih Peran') }}",
-                // allowClear: true,
-            }); */
-        });
+        $(function () { });
 
         $("#btn-filter-collapse").on("click", () => {
             $("#filter-collapse").collapse("toggle");
@@ -388,22 +380,15 @@ $generatePage = function () {
                 }
             });
         });
-        
+
         // Javascript hanlder
         window.addEventListener("hideModalUserJs", function (e) {
             $wire.set('isLoading', true).then(() => {
                 $("#modal-user").modal("hide");
                 $("#search").val("");
                 $("#search-role").val(null).trigger('change');
-                
+
                 $wire.dispatch('loadDataUsers', { page: 1, clearFilter: true });
-
-                /* $wire.set('list.search.general', '');
-                $wire.set('list.search.role', '');
-                $wire.set('isFilter', false).then(() => {
-                    $wire.dispatch('loadDataUsers', { page: 1 });
-
-                }); */
             });
         });
     </script>

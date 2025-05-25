@@ -73,6 +73,18 @@ $createUser = function (UserService $service) {
     }
 };
 
+on(['syncFormCreateUser']);
+
+$syncFormCreateUser = action(function (array $data) {
+    $this->role_id = $data['role_id'] ?? $this->role_id;
+    $this->resident_id = $data['resident_id'] ?? $this->resident_id;
+    $this->name = $data['name'] ?? $this->name;
+    $this->username = $data['username'] ?? $this->username;
+    $this->default_password = $data['default_password'] ?? $this->default_password;
+    $this->password = $data['password'] ?? $this->password;
+    $this->password_confirmation = $data['password_confirmation'] ?? $this->password_confirmation;
+});
+
 ?>
 
 <div>
@@ -158,12 +170,7 @@ $createUser = function (UserService $service) {
 @script
 <script>
     // jquery handler
-    $(function () {
-        /* $(".select2").select2({
-            theme: 'bootstrap4',
-            width: '100%',
-        }); */
-    });
+    $(function () { });
 
     let isWargaBefore = false;
 
@@ -172,19 +179,23 @@ $createUser = function (UserService $service) {
         let roleId = role.val();
         let isWarga = role.data('iswarga');
 
-        
+
         $("#resident-section").toggleClass('d-none', isWarga !== 1);
         if (isWarga) {
             isWargaBefore = isWarga;
             $("#resident").val('').trigger('change');
         } else {
+            let states = {};
             if (isWargaBefore) {
-                @this.set('name', '');
-                @this.set('username', '');
-                @this.set('resident_id', null);
+                states = {
+                    name: '',
+                    username: '',
+                    resident_id: null
+                }
                 isWargaBefore = false;
             }
-            @this.set('role_id', roleId);
+            states.role_id = roleId;
+            Livewire.dispatch('syncFormCreateUser', { data: states });
         }
     });
 
@@ -200,13 +211,15 @@ $createUser = function (UserService $service) {
         }
 
         $("#name").val(residentName).trigger('change');
-        @this.set('name', residentName);
-
         $("#username").val(residentHousingBlock).trigger('change');
-        @this.set('username', residentHousingBlock);
 
-        @this.set('resident_id', residentId);
-        @this.set('role_id', $("#role").val());
+        let states = {
+            resident_id: residentId,
+            name: residentName,
+            username: residentHousingBlock,
+            role_id: $("#role").val()
+        };
+        Livewire.dispatch('syncFormCreateUser', { data: states });
     });
 
     $(document).on("change", "#default-password", function () {
@@ -214,13 +227,17 @@ $createUser = function (UserService $service) {
 
         $(".password-csection").toggleClass('d-none', defaultPassword.prop("checked"));
         $(".password-csection").find('input').val('').trigger('change');
-        
+
+        let states = {};
         if (defaultPassword.prop("checked")) {
-            @this.set('password', '');
-            @this.set('password_confirmation', '');
+            states = {
+                password: '',
+                password_confirmation: ''
+            };
         }
 
-        @this.set('default_password', defaultPassword.prop("checked"));
+        states.default_password = defaultPassword.prop("checked");
+        Livewire.dispatch('syncFormCreateUser', { data: states });
     });
 </script>
 @endscript

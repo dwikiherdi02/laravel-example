@@ -60,6 +60,6 @@ title(function (ComponentService $service) {
     </script>
 @endscript
 
-@push('scripts')
+{{-- @push('scripts')
     <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}" defer></script>
-@endpush
+@endpush --}}
