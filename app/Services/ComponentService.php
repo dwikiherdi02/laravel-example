@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Dto\ResidentDto;
 use App\Dto\RoleDto;
 use App\Repositories\MenuGroupRepository;
 use App\Repositories\MenuRepository;
+use App\Repositories\ResidentRepository;
 use App\Repositories\RoleRepository;
 
 class ComponentService
@@ -14,6 +16,7 @@ class ComponentService
         protected MenuGroupRepository $menuGroupRepo,
         protected MenuRepository $menuRepo,
         protected RoleRepository $roleRepo,
+        protected ResidentRepository $residentRepo,
     ) {
         //
     }
@@ -40,6 +43,21 @@ class ComponentService
                 return new RoleDto(
                     id: $item->id,
                     name: $item->name
+                );
+            });
+    }
+
+    public function getResidentOptions()
+    {
+        return $this->residentRepo->listUnsetUserOptions()
+            ->map(function ($item) {
+                return new ResidentDto(
+                    id: $item->id,
+                    name: $item->name,
+                    housing_block: $item->housing_block,
+                    phone_number: $item->phone_number,
+                    address: $item->address,
+                    unique_code: $item->unique_code
                 );
             });
     }

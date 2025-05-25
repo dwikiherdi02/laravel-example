@@ -10,7 +10,7 @@ state([
     'isLoading' => true,
 
     'list' => (object) [
-        'perpage' => 10,
+        'perpage' => env('DEFAULT_PER_PAGE', 10),
         'npage' => (object) [
             'prev' => 0,
             'current' => 1,
@@ -31,11 +31,17 @@ state([
 
 on(['loadDataUsers', 'toPageUser', 'deleteUser', 'resetUserPassword']);
 
-$loadDataUsers = action(function (?int $page = null) {
+$loadDataUsers = action(function (?int $page = null, ?bool $clearFilter = null) {
     if ($page != null) {
         $this->list->npage->current = $page;
         $this->list->npage->prev = $page - 1 == 0 ? 0 : $page - 1;
         $this->list->npage->next = $page + 1;
+    }
+
+    if($clearFilter) {
+        $this->list->search->general = '';
+        $this->list->search->role = '';
+        $this->isFilter = false;
     }
 
     if ($page != 0 || $page <= $this->list->npage->max) {
@@ -171,7 +177,7 @@ $generatePage = function () {
                         placeholder="{{  __('label.search_placeholder') }}" />
                 </div>
                 <div class="col-12 mb-2">
-                    <livewire:components.widget.list-role :id="'search-role'" :class="'select2'" />
+                    <livewire:components.widget.list-role :id="'search-role'" :class="'select2'" :withModel="false" />
                 </div>
                 <div class="col-12">
                     <button id="btn-search" class="mb-2 mr-2 btn btn-dark w-100">
@@ -250,12 +256,12 @@ $generatePage = function () {
         // jquery handler
         $(function () {
             // $(".select2").select2("destroy");
-            $(".select2").select2({
+            /* $(".select2").select2({
                 theme: 'bootstrap4',
                 width: '100%',
                 // placeholder: "{{ __('Pilih Peran') }}",
                 // allowClear: true,
-            });            
+            }); */
         });
 
         $("#btn-filter-collapse").on("click", () => {
@@ -287,7 +293,7 @@ $generatePage = function () {
                 }
                 $wire.set('list.search.general', search);
                 $wire.set('list.search.role', searchRole);
-                $wire.dispatch('loadDataUsers');
+                $wire.dispatch('loadDataUsers', { page: 1});
             });
         });
 
@@ -382,19 +388,23 @@ $generatePage = function () {
                 }
             });
         });
-    
-        /* window.addEventListener("reloadDataUserJs", function (e) {
+        
+        // Javascript hanlder
+        window.addEventListener("hideModalUserJs", function (e) {
             $wire.set('isLoading', true).then(() => {
+                $("#modal-user").modal("hide");
                 $("#search").val("");
                 $("#search-role").val(null).trigger('change');
+                
+                $wire.dispatch('loadDataUsers', { page: 1, clearFilter: true });
 
-                $wire.set('list.search.general', '');
+                /* $wire.set('list.search.general', '');
                 $wire.set('list.search.role', '');
                 $wire.set('isFilter', false).then(() => {
                     $wire.dispatch('loadDataUsers', { page: 1 });
-                });
 
+                }); */
             });
-        }); */
+        });
     </script>
 @endscript

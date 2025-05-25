@@ -6,9 +6,11 @@ use App\Dto\ListDto\ListFilterDto;
 use App\Dto\ResidentDto;
 use App\Dto\RoleDto;
 use App\Dto\UserDto;
+use App\Enum\RoleEnum;
 use App\Repositories\UserRepository;
 use Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class UserService
 {
@@ -40,6 +42,35 @@ class UserService
     public function list(ListFilterDto $filter)
     {
         return $this->userRepo->list($filter);
+    }
+
+    public function create(UserDto $data)
+    {
+        if ($data->role_id == RoleEnum::Warga && $data->resident_id == null) {
+            throw ValidationException::withMessages([
+                'resident_id' => trans('user.error_resident_notnull'),
+            ]);
+        }
+
+        DB::beginTransaction();
+        try {
+            $data->is_initial_login = true;
+            if ($data->default_password == true) {
+                $data->password = Hash::make(env('DEFAULT_PASSWORD', '12345678'));
+            } else {
+                $data->password = Hash::make($data->password);
+            }
+            $this->userRepo->create($data->toArray());
+            DB::commit();
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            throw $e;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
+            throw new \Exception(trans('label.error_save'));
+        }
+
     }
 
     public function delete(string $id)

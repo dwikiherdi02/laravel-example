@@ -8,10 +8,20 @@ return [
     'label_username' => 'Nama Pengguna',
     'label_assigned_role' => 'Sebagai',
 
+    // form
+    'label_form_role' => 'Peran Pengguna',
+    'label_form_resident' => 'Daftar Warga',
+    'label_form_name' => 'Nama',
+    'label_form_username' => 'Nama Pengguna',
+    'label_form_default_password' => 'Kata Sandi Default',
+    'label_form_password' => 'Kata Sandi Default',
+    'label_form_password_confirmation' => 'Kata Sandi Default',
+
     // error message
     'error_user_notfound' => 'Data pengguna tidak ditemukan. silahkan coba lagi atau hubungi admin.',
     'error_user_is_protected' => 'Data pengguna tidak dapat dihapus karena diproteksi oleh sistem.',
     'error_reset_password' => 'Gagal atur ulang kata sandi, silahkan coba lagi atau hubungi admin.',
+    'error_resident_notnull' => 'Daftar warga tidak boleh kosong.',
 
     // success message
     'success_reset_password' => 'Sandi pengguna berhasil diatur ulang menjadi <b>:password</b>. Silahkan login menggunakan kata sandi tersebut.',

@@ -23,8 +23,10 @@ return [
     'alert_title_delete' => 'Hapus Data',
 
     // error
+    'error_save' => 'Gagal menyimpan data, silahkan coba lagi.',
     'error_delete' => 'Gagal menghapus data, silahkan coba lagi atau hubungi admin.',
 
     // widgets
     'widget_select_role_placeholder' => 'Pilih peran',
+    'widget_select_resident_placeholder' => 'Pilih Warga',
 ];

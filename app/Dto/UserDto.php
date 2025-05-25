@@ -15,6 +15,7 @@ class UserDto extends Data
         public string $username,
         public ?string $password = null,
         public bool $is_initial_login = true,
+        public ?bool $default_password = null,
         public ?RoleDto $role = null,
         public ?ResidentDto $resident = null,
     ) {

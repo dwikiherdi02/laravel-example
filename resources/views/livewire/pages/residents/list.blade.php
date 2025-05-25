@@ -10,7 +10,7 @@ state([
     // 'device' => 'desktop',
 
     'list' => (object) [
-        'perpage' => 10,
+        'perpage' => env('DEFAULT_PER_PAGE', 10),
         'npage' => (object) [
             'prev' => 0,
             'current' => 1,

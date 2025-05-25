@@ -65,6 +65,18 @@ class ResidentRepository
         ]);
     }
 
+    public function listUnsetUserOptions()
+    {
+        return $this->model
+            ->where(function ($query) {
+                $query->whereDoesntHave('user')
+                    ->orWhereHas('user', function ($q) {
+                        $q->whereNotNull('deleted_at');
+                    });
+            })
+            ->get();
+    }
+
     public function create(array $data): Resident
     {
         return $this->model->create($data);
