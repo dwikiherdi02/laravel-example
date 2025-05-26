@@ -48,16 +48,16 @@ $loadDataContributions = action(function (?int $page = null, ?bool $clearFilter 
 
 $deleteContribution = action(function (string $id) {
     try {
-        $service = app(UserService::class);
+        $service = app(ContributionService::class);
         $service->delete($id);
 
         $this->isLoading = true;
 
-        $this->dispatch('userDeletedJs', isSuccess: true);
+        $this->dispatch('contributionDeletedJs', isSuccess: true);
 
         $this->dispatch('loadDataContributions', page: 1);
     } catch (\Exception $e) {
-        $this->dispatch('userDeletedJs', isSuccess: false, message: $e->getMessage());
+        $this->dispatch('contributionDeletedJs', isSuccess: false, message: $e->getMessage());
     }
 });
 
@@ -169,9 +169,13 @@ $generatePage = function () {
                         <li class="list-group-item px-3">
                             <div class="d-flex">
                                 <div class="text-left w-100 align-self-center">
-                                    <p class="h6 text-dark my-0">
+                                    <p class="h6 font-weight-bolder text-muted my-0">
                                         {{ $item->name }}
                                     </p>
+                                    <div class="fsize-2 text-success">
+                                        <small class="opacity-5 pr-1">Rp</small>
+                                        {{ number_format($item->amount, 0, ',', '.') }}
+                                    </div>
                                 </div>
                                 <div class="text-right w-25 align-self-start">
                                     <div class="d-inline-block dropdown">
@@ -233,15 +237,13 @@ $generatePage = function () {
 
         $("#btn-search").on("click", () => {
             let search = $("#search").val();
-            let searchRole = $("#search-role").val();
             $wire.set('isLoading', true).then(() => {
-                if (search != "" || searchRole != "") {
+                if (search != "") {
                     $wire.set('isFilter', true);
                 } else {
                     $wire.set('isFilter', false);
                 }
                 $wire.set('list.search.general', search);
-                $wire.set('list.search.role', searchRole);
                 $wire.dispatch('loadDataContributions', { page: 1});
             });
         });
@@ -260,7 +262,7 @@ $generatePage = function () {
             $btn.dropdown("show");
         });
 
-        $(document).on("click", ".btn-detail", (e) => {
+        $(document).on("click", ".btn-edit", (e) => {
             let $btn = $(e.currentTarget);
             let id = $btn.data("id");
 
@@ -273,7 +275,7 @@ $generatePage = function () {
             window.dispatchEvent(
                 new CustomEvent(
                     'fetchModalContributionContentJs',
-                    { detail: { type: 'detail', id: id } }
+                    { detail: { type: 'edit', id: id } }
                 ));
         })
 
@@ -283,16 +285,16 @@ $generatePage = function () {
 
             showConfirmAlert({
                 title: "{{  __('label.alert_title_delete') }}",
-                text: "{{  __('user.alert_text_delete') }}",
+                text: "{{  __('contribution.alert_text_delete') }}",
                 confirmButtonText: "{{ __('label.button_delete_confirm') }}",
                 cancelButtonText: "{{ __('label.button_cancel') }}",
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
                     return new Promise((resolve) => {
                         $wire.dispatch('deleteContribution', { id: id });
-                        window.addEventListener('userDeletedJs', function handler(e) {
+                        window.addEventListener('contributionDeletedJs', function handler(e) {
                             resolve({ isSuccess: e.detail.isSuccess, message: e.detail.message ?? "" });
-                            window.removeEventListener('userDeletedJs', handler);
+                            window.removeEventListener('contributionDeletedJs', handler);
                         });
                     });
                 },

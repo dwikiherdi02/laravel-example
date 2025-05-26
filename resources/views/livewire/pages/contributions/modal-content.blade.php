@@ -23,8 +23,8 @@ $setState = action(function (?string $type = null, ?string $id = null) {
             <livewire:pages.contributions.modal-content.add lazy />
             @break
 
-        @case('detail')
-            <livewire:pages.contributions.modal-content.detail :id="$id" lazy />
+        @case('edit')
+            <livewire:pages.contributions.modal-content.edit :id="$id" lazy />
             @break
 
         @default
