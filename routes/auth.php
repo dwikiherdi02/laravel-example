@@ -27,40 +27,40 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Volt::route('email', 'pages.email.index')
             ->name('email');
-        
+
         Volt::route('residents', 'pages.residents.index')
             ->name('residents');
-        
+
         Volt::route('users', 'pages.users.index')
             ->name('users');
-        
+
         Volt::route('contributions', 'pages.contributions.index')
             ->name('contributions');
-        
+
         Volt::route('add-monthly-contribution', 'pages.add-monthly-contribution.index')
             ->name('add-monthly-contribution');
-        
-        Volt::route('add-expense', 'pages.add-expense.index')
-            ->name('add-expense');
-        
+
+        Volt::route('add-transaction', 'pages.add-transaction.index')
+            ->name('add-transaction');
+
         Volt::route('monthly-contribution-history', 'pages.monthly-contribution-history.index')
             ->name('monthly-contribution-history');
-        
+
         Volt::route('transaction-history', 'pages.transaction-history.index')
             ->name('transaction-history');
-        
+
         // Volt::route('contribution-report', 'pages.contribution-report.index')
         //     ->name('contribution-report');
-        
+
         // Volt::route('financial-report', 'pages.financial-report.index')
         //     ->name('financial-report');
-        
+
         Volt::route('profile', 'pages.profile.index')
             ->name('profile');
-        
+
         Volt::route('imap', 'pages.imap.index')
             ->name('imap');
-        
+
         Volt::route('text-template', 'pages.text-template.index')
             ->name('text-template');
 
