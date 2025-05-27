@@ -69,8 +69,7 @@ class User extends Authenticatable
 
         static::saving(function (User $user) {
             if ($user->isDirty('name') && $user->resident_id != null) {
-                $user->resident->name = $user->name;
-                $user->resident->save(); // Simpan perubahan nama pada user
+                $user->resident()->update(['name' => $user->name]); // Simpan perubahan nama pada user
             }
         });
     }

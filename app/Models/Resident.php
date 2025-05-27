@@ -42,19 +42,9 @@ class Resident extends Model
             $resident->save(); // Simpan perubahan unique_code sebelum soft delete
         });
 
-        // static::updating(function (Resident $resident) {
-        //     dd('updating resident', $resident->getDirty());
-            
-        //     if ($resident->isDirty('name')) {
-        //         $resident->user->name = $resident->name;
-        //         $resident->user->save(); // Simpan perubahan nama pada user
-        //     }
-        // });
-
         static::saving(function (Resident $resident) {
             if ($resident->isDirty('name')) {
-                $resident->user->name = $resident->name;
-                $resident->user->save(); // Simpan perubahan nama pada user
+                $resident->user()->update(['name' => $resident->name]); // Update user name directly
             }
         });
     }

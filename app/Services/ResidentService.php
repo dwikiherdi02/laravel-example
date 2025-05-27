@@ -87,7 +87,10 @@ class ResidentService
             $resident->name = $data->name;
             $resident->phone_number = $data->phone_number;
             $resident->address = $data->address;
-            $resident->save();
+            
+            if($resident->isDirty()) {
+                $resident->save();
+            }
 
             DB::commit();
         } catch (ValidationException $e) {
