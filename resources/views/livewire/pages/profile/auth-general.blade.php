@@ -60,7 +60,7 @@ $updateUser = function (UserService $service) {
 
 <div>
     <div class="card shadow-none mb-3">
-        <div class="card-header">{{ __('profile.label_card_header_general') }}</div>
+        <div class="card-header px-0">{{ __('profile.label_card_header_general') }}</div>
         <div class="card-body px-0">
             <div class="alert @if($isError) alert-danger @else alert-success @endif alert-dismissible fade @if($alertMessage != null) d-block show @else d-none @endif" role="alert">
                 {{ $alertMessage }}

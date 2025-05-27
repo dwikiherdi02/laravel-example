@@ -47,11 +47,8 @@ title(function (ComponentService $service) {
                         @endif
                         <div class="tab-pane show @if(!$auth->isWarga()) active @endif" id="tab-authentication" role="tabpanel">
                             <livewire:pages.profile.auth-general :auth="$auth" />
-
-                            <div class="card shadow-none mb-3">
-                                <div class="card-header">{{ __('profile.label_card_header_change_password') }}</div>
-                                <div class="card-body"></div>
-                            </div>
+                            
+                            <livewire:pages.profile.auth-change-password />
                         </div>
                     </div>
                 </div>

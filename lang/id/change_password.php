@@ -19,4 +19,7 @@ return [
     'confirm_password_label' => 'Konfirmasi Kata Sandi',
     'update_password_button' => 'Perbarui Kata Sandi',
 
+
+    'success_update' => 'Kata sandi berhasil diperbarui.',
+
 ];
