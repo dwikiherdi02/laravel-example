@@ -24,9 +24,15 @@ class UserRepository
         return null;
     }
 
-    function findByUsername(string $username): ?User
+    function findByUsername(string $username, string $exceptId = null): ?User
     {
-        $user = $this->model->where('username', $username)->first();
+        $query = $this->model->where('username', $username);
+        
+        if ($exceptId != null) {
+            $query->where('id', '!=', $exceptId);
+        }
+
+        $user = $query->first();
         if ($user) {
             return $user;
         }

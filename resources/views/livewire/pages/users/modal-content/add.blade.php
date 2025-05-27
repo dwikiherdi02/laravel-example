@@ -4,6 +4,7 @@ use App\Dto\UserDto;
 use App\Enum\RoleEnum;
 use App\Services\UserService;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 
 use function Livewire\Volt\{placeholder, state, rules, on, action};
@@ -42,7 +43,7 @@ rules([
         })
     ],
     'default_password' => ['boolean', 'nullable'],
-    'password' => ['required_if:default_password,false', 'string', 'confirmed'],
+    'password' => ['required_if:default_password,false', 'string', Password::defaults(), 'confirmed'],
 ])->attributes([
             'role_id' => trans('user.label_form_role'),
             'resident_id' => trans('user.label_form_resident'),

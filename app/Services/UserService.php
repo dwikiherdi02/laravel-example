@@ -73,6 +73,39 @@ class UserService
 
     }
 
+    public function update(UserDto $data)
+    {
+        $user = $user = $this->userRepo->findById($data->id);
+
+        if ($user == null) {
+            throw new \Exception(trans('user.error_user_notfound'));
+        }
+
+        if ($this->userRepo->findByUsername($data->username, $user->id) != null) {
+            throw new \Exception(trans('user.error_username_exists'));
+        }
+
+
+        DB::beginTransaction();
+        try {
+            $user->name = $data->name;
+            $user->username = $data->username;
+            
+            if($user->isDirty()) {
+                $user->save();
+            }
+
+            DB::commit();
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            throw $e;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
+            throw new \Exception(trans('label.error_save'));
+        }
+    }
+
     public function delete(string $id)
     {
         $user = $this->userRepo->findById($id);

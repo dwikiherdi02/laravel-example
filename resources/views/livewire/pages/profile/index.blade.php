@@ -33,9 +33,9 @@ title(function (ComponentService $service) {
                 <div class="card-header card-header-tab-animation">
                     <ul class="nav @if($auth->isWarga()) nav-justified @endif">
                         @if ($auth->role_id == RoleEnum::Warga)
-                            <li class="nav-item"><a data-toggle="tab" href="#tab-general" class="nav-link show active text-uppercase">{{ __('Umum') }}</a></li>
+                            <li class="nav-item"><a data-toggle="tab" href="#tab-general" class="nav-link show active text-uppercase">{{ __('profile.label_card_header_general') }}</a></li>
                         @endif
-                        <li class="nav-item"><a data-toggle="tab" href="#tab-authentication" class="nav-link show @if(!$auth->isWarga()) active @endif text-uppercase">{{ __('Otentikasi') }}</a></li>
+                        <li class="nav-item"><a data-toggle="tab" href="#tab-authentication" class="nav-link show @if(!$auth->isWarga()) active @endif text-uppercase">{{ __('profile.label_card_header_auth') }}</a></li>
                     </ul>
                 </div>
                 <div class="card-body">
@@ -46,9 +46,12 @@ title(function (ComponentService $service) {
                         </div>
                         @endif
                         <div class="tab-pane show @if(!$auth->isWarga()) active @endif" id="tab-authentication" role="tabpanel">
-                            <div class="row">
-                                <div class="col-12">Otentikasi</div>
-                            </div> 
+                            <livewire:pages.profile.auth-general :auth="$auth" />
+
+                            <div class="card shadow-none mb-3">
+                                <div class="card-header">{{ __('profile.label_card_header_change_password') }}</div>
+                                <div class="card-body"></div>
+                            </div>
                         </div>
                     </div>
                 </div>

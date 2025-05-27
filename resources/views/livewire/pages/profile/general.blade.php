@@ -132,7 +132,7 @@ $updateResident = function (ResidentService $service) {
             </div>  
         </div>
         
-        <div class="d-flext">
+        <div class="d-flex">
             <button wire:loading.remove type="submit" class="mb-3 btn btn-lg btn-primary btn-block text-uppercase text-decoration-none w-100">
                 {{ __('label.save') }}
             </button>

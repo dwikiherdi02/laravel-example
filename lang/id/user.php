@@ -22,9 +22,12 @@ return [
     'error_user_is_protected' => 'Data pengguna tidak dapat dihapus karena diproteksi oleh sistem.',
     'error_reset_password' => 'Gagal atur ulang kata sandi, silahkan coba lagi atau hubungi admin.',
     'error_resident_notnull' => 'Daftar warga tidak boleh kosong.',
+    'error_username_exists' => 'Nama pengguna sudah digunakan oleh pengguna lain. Silahkan gunakan nama pengguna lain.',
 
     // success message
     'success_reset_password' => 'Sandi pengguna berhasil diatur ulang menjadi <b>:password</b>. Silahkan login menggunakan kata sandi tersebut.',
+    // success message
+    'success_update' => 'Data pengguna berhasil diperbarui.',
 
     // button
     'button_detail_user' => 'Detail Pengguna',
