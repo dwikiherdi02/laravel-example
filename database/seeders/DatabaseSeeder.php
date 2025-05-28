@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             MenuSeeder::class,
             MenuRoleSeeder::class,
             MenuShortcutSeeder::class,
+            ImapSeeder::class,
         ]);
     }
 }
