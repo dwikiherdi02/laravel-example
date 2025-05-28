@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('imap', function (Blueprint $table) {
+            $table->uuid('id')->index();
             $table->string('host')->nullable();
             $table->integer('port')->default(0);
             $table->string('protocol')->nullable();
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->string('username')->nullable();
             $table->string('password')->nullable();
             $table->string('authentication')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('imaps');
+        Schema::dropIfExists('imap');
     }
 };

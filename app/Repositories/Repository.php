@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Repository
 {
-    protected $model;
+    protected Model $model;
 
     public function __construct(Model $model)
     {

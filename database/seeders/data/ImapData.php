@@ -2,6 +2,9 @@
 
 namespace Database\Seeders\Data;
 
+use Carbon\Carbon;
+use Str;
+
 class ImapData
 {
     /**
@@ -12,6 +15,7 @@ class ImapData
     public static function get(): array
     {
         return [
+            'id' => Str::orderedUuid()->toString(),
             'host' => 'imap.gmail.com',
             'port' => 993,
             'protocol' => 'imap',
@@ -20,6 +24,8 @@ class ImapData
             'username' => null,
             'password' => null,
             'authentication' => null,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ];
     }
 }
