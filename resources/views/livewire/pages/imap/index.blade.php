@@ -99,6 +99,15 @@ $saveImap = function (ImapService $service) {
     }
 };
 
+$checkImapConnection = function (ImapService $service) {
+    try {
+        $service->checkImapConnection();
+        $this->dispatch('showInfoAlertImapJs', message: __('Berhasil terhubung ke server IMAP.'));
+    } catch (\Exception $e) {
+        $this->dispatch('showInfoAlertImapJs', message: $e->getMessage());
+    }
+};
+
 $setData = function (ImapDto $imap) {
     $this->host = $imap->host ?? '';
     $this->port = $imap->port ?? '';
@@ -120,7 +129,7 @@ $setData = function (ImapDto $imap) {
                 <div class="card-header">
                     {{ __('Konfigurasi IMAP') }}
                     <div class="btn-actions-pane-right">
-                        <button class="btn btn-light btn-sm w-100">{{ __('Test Koneksi IMAP') }}</button>
+                        <button wire:click="checkImapConnection" wire:loading.attr="disabled" class="btn btn-light btn-sm w-100">{{ __('Test Koneksi IMAP') }}</button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -230,11 +239,11 @@ $setData = function (ImapDto $imap) {
                         </div>
 
                         <div class="d-flex">
-                            <button wire:loading.remove type="submit" class="mb-3 btn btn-lg btn-primary btn-block text-uppercase text-decoration-none w-100">
+                            <button wire:target="saveImap" wire:loading.remove type="submit" class="mb-3 btn btn-lg btn-primary btn-block text-uppercase text-decoration-none w-100">
                                 {{ __('label.save') }}
                             </button>
 
-                            <button wire:loading class="mb-3 btn btn-lg btn-primary btn-block text-uppercase text-decoration-none w-100" disabled>
+                            <button wire:target="saveImap" wire:loading class="mb-3 btn btn-lg btn-primary btn-block text-uppercase text-decoration-none w-100" disabled>
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             </button>
                         </div> 
@@ -247,9 +256,19 @@ $setData = function (ImapDto $imap) {
 
 @script
 <script>
-    $(".btn-change-password").on("click", function() {
-        $wire.set('password', '');
-        $wire.set('isPasswordExist', false);
+    $(function () {
+        $(".btn-change-password").on("click", function() {
+            $wire.set('password', '');
+            $wire.set('isPasswordExist', false);
+        });
+        
+        Livewire.on('showInfoAlertImapJs', ({ message }) => {
+            showInfoAlert({
+                // title: "{{ __('Berhasil') }}",
+                html: message,
+                confirmButtonText: "{{ __('label.button_ok') }}",
+            });
+        });
     });
 </script>
 @endscript
