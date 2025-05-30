@@ -2,15 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-class Imap extends Model
+class TransactionType extends Model
 {
-    use HasUuids;
-
-    public $table = 'imap';
-
     public $incrementing = false;
 
     protected $keyType = 'string';
@@ -22,14 +17,9 @@ class Imap extends Model
      */
     protected $fillable = [
         'id',
-        'host',
-        'port',
-        'protocol',
-        'encryption',
-        'validate_cert',
-        'username',
-        'password',
-        'authentication',
+        'name',
+        'name_lang_key',
+        'code',
     ];
 
     protected $hidden = [

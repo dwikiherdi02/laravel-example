@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             MenuRoleSeeder::class,
             MenuShortcutSeeder::class,
             ImapSeeder::class,
+            TransactionTypeSeeder::class,
         ]);
     }
 }
