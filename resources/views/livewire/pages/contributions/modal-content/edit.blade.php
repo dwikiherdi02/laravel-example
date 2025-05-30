@@ -129,3 +129,11 @@ $updateContribution = function (ContributionService $service) {
         @endif
     </div>
 </div>
+
+@script
+<script>
+    $(function () {
+        generateScrollbar();
+    });
+</script>
+@endscript

@@ -3,17 +3,17 @@
 return [
     // label
     'label_config_imap' => 'Konfigurasi IMAP',
-    'label_test_imap_connection' => 'Konfigurasi IMAP',
+    'label_test_imap_connection' => 'Test Konfigurasi IMAP',
 
     // label field
     'label_host' => 'Host',
     'label_port' => 'Port',
-    'label_protocol' => 'Protocol',
-    'label_encryption' => 'Encryption',
-    'label_validate_cert' => 'Validate Cert',
-    'label_username' => 'Username',
-    'label_password' => 'Password',
-    'label_authentication' => 'Authentication',
+    'label_protocol' => 'Protokol',
+    'label_encryption' => 'Enkripsi',
+    'label_validate_cert' => 'Validasi Sertifikat',
+    'label_username' => 'Nama Pengguna',
+    'label_password' => 'Kata Sandi',
+    'label_authentication' => 'Otentikasi',
 
     // success message
     'success_save' => 'Data IMAP berhasil disimpan.',
