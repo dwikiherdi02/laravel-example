@@ -88,7 +88,7 @@ $saveImap = function (ImapService $service) {
             $this->isPasswordExist = false;
         }
 
-        $this->alertMessage = __('Data Imap berhasil disimpan.');
+        $this->alertMessage = __('imap.success_save');
     } catch (ValidationException $e) {
         $this->isError = true;
         throw $e;
@@ -102,7 +102,7 @@ $saveImap = function (ImapService $service) {
 $checkImapConnection = function (ImapService $service) {
     try {
         $service->checkImapConnection();
-        $this->dispatch('showInfoAlertImapJs', message: __('Berhasil terhubung ke server IMAP.'));
+        $this->dispatch('showInfoAlertImapJs', message: __('imap.success_check_connection'));
     } catch (\Exception $e) {
         $this->dispatch('showInfoAlertImapJs', message: $e->getMessage());
     }
@@ -127,9 +127,9 @@ $setData = function (ImapDto $imap) {
         <div class="col-12">
             <div class="card mb-3">
                 <div class="card-header">
-                    {{ __('Konfigurasi IMAP') }}
+                    {{ __('imap.label_config_imap') }}
                     <div class="btn-actions-pane-right">
-                        <button wire:click="checkImapConnection" wire:loading.attr="disabled" class="btn btn-light btn-sm w-100">{{ __('Test Koneksi IMAP') }}</button>
+                        <button wire:click="checkImapConnection" wire:loading.attr="disabled" class="btn btn-light btn-sm w-100">{{ __('imap.label_test_imap_connection') }}</button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -142,7 +142,7 @@ $setData = function (ImapDto $imap) {
 
                     <form id="imap-form" wire:submit="saveImap">
                         <div class="form-group row mb-4">
-                            <x-input-label for="host" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('Host')" :isRequired="true" />
+                            <x-input-label for="host" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('imap.label_host')" :isRequired="true" />
                             <div class="col-sm-8">
                                 <x-text-input wire:model="host" id="host" type="text" name="host" aria-describedby="hostHelp" />
                                 <x-input-error class="text-left" id="hostHelp" :messages="$errors->get('host')" />
@@ -150,7 +150,7 @@ $setData = function (ImapDto $imap) {
                         </div>
 
                         <div class="form-group row mb-4">
-                            <x-input-label for="port" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('Port')" :isRequired="true" />
+                            <x-input-label for="port" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('imap.label_port')" :isRequired="true" />
                             <div class="col-sm-8">
                                 <x-text-input wire:model="port" id="port" class="form-number" type="number" name="port" aria-describedby="portHelp" />
                                 <x-input-error class="text-left" id="portHelp" :messages="$errors->get('port')" />
@@ -158,7 +158,7 @@ $setData = function (ImapDto $imap) {
                         </div>
 
                         <div class="form-group row mb-4">
-                            <x-input-label for="protocol" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('Protocol')" />
+                            <x-input-label for="protocol" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('imap.label_protocol')" />
                             <div class="col-sm-8">
                                 <x-text-input
                                     wire:model="protocol"
@@ -172,7 +172,7 @@ $setData = function (ImapDto $imap) {
                         </div>
 
                         <div class="form-group row mb-4">
-                            <x-input-label for="encryption" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('Encryption')" :isRequired="true" />
+                            <x-input-label for="encryption" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('imap.label_encryption')" :isRequired="true" />
                             <div class="col-sm-8">
                                 <x-text-input wire:model="encryption" id="encryption" type="text" name="encryption" aria-describedby="encryptionHelp" />
                                 <x-input-error class="text-left" id="encryptionHelp" :messages="$errors->get('encryption')" />
@@ -180,7 +180,7 @@ $setData = function (ImapDto $imap) {
                         </div>
 
                         <div class="form-group row mb-4">
-                            <x-input-label for="validate-cert" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('Validate Cert')" />
+                            <x-input-label for="validate-cert" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('imap.label_validate_cert')" />
                             <div class="col-sm-8">
                                 <div class="custom-control custom-checkbox">
                                     <x-text-input
@@ -196,7 +196,7 @@ $setData = function (ImapDto $imap) {
                         </div>
 
                         <div class="form-group row mb-4">
-                            <x-input-label for="username" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('Username')" :isRequired="true" />
+                            <x-input-label for="username" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('imap.label_username')" :isRequired="true" />
                             <div class="col-sm-8">
                                 <x-text-input wire:model="username" id="username" type="text" name="username" aria-describedby="usernameHelp" />
                                 <x-input-error class="text-left" id="usernameHelp" :messages="$errors->get('username')" />
@@ -205,7 +205,7 @@ $setData = function (ImapDto $imap) {
 
                         @if(!$isPasswordExist)
                         <div class="form-group row mb-4">
-                            <x-input-label for="password" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('Password')" :isRequired="true" />
+                            <x-input-label for="password" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('imap.label_password')" :isRequired="true" />
                             <div class="col-sm-8">
                                 <x-text-input wire:model="password" id="password" type="password" name="password" aria-describedby="passwordHelp" />
                                 <x-input-error class="text-left" id="passwordHelp" :messages="$errors->get('password')" />
@@ -213,7 +213,7 @@ $setData = function (ImapDto $imap) {
                         </div>
                         @else
                         <div class="form-group row mb-4">
-                            <x-input-label for="password" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('Password')" :isRequired="true" />
+                            <x-input-label for="password" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('imap.label_password')" :isRequired="true" />
                             <div class="col-sm-8 d-flex">
                                 <x-text-input
                                     :isNotFormControl="true"
@@ -224,14 +224,14 @@ $setData = function (ImapDto $imap) {
                                     readonly />
 
                                 <button class="btn btn-link btn-change-password text-decoration-none w-25" type="button">
-                                    {{ __('Ubah') }}
+                                    {{ __('label.edit') }}
                                 </button>
                             </div>
                         </div>
                         @endif
 
                         <div class="form-group row mb-4">
-                            <x-input-label for="authentication" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('Authentication')" :isRequired="true" />
+                            <x-input-label for="authentication" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('imap.label_authentication')" :isRequired="true" />
                             <div class="col-sm-8">
                                 <x-text-input wire:model="authentication" id="authentication" type="text" name="authentication" aria-describedby="authenticationHelp" />
                                 <x-input-error class="text-left" id="authenticationHelp" :messages="$errors->get('authentication')" />
