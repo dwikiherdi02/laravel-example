@@ -61,9 +61,9 @@
         {{-- @endpersist --}}
 
         <style>
-            #loading-page { position: fixed; z-index: 9999; inset: 0; background: #fff; display: flex; align-items: center; justify-content: center; transition: opacity 0.7s cubic-bezier(.4,0,.2,1); opacity: 1; } #loading-page.fade-out { opacity: 0; pointer-events: none; } #loading-page .loading-logo { width: 120px; max-width: 60vw; height: auto; animation: pulse 1.2s infinite alternate; } @keyframes pulse { 0% { transform: scale(1); filter: brightness(1); } 100% { transform: scale(1.08); filter: brightness(1.15);} } 
+            #loading-page { position: fixed; z-index: 9999; inset: 0; background: #fff; display: flex; align-items: center; justify-content: center; transition: opacity 0.7s cubic-bezier(.4,0,.2,1); opacity: 1; } #loading-page.fade-out { opacity: 0; pointer-events: none; } #loading-page .loading-logo { width: 120px; max-width: 60vw; height: auto; animation: pulse 1.2s infinite alternate; } @keyframes pulse { 0% { transform: scale(1); filter: brightness(1); } 100% { transform: scale(1.08); filter: brightness(1.15);} }
         </style>
-        
+
         @stack('styles')
 
     </head>
@@ -108,7 +108,7 @@
         <!--Textarea Autosize -->
         <script src="{{ asset('assets/plugins/textarea-autosize/textarea-autosize.min.js') }}" defer></script>
         {{-- <script src="{{ asset('assets/plugins/textarea-autosize/scripts-init/textarea-autosize.js') }}" defer></script> --}}
-        
+
         <!-- Sweetalert2 -->
         <script src="{{ asset('assets/plugins/sweetalert2/sweetalert2.all.min.js') }}" defer></script>
 
@@ -119,7 +119,7 @@
             document.addEventListener("DOMContentLoaded", function() { const loadingPage = document.getElementById('loading-page'); const appContainer = document.querySelector('.app-container'); if (loadingPage && appContainer) { appContainer.style.display = 'none'; window.addEventListener('load', function() { setTimeout(() => { appContainer.style.display = 'block'; loadingPage.classList.add('fade-out'); setTimeout(() => { loadingPage.remove(); }, 800); }, 3000); }); } });
         </script>
 
-        {{-- <script src="{{ asset('assets/plugins/restables/restables.min.js') }}" defer></script> --}}
+    {{-- <script src="{{ asset('assets/plugins/restables/restables.min.js') }}" defer></script> --}}
         {{-- @endpersist --}}
         @stack('scripts')
     </body>

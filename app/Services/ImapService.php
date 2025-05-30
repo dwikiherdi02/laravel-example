@@ -21,7 +21,7 @@ class ImapService
     public function get(): ?ImapDto
     {
         $item = $this->imapRepo->get();
-        if($item === null) {
+        if ($item === null) {
             return null;
         }
         return ImapDto::from($item);
@@ -33,7 +33,7 @@ class ImapService
 
         DB::beginTransaction();
         try {
-            
+
             if ($data->username != null) {
                 $data->username = Crypt::encryptString($data->username);
             }
@@ -41,19 +41,19 @@ class ImapService
             if ($data->password != null) {
                 $data->password = Crypt::encryptString($data->password);
             }
-            
+
             if ($item) {
-                $item->host = $data->host; 
-                $item->port = $data->port; 
-                $item->protocol = $data->protocol; 
-                $item->encryption = $data->encryption; 
-                $item->validate_cert = $data->validate_cert; 
+                $item->host = $data->host;
+                $item->port = $data->port;
+                $item->protocol = $data->protocol;
+                $item->encryption = $data->encryption;
+                $item->validate_cert = $data->validate_cert;
                 $item->username = $data->username;
-                $item->password = $data->password; 
+                $item->password = $data->password;
                 $item->authentication = $data->authentication;
 
                 // dd($item);
-                
+
                 $item->save();
             } else {
                 $item = $this->imapRepo->create($data->toArray());
@@ -71,7 +71,7 @@ class ImapService
         }
     }
 
-    public function checkImapConnection() 
+    public function checkImapConnection()
     {
         $imap = $this->imapRepo->get();
         if ($imap === null) {
@@ -96,8 +96,8 @@ class ImapService
             // Coba koneksi
             $client->connect();
 
-            $folder = $client->getFolder('INBOX');
-            
+            /*  $folder = $client->getFolder('INBOX');
+
             // $messages = $folder->messages()->all()->limit(1)->get();
 
             // Ambil email yang belum dibaca dan datang hari ini
@@ -109,9 +109,9 @@ class ImapService
                             ->subject('Contoh Uang Masuk')
                             // ->from('dwikiherdi520@gmail.com')
                             ->get();
-            
+
             $data = [];
-            
+
             foreach ($messages as $message) {
                 $data[] = [
                     'subject' => $message->getSubject()[0],
@@ -123,12 +123,10 @@ class ImapService
 
                 // Tandai sebagai sudah dibaca
                 $message->setFlag('SEEN');
-            }
-            
+             } */
+
             // Jika berhasil, disconnect & return true
             $client->disconnect();
-            
-            dd($data);
 
             return true;
 

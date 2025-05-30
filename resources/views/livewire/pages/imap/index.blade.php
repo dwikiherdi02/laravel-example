@@ -54,7 +54,7 @@ mount(function (ImapService $service) {
     $imap = $service->get();
 
     if ($imap) {
-        
+
         $this->setData($imap);
 
         if ($imap->password) {
@@ -160,12 +160,12 @@ $setData = function (ImapDto $imap) {
                         <div class="form-group row mb-4">
                             <x-input-label for="protocol" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('Protocol')" />
                             <div class="col-sm-8">
-                                <x-text-input 
-                                    wire:model="protocol" 
-                                    :isNotFormControl="true" 
-                                    class="form-control-plaintext" 
-                                    id="protocol" 
-                                    type="text" 
+                                <x-text-input
+                                    wire:model="protocol"
+                                    :isNotFormControl="true"
+                                    class="form-control-plaintext"
+                                    id="protocol"
+                                    type="text"
                                     name="protocol"
                                     readonly />
                             </div>
@@ -183,12 +183,12 @@ $setData = function (ImapDto $imap) {
                             <x-input-label for="validate-cert" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('Validate Cert')" />
                             <div class="col-sm-8">
                                 <div class="custom-control custom-checkbox">
-                                    <x-text-input 
-                                        wire:model="validate_cert" 
-                                        :isNotFormControl="true" 
-                                        class="custom-control-input" 
-                                        id="validate-cert-check" 
-                                        type="checkbox" 
+                                    <x-text-input
+                                        wire:model="validate_cert"
+                                        :isNotFormControl="true"
+                                        class="custom-control-input"
+                                        id="validate-cert-check"
+                                        type="checkbox"
                                         name="validate_cert" />
                                     <label class="custom-control-label" for="validate-cert-check"></label>
                                 </div>
@@ -215,10 +215,10 @@ $setData = function (ImapDto $imap) {
                         <div class="form-group row mb-4">
                             <x-input-label for="password" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('Password')" :isRequired="true" />
                             <div class="col-sm-8 d-flex">
-                                <x-text-input 
-                                    :isNotFormControl="true" 
-                                    class="form-control-plaintext" 
-                                    id="password" 
+                                <x-text-input
+                                    :isNotFormControl="true"
+                                    class="form-control-plaintext"
+                                    id="password"
                                     type="password"
                                     value="{{ __('********************') }}"
                                     readonly />
@@ -246,7 +246,7 @@ $setData = function (ImapDto $imap) {
                             <button wire:target="saveImap" wire:loading class="mb-3 btn btn-lg btn-primary btn-block text-uppercase text-decoration-none w-100" disabled>
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             </button>
-                        </div> 
+                        </div>
                     </form>
                 </div>
             </div>
@@ -256,18 +256,16 @@ $setData = function (ImapDto $imap) {
 
 @script
 <script>
-    $(function () {
-        $(".btn-change-password").on("click", function() {
-            $wire.set('password', '');
-            $wire.set('isPasswordExist', false);
-        });
-        
-        Livewire.on('showInfoAlertImapJs', ({ message }) => {
-            showInfoAlert({
-                // title: "{{ __('Berhasil') }}",
-                html: message,
-                confirmButtonText: "{{ __('label.button_ok') }}",
-            });
+    $(document).on("click", ".btn-change-password", function() {
+        $wire.set('password', '');
+        $wire.set('isPasswordExist', false);
+    });
+
+    Livewire.on('showInfoAlertImapJs', ({ message }) => {
+        showInfoAlert({
+            // title: "{{ __('Berhasil') }}",
+            html: message,
+            confirmButtonText: "{{ __('label.button_ok') }}",
         });
     });
 </script>
