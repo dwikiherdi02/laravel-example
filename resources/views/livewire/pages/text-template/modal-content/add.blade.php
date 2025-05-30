@@ -9,18 +9,30 @@ use function Livewire\Volt\{placeholder, state, rules};
 placeholder('components.loading');
 
 state([
-    
+    // form
+    'name' => '',
+    'transaction_type' => '',
+    'email' => '',
+    'email_subject' => '',
+    'template' => '',
+
     // alert
     'alertMessage' => ''
 ]);
 
-/* rules([
-    'name' => ['required', 'string', 'max:100'],
-    'amount' => ['required', 'numeric', 'min:0'],
+rules([
+    'name' => ['required', 'string'],
+    'transaction_type' => ['required', 'string'],
+    'email' => ['required', 'email', 'string'],
+    'email_subject' => ['required', 'string'],
+    'template' => ['required', 'string'],
 ])->attributes([
-    'name' => trans('contribution.label_name'),
-    'amount' => trans('contribution.label_amount'),
-]); */
+    // 'name' => '',
+    // 'transaction_type' => '',
+    // 'email' => '',
+    // 'email_subject' => '',
+    // 'template' => '',
+]);
 
 $createTextTemplate = function (ContributionService $service) {
     try {
@@ -70,6 +82,12 @@ $createTextTemplate = function (ContributionService $service) {
                 </div>
 
                 <div class="form-group col-12 col-md-12 mb-3">
+                    <x-input-label for="transaction_type" :value="__('Tipe Transaksi')" :isRequired="true" />
+                    <livewire:components.widget.list-transaction-type wire:model="transaction_type" :id="'transaction-type'" :class="'select2'" :name="'transaction_type'" :ariaDescribedby="'transactionTypeHelp'">
+                    <x-input-error id="transactionTypeHelp" :messages="$errors->get('transaction_type')" />
+                </div>
+
+                <div class="form-group col-12 col-md-12 mb-3">
                     <x-input-label for="email" :value="__('Email')" :isRequired="true" />
                     <x-text-input wire:model="email" id="email" type="email" name="email"
                         aria-describedby="emailHelp" />
@@ -86,7 +104,7 @@ $createTextTemplate = function (ContributionService $service) {
                 <div class="col-12 col-md-12 mb-3">
                     <button wire:click="generateTemplate" wire:loading.attr="disabled" class="btn btn-light">{{ __('Generate Template') }}</button>
                 </div>
-                
+
                 <div class="form-group col-12 mb-3">
                     <x-input-label for="template" :value="__('Template')" :isRequired="true" />
                     <x-text-area wire:model="template" rows="1" id="template" class="autosize-input" style="min-height: 200px !important; max-height: 500px;" />

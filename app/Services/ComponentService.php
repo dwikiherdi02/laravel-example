@@ -4,10 +4,12 @@ namespace App\Services;
 
 use App\Dto\ResidentDto;
 use App\Dto\RoleDto;
+use App\Dto\TransactionTypeDto;
 use App\Repositories\MenuGroupRepository;
 use App\Repositories\MenuRepository;
 use App\Repositories\ResidentRepository;
 use App\Repositories\RoleRepository;
+use App\Repositories\TransactionTypeRepository;
 
 class ComponentService
 {
@@ -17,6 +19,7 @@ class ComponentService
         protected MenuRepository $menuRepo,
         protected RoleRepository $roleRepo,
         protected ResidentRepository $residentRepo,
+        protected TransactionTypeRepository $transactionTypeRepo
     ) {
         //
     }
@@ -58,6 +61,19 @@ class ComponentService
                     phone_number: $item->phone_number,
                     address: $item->address,
                     unique_code: $item->unique_code
+                );
+            });
+    }
+
+    public function getTransactionTypeOptions()
+    {
+        return $this->transactionTypeRepo->listOptions()
+            ->map(function ($item) {
+                return new TransactionTypeDto(
+                    id: $item->id,
+                    name: $item->name,
+                    name_lang_key: $item->name_lang_key,
+                    code: $item->code
                 );
             });
     }
