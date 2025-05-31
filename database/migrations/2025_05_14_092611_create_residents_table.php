@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('residents', function (Blueprint $table) {
-            $table->uuid('id')->index();
+            $table->uuid('id')->primary();
             $table->string('name', 100);
             // $table->string('housing_block', 10)->unique();
             $table->string('housing_block', 10);

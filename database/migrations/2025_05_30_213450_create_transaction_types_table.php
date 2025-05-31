@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('transaction_types', function (Blueprint $table) {
-            $table->uuid('id')->index();
+            $table->uuid('id')->primary();
             $table->string('name', 50);
             $table->string('name_lang_key', 100);
             $table->string('code', 2)->unique();
