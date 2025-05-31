@@ -28,7 +28,7 @@ state([
     'isFilter' => false,
 ]);
 
-on(['loadDataTextTemplates', 'deleteTextTemplate']);
+on(['loadDataTextTemplates', 'deleteTextTemplate', 'generateTestTextTemplate']);
 
 $loadDataTextTemplates = action(function (?int $page = null, ?bool $clearFilter = null) {
     if ($page != null) {
@@ -59,6 +59,17 @@ $deleteTextTemplate = action(function (string $id) {
         $this->dispatch('loadDataTextTemplates', page: 1);
     } catch (\Exception $e) {
         $this->dispatch('textTemplateDeletedJs', isSuccess: false, message: $e->getMessage());
+    }
+});
+
+$generateTestTextTemplate = action(function (string $id) {
+    try {
+        $service = app(TextTemplateService::class);
+        $message = $service->generateTestData($id);
+
+        $this->dispatch('textTemplateGeneratedJs', message: $message);
+    } catch (\Exception $e) {
+        $this->dispatch('textTemplateGeneratedJs', message: $e->getMessage());
     }
 });
 
@@ -194,6 +205,10 @@ $generatePage = function () {
                                                 <i class="dropdown-icon lnr-pencil"></i><span>{{ __('label.edit') }}</span>
                                             </button>
                                             <div tabindex="-1" class="dropdown-divider"></div>
+                                            <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-test-template" data-id="{{ $item->id }}">
+                                                <i class="dropdown-icon lnr-bullhorn"></i><span>{{ __('text-template.label_generate_data_test') }}</span>
+                                            </button>
+                                            <div tabindex="-1" class="dropdown-divider"></div>
                                             <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-delete" data-id="{{ $item->id }}">
                                                 <i class="dropdown-icon lnr-trash"></i><span>{{ __('label.delete') }}</span>
                                             </button>
@@ -311,6 +326,36 @@ $generatePage = function () {
                 }
             });
 
+        });
+
+        $(document).on("click", ".btn-test-template", (e) => {
+            let $btn = $(e.currentTarget);
+            let id = $btn.data("id");
+
+            showConfirmAlert({
+                // title: "{{  __('label.alert_title_delete') }}",
+                text: "{{ __('text-template.alert_text_generate_test') }}",
+                confirmButtonText: "{{ __('label.button_accept_confirm') }}",
+                cancelButtonText: "{{ __('label.button_cancel') }}",
+                showLoaderOnConfirm: true,
+                preConfirm: () => {
+                    return new Promise((resolve) => {
+                        $wire.dispatch('generateTestTextTemplate', { id: id });
+                        window.addEventListener('textTemplateGeneratedJs', function handler(e) {
+                            resolve({ message: e.detail.message ?? "" });
+                            window.removeEventListener('textTemplateGeneratedJs', handler);
+                        });
+                    });
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed && result.value.message != "") {
+                    showInfoAlert({
+                        text: result.value.message,
+                        confirmButtonText: "{{ __('label.button_ok') }}",
+                    });
+                }
+            });
         });
 
         // Javascript hanlder

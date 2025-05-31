@@ -18,6 +18,7 @@ return [
     'button_ok' => 'Oke',
     'button_cancel' => 'Batal',
     'button_delete_confirm' => 'Ya, Hapus!',
+    'button_accept_confirm' => 'Ya, Setuju!',
 
     // alert
     'alert_title_delete' => 'Hapus Data',

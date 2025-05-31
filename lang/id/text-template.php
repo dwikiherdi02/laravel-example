@@ -3,7 +3,8 @@
 return [
     // label
     'label_add' => 'Tambah Template',
-    'label_edit' => 'Uba Template',
+    'label_edit' => 'Ubah Template',
+    'label_generate_data_test' => 'Test Ambil Data',
 
     // form
     'label_name' => 'Nama Template',
@@ -18,4 +19,5 @@ return [
 
     // alert
     'alert_text_delete' => 'Apakah Anda yakin ingin menghapus template ini? Tindakan ini tidak dapat dibatalkan.',
+    'alert_text_generate_test' => 'Proses pengujian template mungkin memerlukan waktu beberapa saat. Apakah Anda ingin melanjutkan?',
 ];

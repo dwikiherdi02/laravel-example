@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Dto\ListDto\ListFilterDto;
 use App\Dto\TextTemplateDto;
+use App\Libraries\Imap;
 use App\Repositories\TextTemplateRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -12,6 +13,7 @@ class TextTemplateService
 {
     function __construct(
         protected TextTemplateRepository $textTemplateRepo,
+        protected Imap $imapLib,
     ) {
 
     }
@@ -30,6 +32,33 @@ class TextTemplateService
         }
 
         return null;
+    }
+
+    public function generateTestData(string $id): string
+    {
+        $item = $this->textTemplateRepo->findById($id);
+
+        if ($item == null) {
+            throw new \Exception(trans('text-template.error_notfound'));
+        }
+
+        try {
+            $body = $this->imapLib->generateBodyMail($item->email, $item->email_subject);
+
+            if ($body == null) {
+                throw new \Exception(trans('Body email tidak ditemukan. Silahkan coba lagi.'));
+            }
+
+
+            $data = extract_by_template($item->template, $body);
+            // dd($body, $item->template, $data);
+            return 'Pengirim/Penerima: ' . $data['TF_FROM_TO'] . ', Nominal: ' . $data['TF_NOMINAL'] . ', Tanggal Kirim/Terima: ' . $data['TF_DATE'];
+        } catch (\Exception $e) {
+            report($e);
+            throw $e;
+        }
+
+
     }
 
     public function create(TextTemplateDto $data)

@@ -119,3 +119,48 @@ if (!function_exists('html_to_text')) {
         return $finalText;
     }
 }
+
+if (!function_exists('extract_by_template')) {
+    function extract_by_template(string $template, string $html, bool $toText = false): array
+    {
+        $text = $html;
+
+        if ($toText) {
+            // Ubah HTML ke plain text menggunakan fungsi kamu
+            $text = html_to_text($html);
+        }
+
+        // Split template menjadi bagian-bagian statis dan placeholder
+        preg_match_all('/\[\[(.*?)\]\]/', $template, $paramMatches);
+        $fields = $paramMatches[1];
+
+        $parts = preg_split('/\[\[(.*?)\]\]/', $template);
+
+        $results = [];
+        $offset = 0;
+
+        for ($i = 0; $i < count($fields); $i++) {
+            $start = $parts[$i];
+            $end = $parts[$i + 1];
+
+            // Cari posisi start
+            $startPos = strpos($text, $start, $offset);
+            if ($startPos === false)
+                break;
+            $startPos += strlen($start);
+
+            // Cari posisi end setelah start
+            $endPos = $end !== '' ? strpos($text, $end, $startPos) : strlen($text);
+            if ($endPos === false)
+                break;
+
+            $value = substr($text, $startPos, $endPos - $startPos);
+            $results[$fields[$i]] = trim($value);
+
+            // Geser offset untuk pencarian berikutnya
+            $offset = $endPos;
+        }
+
+        return $results;
+    }
+}
