@@ -10,6 +10,7 @@ class ListFilterSearchDto extends Data
     public function __construct(
         public ?string $general,
         public ?string $role,
+        public ?string $transactionType,
     ) {
     }
 }

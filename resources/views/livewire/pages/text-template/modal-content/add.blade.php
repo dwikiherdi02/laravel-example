@@ -1,17 +1,17 @@
 <?php
 
-use App\Dto\ContributionDto;
-use App\Services\ContributionService;
+use App\Dto\TextTemplateDto;
+use App\Services\TextTemplateService;
 use Illuminate\Validation\ValidationException;
 
-use function Livewire\Volt\{placeholder, state, rules};
+use function Livewire\Volt\{placeholder, state, rules, on, action};
 
 placeholder('components.loading');
 
 state([
     // form
     'name' => '',
-    'transaction_type' => '',
+    'transaction_type_id' => '',
     'email' => '',
     'email_subject' => '',
     'template' => '',
@@ -22,19 +22,19 @@ state([
 
 rules([
     'name' => ['required', 'string'],
-    'transaction_type' => ['required', 'string'],
+    'transaction_type_id' => ['required', 'string'],
     'email' => ['required', 'email', 'string'],
     'email_subject' => ['required', 'string'],
     'template' => ['required', 'string'],
 ])->attributes([
-    // 'name' => '',
-    // 'transaction_type' => '',
-    // 'email' => '',
-    // 'email_subject' => '',
-    // 'template' => '',
-]);
+            // 'name' => '',
+            // 'transaction_type_id' => '',
+            // 'email' => '',
+            // 'email_subject' => '',
+            // 'template' => '',
+        ]);
 
-$createTextTemplate = function (ContributionService $service) {
+$createTextTemplate = function (TextTemplateService $service) {
     try {
         $this->alertMessage = null;
 
@@ -42,7 +42,7 @@ $createTextTemplate = function (ContributionService $service) {
 
         $validated = $this->validate();
 
-        $data = ContributionDto::from($validated);
+        $data = TextTemplateDto::from($validated);
 
         $service->create($data);
 
@@ -50,10 +50,21 @@ $createTextTemplate = function (ContributionService $service) {
     } catch (ValidationException $e) {
         throw $e;
     } catch (\Exception $e) {
-        $this->reset('name', 'amount');
+        $this->reset('name', 'transaction_type_id', 'email', 'email_subject', 'template');
         $this->alertMessage = $e->getMessage();
     }
 };
+
+on(['generateTemplate']);
+
+$generateTemplate = action(function (\App\Libraries\Imap $imapLib) {
+    try {
+        $this->alertMessage = null;
+        $this->template = $imapLib->generateBodyMail($this->email, $this->email_subject);
+    } catch (\Exception $e) {
+        $this->alertMessage = $e->getMessage();
+    }
+});
 
 ?>
 
@@ -82,9 +93,9 @@ $createTextTemplate = function (ContributionService $service) {
                 </div>
 
                 <div class="form-group col-12 col-md-12 mb-3">
-                    <x-input-label for="transaction_type" :value="__('Tipe Transaksi')" :isRequired="true" />
-                    <livewire:components.widget.list-transaction-type wire:model="transaction_type" :id="'transaction-type'" :class="'select2'" :name="'transaction_type'" :ariaDescribedby="'transactionTypeHelp'">
-                    <x-input-error id="transactionTypeHelp" :messages="$errors->get('transaction_type')" />
+                    <x-input-label for="transaction_type_id" :value="__('Tipe Transaksi')" :isRequired="true" />
+                    <livewire:components.widget.list-transaction-type wire:model="transaction_type_id" :id="'transaction-type'" :class="'select2'" :name="'transaction_type_id'" :ariaDescribedby="'transactionTypeHelp'">
+                    <x-input-error id="transactionTypeHelp" :messages="$errors->get('transaction_type_id')" />
                 </div>
 
                 <div class="form-group col-12 col-md-12 mb-3">
@@ -102,7 +113,7 @@ $createTextTemplate = function (ContributionService $service) {
                 </div>
 
                 <div class="col-12 col-md-12 mb-3">
-                    <button wire:click="generateTemplate" wire:loading.attr="disabled" class="btn btn-light">{{ __('Generate Template') }}</button>
+                    <a wire:click="generateTemplate" wire:target="generateTemplate" wire:loading.attr="disabled" class="btn btn-light">{{ __('Generate Template') }}</a>
                 </div>
 
                 <div class="form-group col-12 mb-3">
@@ -115,7 +126,7 @@ $createTextTemplate = function (ContributionService $service) {
         </form>
     </div>
     <div class="modal-footer bg-transparent d-flex justify-content-between w-100 px-0 pb-0 border-0">
-        <button wire:target="createTextTemplate" wire:loading.attr="disabled" type="button" class="btn btn-lg btn-danger font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0" data-dismiss="modal">
+        <button wire:target="createTextTemplate, generateTemplate" wire:loading.attr="disabled" type="button" class="btn btn-lg btn-danger font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0" data-dismiss="modal">
             {{ __('label.cancel') }}
         </button>
 

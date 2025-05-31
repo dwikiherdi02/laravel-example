@@ -3,7 +3,6 @@
 namespace App\Libraries;
 
 use App\Repositories\ImapRepository;
-use App\Services\ImapService;
 use Crypt;
 use Webklex\PHPIMAP\ClientManager;
 
@@ -23,15 +22,15 @@ class Imap
             throw new \Exception(trans('imap.error_imap_config_notfound'));
         }
         return $this->clientManager->make([
-                'host' => $imap->host,
-                'port' => $imap->port,
-                'protocol' => $imap->protocol,
-                'encryption' => $imap->encryption,
-                'validate_cert' => $imap->validate_cert,
-                'username' => Crypt::decryptString($imap->username),
-                'password' => Crypt::decryptString($imap->password),
-                'authentication' => $imap->authentication,
-            ]);
+            'host' => $imap->host,
+            'port' => $imap->port,
+            'protocol' => $imap->protocol,
+            'encryption' => $imap->encryption,
+            'validate_cert' => $imap->validate_cert,
+            'username' => Crypt::decryptString($imap->username),
+            'password' => Crypt::decryptString($imap->password),
+            'authentication' => $imap->authentication,
+        ]);
     }
 
     public function checkImapConnection()
@@ -68,6 +67,40 @@ class Imap
                 $message->setFlag('SEEN');
              } */
             return true;
+        } catch (\Exception $e) {
+            // throw new \Exception('Gagal terhubung ke server IMAP: ' . $e->getMessage());
+            throw new \Exception(trans('imap.error_check_connection', ['message' => $e->getMessage()]));
+        } finally {
+            $client->disconnect();
+        }
+    }
+
+    public function generateBodyMail(string $email = null, string $subject = null)
+    {
+        if ($email == null || $subject == null) {
+            throw new \Exception(trans('Pastikan email dan subjek tidak boleh kosong'));
+        }
+
+        $client = $this->getClient();
+
+        try {
+            $client->connect();
+            $folder = $client->getFolder('INBOX');
+
+            $message = $folder->messages()
+                ->from($email)
+                ->subject($subject)
+                ->limit(1)
+                ->fetchOrderDesc() // Ambil email terbaru
+                ->get()
+                ->first();
+
+            if ($message) {
+                $body = html_to_text($message->getHtmlBody());
+                return $body;
+            } else {
+                return throw new \Exception(trans('Email tidak ditemukan'));
+            }
         } catch (\Exception $e) {
             // throw new \Exception('Gagal terhubung ke server IMAP: ' . $e->getMessage());
             throw new \Exception(trans('imap.error_check_connection', ['message' => $e->getMessage()]));

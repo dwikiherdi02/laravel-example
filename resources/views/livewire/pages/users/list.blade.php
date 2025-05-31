@@ -203,7 +203,7 @@ $generatePage = function () {
                                     @endpersist
                                 </div>
                                 <div class="text-left w-100">
-                                    <p class="h6 text-dark my-0">
+                                    <p class="h6 text-dark my-0 mb-1">
                                         {{ $item->name }}
                                     </p>
                                     <div class="badge badge-focus fs-9">

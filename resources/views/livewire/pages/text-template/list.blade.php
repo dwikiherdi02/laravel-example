@@ -1,7 +1,7 @@
 <?php
 
 use App\Dto\ListDto\ListFilterDto;
-use App\Services\ContributionService;
+use App\Services\TextTemplateService;
 
 use function Livewire\Volt\{state, on, action};
 
@@ -18,6 +18,7 @@ state([
         ],
         'search' => (object) [
             'general' => '',
+            'transactionType' => '',
         ],
         'data' => [],
         'total' => 0,
@@ -36,7 +37,7 @@ $loadDataTextTemplates = action(function (?int $page = null, ?bool $clearFilter 
         $this->list->npage->next = $page + 1;
     }
 
-    if($clearFilter) {
+    if ($clearFilter) {
         $this->list->search->general = '';
         $this->isFilter = false;
     }
@@ -48,7 +49,7 @@ $loadDataTextTemplates = action(function (?int $page = null, ?bool $clearFilter 
 
 $deleteTextTemplate = action(function (string $id) {
     try {
-        $service = app(ContributionService::class);
+        $service = app(TextTemplateService::class);
         $service->delete($id);
 
         $this->isLoading = true;
@@ -68,18 +69,12 @@ $load = function () {
     // sleep(2);
     $filter = ListFilterDto::fromState($this->list);
 
-    $service = app(ContributionService::class);
+    $service = app(TextTemplateService::class);
 
-    // $collection = $service->list($filter);
+    $collection = $service->list($filter);
 
-    // dd($collection->data);
-
-    // $this->list->data = $collection->data;
-    // $this->list->total = $collection->total;
-    // $this->list->npage->max = ceil($this->list->total / $this->list->perpage);
-
-    $this->list->data = [];
-    $this->list->total = 0;
+    $this->list->data = $collection->data;
+    $this->list->total = $collection->total;
     $this->list->npage->max = ceil($this->list->total / $this->list->perpage);
 
     $this->isLoading = false;
@@ -154,6 +149,9 @@ $generatePage = function () {
                         value="{{ $list->search->general }}"
                         placeholder="{{  __('label.search_placeholder') }}" />
                 </div>
+                <div class="col-12 mb-2">
+                    <livewire:components.widget.list-transaction-type :id="'search-type'" :class="'select2'" :withModel="false" />
+                </div>
                 <div class="col-12">
                     <button id="btn-search" class="mb-2 mr-2 btn btn-dark w-100">
                         {{ __('label.search') }}
@@ -173,12 +171,11 @@ $generatePage = function () {
                         <li class="list-group-item px-3">
                             <div class="d-flex">
                                 <div class="text-left w-100 align-self-center">
-                                    <p class="h6 font-weight-bolder text-muted my-0">
+                                    <p class="h6 text-dark my-0 mb-1">
                                         {{ $item->name }}
                                     </p>
-                                    <div class="fsize-2 text-success">
-                                        <small class="opacity-5 pr-1">Rp</small>
-                                        {{ number_format($item->amount, 0, ',', '.') }}
+                                    <div class="badge badge-focus fs-9">
+                                        {{ $item->transactionType->name }}
                                     </div>
                                 </div>
                                 <div class="text-right w-25 align-self-start">
@@ -241,13 +238,15 @@ $generatePage = function () {
 
         $("#btn-search").on("click", () => {
             let search = $("#search").val();
+            let searchType = $("#search-type").val();
             $wire.set('isLoading', true).then(() => {
-                if (search != "") {
+                if (search != "" || searchType != "") {
                     $wire.set('isFilter', true);
                 } else {
                     $wire.set('isFilter', false);
                 }
                 $wire.set('list.search.general', search);
+                $wire.set('list.search.transactionType', searchType);
                 $wire.dispatch('loadDataTextTemplates', { page: 1});
             });
         });
