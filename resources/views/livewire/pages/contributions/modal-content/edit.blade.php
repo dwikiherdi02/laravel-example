@@ -13,7 +13,7 @@ state([
     'id',
     'name' => '',
     'amount' => 0,
-    
+
     // alert
     'alertMessage' => ''
 ]);
@@ -115,7 +115,7 @@ $updateContribution = function (ContributionService $service) {
         <button wire:target="updateContribution" wire:loading.attr="disabled" type="button" class="btn btn-lg btn-danger font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0" data-dismiss="modal">
             {{ __('label.cancel') }}
         </button>
-        
+
         <button wire:loading.remove type="submit" form="user-form" class="btn btn-lg btn-primary font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0">
             {{ __('label.save') }}
         </button>

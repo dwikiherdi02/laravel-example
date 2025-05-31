@@ -288,7 +288,7 @@ $generatePage = function () {
 
             showConfirmAlert({
                 title: "{{  __('label.alert_title_delete') }}",
-                text: "{{  __('contribution.alert_text_delete') }}",
+                text: "{{  __('text-template.alert_text_delete') }}",
                 confirmButtonText: "{{ __('label.button_delete_confirm') }}",
                 cancelButtonText: "{{ __('label.button_cancel') }}",
                 showLoaderOnConfirm: true,

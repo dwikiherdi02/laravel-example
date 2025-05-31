@@ -21,6 +21,17 @@ class TextTemplateService
         return $this->textTemplateRepo->list($filter);
     }
 
+    public function findById(string $id): ?TextTemplateDto
+    {
+        $item = $this->textTemplateRepo->findById($id);
+
+        if ($item) {
+            return TextTemplateDto::from($item);
+        }
+
+        return null;
+    }
+
     public function create(TextTemplateDto $data)
     {
         DB::beginTransaction();
@@ -37,12 +48,41 @@ class TextTemplateService
         }
     }
 
+    public function update(TextTemplateDto $data)
+    {
+        $item = $this->textTemplateRepo->findById($data->id);
+
+        if ($item == null) {
+            throw new \Exception(trans('text-template.error_notfound'));
+        }
+
+        DB::beginTransaction();
+        try {
+            $item->name = $data->name;
+            $item->transaction_type_id = $data->transaction_type_id;
+            $item->email = $data->email;
+            $item->email_subject = $data->email_subject;
+            $item->template = $data->template;
+
+            $item->save();
+
+            DB::commit();
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            throw $e;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
+            throw new \Exception(trans('label.error_save'));
+        }
+    }
+
     public function delete(string $id)
     {
         $item = $this->textTemplateRepo->findById($id);
 
         if ($item == null) {
-            throw new \Exception(trans('Data template tidak ditemukan. silahkan coba lagi atau hubungi admin.'));
+            throw new \Exception(trans('text-template.error_notfound'));
         }
 
         DB::beginTransaction();
