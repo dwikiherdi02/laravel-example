@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
             // $table->foreign('role_id')->references('id')->on('roles')->nullOnDelete();
             $table->uuid('resident_id')->nullable()->index();
-            // $table->foreign('resident_id')->references('id')->on('residents')->nullOnDelete();
+            $table->foreign('resident_id')->references('id')->on('residents')->nullOnDelete();
             $table->string('name');
             // $table->string('email')->unique();
             $table->string('username')->unique();
@@ -53,8 +53,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
     }
 };

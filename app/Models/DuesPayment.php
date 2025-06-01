@@ -22,6 +22,7 @@ class DuesPayment extends Model
      */
     protected $fillable = [
         'id',
+        'resident_id',
         'dues_month_id',
         'parent_id',
         'base_amount',
@@ -36,6 +37,11 @@ class DuesPayment extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function resident(): HasOne
+    {
+        return $this->hasOne(Resident::class, 'id', 'resident_id');
+    }
 
     public function duesMonth(): HasOne
     {
