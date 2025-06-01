@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             MenuShortcutSeeder::class,
             ImapSeeder::class,
             TransactionTypeSeeder::class,
+            TransactionMethodSeeder::class,
+            SystemBalanceSeeder::class,
         ]);
     }
 }

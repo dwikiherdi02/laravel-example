@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-class TransactionType extends Model
+class Email extends Model
 {
     use HasUuids;
 
@@ -20,13 +20,15 @@ class TransactionType extends Model
      */
     protected $fillable = [
         'id',
-        'name',
-        'name_lang_key',
-        'code',
+        'text_template_id',
+        'body_text',
+        'body_html',
+        'is_read',
     ];
 
     protected $hidden = [
         'created_at',
         'updated_at',
+        'deleted_at',
     ];
 }

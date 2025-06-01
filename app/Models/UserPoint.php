@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-class TransactionType extends Model
+class UserPoint extends Model
 {
     use HasUuids;
 
@@ -20,9 +20,8 @@ class TransactionType extends Model
      */
     protected $fillable = [
         'id',
-        'name',
-        'name_lang_key',
-        'code',
+        'user_id',
+        'total_point',
     ];
 
     protected $hidden = [

@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-class TransactionType extends Model
+class SystemBalance extends Model
 {
     use HasUuids;
+
+    public $table = 'system_balance';
 
     public $incrementing = false;
 
@@ -20,9 +22,9 @@ class TransactionType extends Model
      */
     protected $fillable = [
         'id',
-        'name',
-        'name_lang_key',
-        'code',
+        'total_balance',
+        'total_point',
+        'final_balance',
     ];
 
     protected $hidden = [

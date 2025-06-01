@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-class TransactionType extends Model
+class TransactionMethod extends Model
 {
     use HasUuids;
 
@@ -22,7 +22,6 @@ class TransactionType extends Model
         'id',
         'name',
         'name_lang_key',
-        'code',
     ];
 
     protected $hidden = [
