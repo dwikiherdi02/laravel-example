@@ -1,5 +1,6 @@
 FROM dunglas/frankenphp:1.5-php8.4.6
 
+ARG SERVER_NAME
 ARG APP_ENV
 ARG APP_URL
 ARG APP_DEBUG
@@ -12,7 +13,7 @@ ARG DB_PASSWORD
 # Be sure to replace "your-domain-name.example.com" by your domain name
 # ENV SERVER_NAME=your-domain-name.example.com
 # If you want to disable HTTPS, use this value instead:
-ENV SERVER_NAME=${APP_URL}
+ENV SERVER_NAME=${SERVER_NAME}
 
 # Install composer
 COPY --from=composer:2.8.8 /usr/bin/composer /usr/bin/composer
