@@ -14,8 +14,8 @@ return [
     'label_form_name' => 'Nama',
     'label_form_username' => 'Nama Pengguna',
     'label_form_default_password' => 'Kata Sandi Default',
-    'label_form_password' => 'Kata Sandi Default',
-    'label_form_password_confirmation' => 'Kata Sandi Default',
+    'label_form_password' => 'Kata Sandi',
+    'label_form_password_confirmation' => 'Konfirmasi Kata Sandi',
 
     // error message
     'error_user_notfound' => 'Data pengguna tidak ditemukan. silahkan coba lagi atau hubungi admin.',
