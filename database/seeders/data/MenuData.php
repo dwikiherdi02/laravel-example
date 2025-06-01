@@ -75,8 +75,8 @@ class MenuData
             [
                 'id' => '018f984f-5c4d-8368-b07e-9e7b58fc998f',
                 'name' => 'Tambah Iuran Bulanan',
-                'name_lang_key' => 'menu.add_monthly_contribution',
-                'slug' => '/add-monthly-contribution',
+                'name_lang_key' => 'menu.add_dues_month',
+                'slug' => '/add-dues-month',
                 'icon' => 'pe-7s-note2',
                 'menu_group_id' => 'cb85dfba-6ac2-4b5b-a012-63bdd379ceb0',
                 'sort' => 6,

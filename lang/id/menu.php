@@ -7,7 +7,7 @@ return [
     'residents' => 'Daftar Warga',
     'users' => 'Daftar Pengguna',
     'contributions' => 'Daftar Iuran',
-    'add_monthly_contribution' => 'Tambah Iuran Bulanan',
+    'add_dues_month' => 'Tambah Iuran Bulanan',
     'add_transaction' => 'Input Pemasukan/Pengeluaran',
     'monthly_contribution_history' => 'Riwayat Iuran Bulanan',
     'transaction_history' => 'Riwayat Transaksi',

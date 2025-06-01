@@ -12,7 +12,7 @@ state([
 ]);
 
 title(function (ComponentService $service) {
-    $path = '/add-monthly-contribution';
+    $path = '/add-dues-month';
     $menu = $service->getMenuBySlug($path);
     $this->title = __($menu->name_lang_key ?? '');
     $this->icon = $menu->icon ?? '';
