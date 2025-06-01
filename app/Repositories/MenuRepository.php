@@ -21,10 +21,9 @@ class MenuRepository
                     ->where('role_id', $authRoleId);
             })
             ->orderBy(
-                MenuShortcut::select('sort')
+                MenuShortcut::selectRaw('MIN(sort)')
                     ->whereColumn('menu_shortcuts.menu_id', 'menus.id')
-            )
-            ->get();
+            )->get();
     }
 
     public function getMenuBySlug(string $slug = '')

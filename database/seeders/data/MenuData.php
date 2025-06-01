@@ -32,7 +32,7 @@ class MenuData
                 'sort' => 2,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-                'deleted_at' => null,
+                'deleted_at' => Carbon::now(),
             ],
             [
                 'id' => '018f984f-5c4d-7b7a-a54d-bba9e4d83d03',
