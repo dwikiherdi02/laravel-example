@@ -1,0 +1,35 @@
+# compose.yaml
+
+services:
+  app:
+    container_name: iuranku
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - APP_ENV=${APP_ENV}
+        - APP_URL=${APP_URL}
+        - APP_DEBUG=${APP_DEBUG}
+        - DB_HOST=${DB_HOST}
+        - DB_PORT=${DB_PORT}
+        - DB_DATABASE=${DB_DATABASE}
+        - DB_USERNAME=${DB_USERNAME}
+        - DB_PASSWORD=${DB_PASSWORD}
+    restart: always
+    env_file:
+      - .docker/.env
+    ports:
+      - "8081:80" # HTTP
+      # - "443:443" # HTTPS
+      # - "443:443/udp" # HTTP/3
+    # volumes:
+      # - ./:/app/public
+      # - caddy_data:/data
+      # - caddy_config:/config
+    # comment the following line in production, it allows to have nice human-readable logs in dev
+    # tty: true
+
+# Volumes needed for Caddy certificates and configuration
+# volumes:
+#   caddy_data:
+#   caddy_config:
