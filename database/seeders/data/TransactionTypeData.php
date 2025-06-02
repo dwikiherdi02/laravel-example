@@ -16,7 +16,7 @@ class TransactionTypeData
     {
         return [
             [
-                'id' => Str::orderedUuid(),
+                'id' => '9f0e38bd-1ea4-432f-8f8f-a34fb5fd7ca8',
                 'name' => 'Pemasukan',
                 'name_lang_key' => 'transaction_type.credit',
                 'code' => 'cr',
@@ -24,7 +24,7 @@ class TransactionTypeData
                 'updated_at' => Carbon::now()
             ],
             [
-                'id' => Str::orderedUuid(),
+                'id' => '9f0e38bd-1eb2-42be-8246-31e47e740b97',
                 'name' => 'Pengeluaran',
                 'name_lang_key' => 'transaction_type.debit',
                 'code' => 'db',

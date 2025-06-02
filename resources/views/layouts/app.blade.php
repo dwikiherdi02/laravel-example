@@ -119,7 +119,7 @@
             document.addEventListener("DOMContentLoaded", function() { const loadingPage = document.getElementById('loading-page'); const appContainer = document.querySelector('.app-container'); if (loadingPage && appContainer) { appContainer.style.display = 'none'; window.addEventListener('load', function() { setTimeout(() => { appContainer.style.display = 'block'; loadingPage.classList.add('fade-out'); setTimeout(() => { loadingPage.remove(); }, 800); }, 3000); }); } });
         </script>
 
-    {{-- <script src="{{ asset('assets/plugins/restables/restables.min.js') }}" defer></script> --}}
+        {{-- <script src="{{ asset('assets/plugins/restables/restables.min.js') }}" defer></script> --}}
         {{-- @endpersist --}}
         @stack('scripts')
     </body>
