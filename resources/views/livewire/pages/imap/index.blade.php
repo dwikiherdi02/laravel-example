@@ -127,6 +127,7 @@ $setData = function (ImapDto $imap) {
         <div class="col-12">
             <div class="card mb-3">
                 <div class="card-header">
+                    <i class="header-icon lnr-cog icon-gradient bg-deep-blue"></i>
                     {{ __('imap.label_config_imap') }}
                     <div class="btn-actions-pane-right">
                         <button wire:click="checkImapConnection" wire:loading.attr="disabled" class="btn btn-light btn-sm w-100">{{ __('imap.label_test_imap_connection') }}</button>

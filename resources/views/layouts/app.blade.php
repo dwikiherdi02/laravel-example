@@ -53,6 +53,12 @@
             <link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.css') }}">
         </noscript>
 
+        <link rel="preload" href="{{ asset('assets/plugins/daterangepicker/css/daterangepicker.min.css') }}" as="style"
+            onload="this.onload=null;this.rel='stylesheet'">
+        <noscript>
+            <link rel="stylesheet" href="{{ asset('assets/plugins/daterangepicker/css/daterangepicker.min.css') }}">
+        </noscript>
+
         <link rel="preload" href="{{ asset('assets/css/custom-bs.css') }}" as="style"
             onload="this.onload=null;this.rel='stylesheet'">
         <noscript>
@@ -111,6 +117,17 @@
 
         <!-- Sweetalert2 -->
         <script src="{{ asset('assets/plugins/sweetalert2/sweetalert2.all.min.js') }}" defer></script>
+        
+        <!-- MomentJS -->
+        <script src="{{ asset('assets/plugins/moment/moment.min.js') }}" defer></script>
+        
+        <!-- Daterangepicker -->
+        <script src="{{ asset('assets/plugins/daterangepicker/js/daterangepicker.min.js') }}" defer></script>
+        
+        <!-- Datepicker -->
+        <script src="{{ asset('assets/plugins/datepicker/js/datepicker.min.js') }}" defer></script>
+        <script src="{{ asset('assets/plugins/datepicker/i18n/datepicker.id-ID.js') }}" defer></script>
+        
 
         <!--General -->
         <script src="{{ asset('assets/js/general.js') }}" defer></script>

@@ -22,6 +22,11 @@ class Repository
         return null;
     }
 
+    public function getAll()
+    {
+        return $this->model->all();
+    }
+
     public function create(array $data)
     {
         return $this->model->create($data);
