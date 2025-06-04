@@ -15,7 +15,7 @@ class ImapData
     public static function get(): array
     {
         return [
-            'id' => Str::orderedUuid()->toString(),
+            'id' => Str::uuid7(),
             'host' => 'imap.gmail.com',
             'port' => 993,
             'protocol' => 'imap',

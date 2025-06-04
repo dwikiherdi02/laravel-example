@@ -31,4 +31,9 @@ class Repository
     {
         return $this->model->create($data);
     }
+
+    public function createMany(array $data)
+    {
+        return $this->model->insert($data);
+    }
 }

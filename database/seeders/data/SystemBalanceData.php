@@ -16,7 +16,7 @@ class SystemBalanceData
     {
         return [
             [
-                'id' => Str::orderedUuid(),
+                'id' => Str::uuid7(),
                 'total_balance' => 0.00,
                 'total_point' => 0,
                 'final_balance' => 0.00,

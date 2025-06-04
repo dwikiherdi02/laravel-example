@@ -12,7 +12,8 @@ state([
 ]);
 
 title(function (ComponentService $service) {
-    $path = '/' . app('request')->uri()->path();
+    // $path = '/' . app('request')->uri()->path();
+    $path = '/dashboard';
     $menu = $service->getMenuBySlug($path);
     $this->title = __($menu->name_lang_key);
     $this->icon = $menu->icon;

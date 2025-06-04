@@ -3,13 +3,36 @@
 namespace App\Providers;
 
 use App\Models\Contribution;
+use App\Models\DuesMonth;
+use App\Models\DuesPayment;
+use App\Models\DuesPaymentDetail;
 use App\Models\Imap;
+use App\Models\Menu;
+use App\Models\MenuGroup;
+use App\Models\Resident;
+use App\Models\Role;
 use App\Models\TextTemplate;
 use App\Models\TransactionType;
+use App\Models\User;
 use App\Repositories\ContributionRepository;
+use App\Repositories\DuesMonthRepository;
+use App\Repositories\DuesPaymentDetailRepository;
+use App\Repositories\DuesPaymentRepository;
 use App\Repositories\ImapRepository;
+use App\Repositories\MenuGroupRepository;
+use App\Repositories\MenuRepository;
+use App\Repositories\ResidentRepository;
+use App\Repositories\RoleRepository;
 use App\Repositories\TextTemplateRepository;
 use App\Repositories\TransactionTypeRepository;
+use App\Repositories\UserRepository;
+use App\Services\ComponentService;
+use App\Services\ContributionService;
+use App\Services\DuesMonthService;
+use App\Services\ImapService;
+use App\Services\ResidentService;
+use App\Services\TextTemplateService;
+use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 use Webklex\PHPIMAP\ClientManager;
 
@@ -20,25 +43,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(ContributionRepository::class, function () {
-            return new ContributionRepository(new Contribution());
-        });
+        $this->registerLibraries();
+        
+        $this->registerRepositories();
 
-        $this->app->bind(TransactionTypeRepository::class, function () {
-            return new TransactionTypeRepository(new TransactionType());
-        });
-
-        $this->app->bind(TextTemplateRepository::class, function () {
-            return new TextTemplateRepository(new TextTemplate());
-        });
-
-        $this->app->bind(ImapRepository::class, function () {
-            return new ImapRepository(new Imap());
-        });
-
-        $this->app->bind(\App\Libraries\Imap::class, function () {
-            return new \App\Libraries\Imap(new ClientManager(), new ImapRepository(new Imap()));
-        });
+        $this->registerServices();
     }
 
     /**
@@ -47,5 +56,82 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+    }
+
+    protected function registerLibraries()
+    {
+        $this->app->bind(\App\Libraries\Imap::class, function () {
+            return new \App\Libraries\Imap(new ClientManager(), new ImapRepository(new Imap()));
+        });
+    }
+
+    protected function registerRepositories()
+    {
+        $repositories = [
+            ContributionRepository::class => Contribution::class,
+            DuesMonthRepository::class => DuesMonth::class,
+            DuesPaymentDetailRepository::class => DuesPaymentDetail::class,
+            DuesPaymentRepository::class => DuesPayment::class,
+            ImapRepository::class => Imap::class,
+            MenuGroupRepository::class => MenuGroup::class,
+            MenuRepository::class => Menu::class,
+            ResidentRepository::class => Resident::class,
+            RoleRepository::class => Role::class,
+            TextTemplateRepository::class => TextTemplate::class,
+            TransactionTypeRepository::class => TransactionType::class,
+            UserRepository::class => User::class,
+        ];
+
+        foreach ($repositories as $repo => $model) {
+            $this->app->bind($repo, function ($app) use ($repo, $model) {
+                // return new $repo(new $model());
+                return new $repo($app->make($model));
+            });
+        }
+    }
+
+    protected function registerServices()
+    {
+        $services = [
+            ComponentService::class => [
+                MenuGroupRepository::class,
+                MenuRepository::class,
+                RoleRepository::class,
+                ResidentRepository::class,
+                TransactionTypeRepository::class,
+                ContributionRepository::class,
+            ],
+            DuesMonthService::class => [
+                DuesMonthRepository::class,
+                DuesPaymentDetailRepository::class,
+                DuesPaymentRepository::class,
+                ResidentRepository::class,
+            ],
+            ContributionService::class => [
+                ContributionRepository::class,
+            ],
+            ImapService::class => [
+                \App\Libraries\Imap::class,
+                ImapRepository::class,
+            ],
+            ResidentService::class => [
+                ResidentRepository::class,
+                UserRepository::class,
+            ],
+            TextTemplateService::class => [
+                TextTemplateRepository::class,
+                \App\Libraries\Imap::class,
+            ],
+            UserService::class => [
+                UserRepository::class,
+            ],
+        ];
+
+        foreach ($services as $service => $dependencies) {
+            $this->app->bind($service, function ($app) use ($service, $dependencies) {
+                $resolved = array_map(fn($dep) => $app->make($dep), $dependencies);
+                return new $service(...$resolved);
+            });
+        }
     }
 }

@@ -7,21 +7,23 @@ use App\Dto\ListDto\ListFilterDto;
 use App\Dto\ResidentDto;
 use App\Models\Resident;
 
-class ResidentRepository
+class ResidentRepository extends Repository
 {
     function __construct(
-        protected Resident $model,
+        // protected Resident $model,
+        Resident $model,
     ) {
+        parent::__construct($model);
     }
 
-    public function findById(string $id): ?Resident
+    /* public function findById(string $id): ?Resident
     {
         $resident = $this->model->find($id);
         if ($resident) {
             return $resident;
         }
         return null;
-    }
+    } */
 
     public function list(ListFilterDto $filter): ListDto
     {
@@ -77,8 +79,8 @@ class ResidentRepository
             ->get();
     }
 
-    public function create(array $data): Resident
+    /* public function create(array $data): Resident
     {
         return $this->model->create($data);
-    }
+    } */
 }

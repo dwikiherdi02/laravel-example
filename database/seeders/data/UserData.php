@@ -18,7 +18,7 @@ class UserData
     {
         return [
             [
-                'id' => Str::orderedUuid(),
+                'id' => Str::uuid7(),
                 'name' => 'Admin',
                 'username' => 'admin',
                 'role_id' => RoleEnum::Admin,
@@ -30,7 +30,7 @@ class UserData
                 'updated_at' => Carbon::now(),
             ],
             [
-                'id' => Str::orderedUuid(),
+                'id' => Str::uuid7(),
                 'name' => 'Bendahara',
                 'username' => 'bendahara',
                 'role_id' => RoleEnum::Bendahara,

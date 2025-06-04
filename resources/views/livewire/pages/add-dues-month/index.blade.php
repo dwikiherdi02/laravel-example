@@ -1,9 +1,11 @@
 <?php
 
+use App\Dto\DuesMonthDto;
 use App\Services\ComponentService;
+use App\Services\DuesMonthService;
 use Illuminate\Validation\ValidationException;
 
-use function Livewire\Volt\{layout, state, rules, title};
+use function Livewire\Volt\{layout, state, rules, title, mount};
 
 layout('layouts.app');
 
@@ -33,9 +35,7 @@ title(function (ComponentService $service) {
     return $this->title;
 });
 
-
-
-$createDuesMonth = function () {
+$createDuesMonth = function (DuesMonthService $service) {
     // dd($this->all());
     try {
         $this->isError = false;
@@ -43,13 +43,11 @@ $createDuesMonth = function () {
         
         $this->resetErrorBag();
         
-        $validated = $this->validate();
+        $validated = $this->validate(); 
         
-        dd($validated);
+        $data = DuesMonthDto::from($validated);
         
-        // $data = ContributionDto::from($validated);
-        
-        // $service->create($data);
+        $service->create($data);
         
         // $this->dispatch('hideModalContributionJs');
     } catch (ValidationException $e) {
@@ -57,8 +55,8 @@ $createDuesMonth = function () {
         throw $e;
     } catch (\Exception $e) {
         $this->isError = true;
-        $this->reset('dues_date', 'contribution_ids');
         $this->alertMessage = $e->getMessage();
+        // $this->reset('dues_date', 'contribution_ids');
     }
 };
 
@@ -126,6 +124,8 @@ $createDuesMonth = function () {
         });
 
         $("#dues-date").on('pick.datepicker', function (e) {
+            $wire.set('isError', false);
+            $wire.set('alertMessage', null);
             $wire.set('dues_date', moment(e.date).format('MM-YYYY'));
         });
     });
