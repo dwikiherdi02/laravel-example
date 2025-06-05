@@ -19,7 +19,7 @@ class MenuGroupRepository
             ->with([
                 'menus' => function ($query) use ($authRoleId) {
                     $query
-                        ->select('id', 'menu_group_id', 'name', 'name_lang_key', 'icon', 'slug', 'sort', 'deleted_at')
+                        ->select('id', 'menu_group_id', 'name', 'name_lang_key', 'icon', 'route_name', 'slug', 'sort', 'deleted_at')
                         ->whereHas('menuRole', function ($query) use ($authRoleId) {
                             $query->where('role_id', $authRoleId);
                         })

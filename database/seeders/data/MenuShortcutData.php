@@ -18,22 +18,29 @@ class MenuShortcutData
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
-            [
+            /* [
                 'menu_id' => '018f984f-5c4d-74cb-9341-31a06b55de57',
+                'role_id' => RoleEnum::Admin,
+                'sort' => 2,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ], */
+            [
+                'menu_id' => '018f984f-5c4d-7b7a-a54d-bba9e4d83d03',
                 'role_id' => RoleEnum::Admin,
                 'sort' => 2,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'menu_id' => '018f984f-5c4d-7b7a-a54d-bba9e4d83d03',
+                'menu_id' => '018f984f-5c4d-7ed6-83f5-e7e80adfe98b',
                 'role_id' => RoleEnum::Admin,
                 'sort' => 3,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'menu_id' => '018f984f-5c4d-7ed6-83f5-e7e80adfe98b',
+                'menu_id' => '018f984f-5c4d-80fa-b27a-67f61ecb5c87',
                 'role_id' => RoleEnum::Admin,
                 'sort' => 4,
                 'created_at' => Carbon::now(),

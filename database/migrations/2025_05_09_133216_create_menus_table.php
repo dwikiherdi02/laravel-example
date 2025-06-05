@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreign('menu_group_id')->references('id')->on('menu_groups')->onDelete('cascade');
             $table->string('name', 50);
             $table->string('name_lang_key', 100);
+            $table->string('route_name', 255);
             $table->string('slug', 255);
             $table->string('icon', 25);
             $table->integer('sort')->default(0);

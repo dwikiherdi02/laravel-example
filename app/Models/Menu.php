@@ -18,6 +18,7 @@ class Menu extends Model
     protected $fillable = [
         'name',
         'name_lang_key',
+        'route_name',
         'slug',
         'icon',
         'menu_group_id',

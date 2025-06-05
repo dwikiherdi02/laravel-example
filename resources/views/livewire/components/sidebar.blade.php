@@ -55,7 +55,15 @@ mount(function (ComponentService $service) {
                     <li class="app-sidebar__heading">{{ __($item->name_lang_key) }}</li>
                     @foreach ($item->menus as $menu)
                     <li>
-                        <a href="{{ $menu->slug }}" wire:current="mm-active">
+                        {{-- <a href="{{ $menu->slug }}" wire:current="mm-active">
+                            <i class="metismenu-icon {{ $menu->icon }}">
+                            </i>
+                            {{ __($menu->name_lang_key) }}
+                        </a> --}}
+                        @php
+                            $isActive =  (request()->routeIs($menu->route_name) || request()->routeIs($menu->route_name . '.*'))
+                        @endphp
+                        <a href="{{ route($menu->route_name) }}" class="{{ $isActive ? 'mm-active' : '' }}">
                             <i class="metismenu-icon {{ $menu->icon }}">
                             </i>
                             {{ __($menu->name_lang_key) }}
