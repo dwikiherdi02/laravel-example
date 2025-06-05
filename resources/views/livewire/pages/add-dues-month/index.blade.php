@@ -26,6 +26,9 @@ state([
 rules([
     'dues_date' => ['required', 'string'],
     'contribution_ids' => ['array'],
+])->attributes([
+    'dues_date' => trans('dues_month.label_dues_date'),
+    'contribution_ids' => trans('contribution.label_list'),
 ]);
 
 title(function (ComponentService $service) {
@@ -37,7 +40,6 @@ title(function (ComponentService $service) {
 });
 
 $createDuesMonth = function (DuesMonthService $service) {
-    // dd($this->all());
     try {
         $this->isError = false;
         $this->alertMessage = null;
@@ -63,11 +65,9 @@ $createDuesMonth = function (DuesMonthService $service) {
             $params
         ));
     } catch (ValidationException $e) {
-        // dd('masuk sini');
         $this->isError = true;
         throw $e;
     } catch (\Exception $e) {
-        // dd('masuk sana');
         $this->isError = true;
         $this->alertMessage = $e->getMessage();
         // $this->reset('dues_date', 'contribution_ids');
@@ -96,7 +96,7 @@ $createDuesMonth = function (DuesMonthService $service) {
 
                     <form id="dues-month-form" wire:submit="createDuesMonth">
                         <div class="form-group row mb-4">
-                            <x-input-label for="host" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('Tanggal Iuran')" :isRequired="true" />
+                            <x-input-label for="host" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('dues_month.label_dues_date')" :isRequired="true" />
                             <div class="col-sm-8">
                                 <x-text-input wire:model="dues_date" id="dues-date" type="text" name="dues_date" autocomplete="off" aria-describedby="duesDateHelp" />
                                 <x-input-error class="text-left" id="duesDateHelp" :messages="$errors->get('dues_date')" />

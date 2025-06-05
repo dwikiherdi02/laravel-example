@@ -34,24 +34,21 @@ class DuesMonthService
                 $data->month = (int) $date->format('m'); // Hilangkan angka 0 di depan
             } else {
                 throw ValidationException::withMessages([
-                    // 'dues_date' => trans('Format tanggal iuran salah, gunakan format mm-YYYY'),
-                    'dues_date' => 'Format tanggal iuran salah, gunakan format mm-YYYY',
+                    'dues_date' => trans('dues_month.error_label_wrong_dues_date_format'),
                 ]);
             }
         } catch (\Exception $e) {
-            // throw new \Exception(trans('Terjadi kesalahan saat memproses tanggal iuran'));
-            throw new \Exception('Terjadi kesalahan saat memproses tanggal iuran');
+            throw new \Exception(trans('dues_month.error_process_parse_dues_date'));
         }
     
         if (empty($data->contribution_ids)) {
-            // throw new \Exception(trans('Iuran tidak boleh kosong'));
-            throw new \Exception('Iuran tidak boleh kosong');
+            throw new \Exception(trans('contribution.error_no_contribution_selected'));
         }
         
         if ($this->duesMonthRepo->findByYearAndMonth($data->year, $data->month)) {
             // throw new \Exception('Tanggal iuran sudah ada');
             throw ValidationException::withMessages([
-                'dues_date' => 'Tanggal iuran sudah ada',
+                'dues_date' => trans('dues_month.error_label_dues_date_exist'),
             ]);
         }
 

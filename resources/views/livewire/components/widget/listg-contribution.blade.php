@@ -25,7 +25,7 @@ mount(function (ComponentService $service) {
         @if ($id != null) id="{{ $id }}" @endif 
         class="card shadow-none {{ $class ?? '' }}">
         <div class="card-header text-left border-bottom px-0">
-            {{ __('Daftar Iuran') }} <small class="text-danger">*</small>
+            {{ __('contribution.label_list') }} <small class="text-danger">*</small>
         </div>
         <div class="card-body border-bottom px-2">
             @if ($items)
@@ -39,7 +39,7 @@ mount(function (ComponentService $service) {
                                         <input type="checkbox" wire:model="value" class="custom-control-input contribution-listg" id="contribution-{{ $key }}" value="{{ $item->id }}" autocomplete="off">
                                     </div>
                                     <h5 class="align-self-center m-0 text-truncate fs-6 font-weight-bold w-100" title="{{ $item->name }}">{{ $item->name }}</h5>
-                                    <div class="label-currency align-self-center fs-6 font-weight-bold text-success text-right w-100">
+                                    <div class="label-currency align-self-center fs-6 font-weight-bold {{ in_array($item->id, (array) $value) ? 'text-white' : 'text-success' }} text-right w-100">
                                         <small class="opacity-7 pr-1">Rp</small>
                                         {{ number_format($item->amount, 0, ',', '.') }}
                                     </div>
@@ -51,7 +51,7 @@ mount(function (ComponentService $service) {
             </div>
             @else
             <div class="text-center text-secondary font-weight-bold">
-                {{ __('Tidak ada data iuran yang tersedia.') }}
+                {{ __('contribution.label_not_found') }}
             </div>
             @endif
         </div>
