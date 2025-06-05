@@ -30,6 +30,9 @@ class DuesPayment extends Model
         'final_amount',
         'is_paid',
         'is_merge',
+
+        'created_at',
+        'updated_at',
     ];
 
     protected $hidden = [

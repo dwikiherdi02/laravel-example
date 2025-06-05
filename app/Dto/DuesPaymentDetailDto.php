@@ -2,6 +2,7 @@
 
 namespace App\Dto;
 
+use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Data;
 
 class DuesPaymentDetailDto extends Data
@@ -11,6 +12,9 @@ class DuesPaymentDetailDto extends Data
         public ?string $dues_payment_id,
         public ?string $contribution_id,
         public ?float $amount,
+
+        public ?CarbonImmutable $created_at = null,
+        public ?CarbonImmutable $updated_at = null,
     ) {
     }
 }

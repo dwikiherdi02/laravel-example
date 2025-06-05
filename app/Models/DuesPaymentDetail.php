@@ -24,6 +24,9 @@ class DuesPaymentDetail extends Model
         'dues_payment_id',
         'contribution_id',
         'amount',
+
+        'created_at',
+        'updated_at',
     ];
 
     protected $hidden = [

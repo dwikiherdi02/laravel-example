@@ -54,6 +54,7 @@ class DuesMonthService
 
         DB::beginTransaction();
         try {
+            $now = Carbon::now();
             // simpan data dues_month
             $duesMonth = $this->duesMonthRepo->create($data->toArray());
             $contributions = $duesMonth->contributions;
@@ -73,6 +74,8 @@ class DuesMonthService
                     'final_amount' => array_sum([$contributions->sum('amount'), $resindent->unique_code]),
                     'is_paid' => false,
                     'is_merge' => false,
+                    'created_at' => $now,
+                    'updated_at' => $now,
                 ])->toArray();
             }
 
@@ -88,6 +91,8 @@ class DuesMonthService
                         'dues_payment_id' => $payment->id,
                         'contribution_id' => $contribution->id,
                         'amount' => $contribution->amount,
+                        'created_at' => $now,
+                        'updated_at' => $now,
                     ])->toArray();
                 }
             }
