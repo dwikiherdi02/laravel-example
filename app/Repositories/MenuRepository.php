@@ -15,7 +15,7 @@ class MenuRepository
     public function getMenuShortcuts(string $authRoleId = '')
     {
         return $this->model
-            ->select('id', 'name', 'name_lang_key', 'icon', 'slug')
+            ->select('id', 'name', 'name_lang_key', 'icon', 'route_name', 'slug')
             ->whereHas('menuShortcut', function ($query) use ($authRoleId) {
                 $query
                     ->where('role_id', $authRoleId);
@@ -23,6 +23,7 @@ class MenuRepository
             ->orderBy(
                 MenuShortcut::selectRaw('MIN(sort)')
                     ->whereColumn('menu_shortcuts.menu_id', 'menus.id')
+                    ->where('role_id', $authRoleId)
             )->get();
     }
 
