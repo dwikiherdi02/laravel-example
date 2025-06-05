@@ -52,6 +52,11 @@ class DuesMonthService
             ]);
         }
 
+        $resindents = $this->residentRepo->getAll();
+        if ($resindents->isEmpty()) {
+            throw new \Exception(trans('resident.error_resident_empty'));
+        }
+
         DB::beginTransaction();
         try {
             $now = Carbon::now();
@@ -60,7 +65,6 @@ class DuesMonthService
             $contributions = $duesMonth->contributions;
 
             // simpan data dues_payments
-            $resindents = $this->residentRepo->getAll();
             $payments = [];
 
             foreach ($resindents as $resindent) {

@@ -24,7 +24,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::group(['prefix' => $prefix], function () {
         Volt::route('change-password', 'pages.auth.change-password')->name('change_password');
     
-        Route::middleware(['must_change_password'])->group(function () {
+        Route::middleware(['must_change_password', 'menu_permission'])->group(function () {
             Volt::route('dashboard', 'pages.dashboard.index')
                 ->name('dashboard');
     

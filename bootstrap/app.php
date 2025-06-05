@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // alias middleware
         $middleware->alias([
             'must_change_password' => App\Http\Middleware\MustChangePassword::class,
+            'menu_permission' => App\Http\Middleware\MenuPermission::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

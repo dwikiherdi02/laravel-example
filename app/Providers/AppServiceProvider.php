@@ -9,6 +9,7 @@ use App\Models\DuesPaymentDetail;
 use App\Models\Imap;
 use App\Models\Menu;
 use App\Models\MenuGroup;
+use App\Models\MenuRole;
 use App\Models\Resident;
 use App\Models\Role;
 use App\Models\TextTemplate;
@@ -21,6 +22,7 @@ use App\Repositories\DuesPaymentRepository;
 use App\Repositories\ImapRepository;
 use App\Repositories\MenuGroupRepository;
 use App\Repositories\MenuRepository;
+use App\Repositories\MenuRoleRepository;
 use App\Repositories\ResidentRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\TextTemplateRepository;
@@ -30,6 +32,7 @@ use App\Services\ComponentService;
 use App\Services\ContributionService;
 use App\Services\DuesMonthService;
 use App\Services\ImapService;
+use App\Services\MenuRoleService;
 use App\Services\ResidentService;
 use App\Services\TextTemplateService;
 use App\Services\UserService;
@@ -75,6 +78,7 @@ class AppServiceProvider extends ServiceProvider
             ImapRepository::class => Imap::class,
             MenuGroupRepository::class => MenuGroup::class,
             MenuRepository::class => Menu::class,
+            MenuRoleRepository::class => MenuRole::class,
             ResidentRepository::class => Resident::class,
             RoleRepository::class => Role::class,
             TextTemplateRepository::class => TextTemplate::class,
@@ -113,6 +117,9 @@ class AppServiceProvider extends ServiceProvider
             ImapService::class => [
                 \App\Libraries\Imap::class,
                 ImapRepository::class,
+            ],
+            MenuRoleService::class => [
+                MenuRoleRepository::class,
             ],
             ResidentService::class => [
                 ResidentRepository::class,

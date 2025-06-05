@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enum\RoleEnum;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class MenuRole extends Model
 {
@@ -59,5 +60,10 @@ class MenuRole extends Model
     public function isWarga(): bool
     {
         return $this->isRole(RoleEnum::Warga);
+    }
+
+    public function menu(): HasOne
+    {
+        return $this->hasOne(Menu::class, 'id', 'menu_id');
     }
 }

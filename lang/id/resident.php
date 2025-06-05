@@ -23,6 +23,7 @@ return [
     'error_delete' => 'Gagal menghapus data, silahkan coba lagi atau hubungi admin.',
     'error_housing_block_username' => 'Nama Pengguna dari nomor rumah sudah terdaftar, silahkan gunakan nomor rumah lain.',
     'error_resident_not_found' => 'Data warga tidak ditemukan. silahkan coba lagi atau hubungi admin.',
+    'error_resident_empty' => 'Data warga tidak ditemukan. Silahkan tambahkan data warga terlebih dahulu.',
 
     // success message
     'success_update' => 'Data warga berhasil diperbarui.',

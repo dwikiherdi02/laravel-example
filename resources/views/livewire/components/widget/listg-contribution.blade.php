@@ -28,7 +28,7 @@ mount(function (ComponentService $service) {
             {{ __('contribution.label_list') }} <small class="text-danger">*</small>
         </div>
         <div class="card-body border-bottom px-2">
-            @if ($items)
+            @if (count((array) $items) > 0)
             <div class="scroll-area-md">
                 <div class="scrollbar-container ps--active-y">
                     <div class="list-group px-1 w-100">
