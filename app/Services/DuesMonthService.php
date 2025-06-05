@@ -47,6 +47,13 @@ class DuesMonthService
             // throw new \Exception(trans('Iuran tidak boleh kosong'));
             throw new \Exception('Iuran tidak boleh kosong');
         }
+        
+        if ($this->duesMonthRepo->findByYearAndMonth($data->year, $data->month)) {
+            // throw new \Exception('Tanggal iuran sudah ada');
+            throw ValidationException::withMessages([
+                'dues_date' => 'Tanggal iuran sudah ada',
+            ]);
+        }
 
         DB::beginTransaction();
         try {
@@ -89,13 +96,6 @@ class DuesMonthService
             }
 
             $this->duesPaymentDetailRepo->createMany($paymentDetails);
-            
-            dd(
-                $duesMonth->toArray(), 
-                $contributions->toArray(), 
-                $resindents->toArray(),
-                collect($payments)->toArray(),
-                collect($paymentDetails)->toArray());
 
             DB::commit();
         } catch (ValidationException $e) {

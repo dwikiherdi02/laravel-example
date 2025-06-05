@@ -11,4 +11,9 @@ class DuesMonthRepository extends Repository
     ) {
         parent::__construct($model);
     }
+
+    public function findByYearAndMonth(int $year, int $month)
+    {
+        return $this->model->where('year', $year)->where('month', $month)->first();
+    }
 }

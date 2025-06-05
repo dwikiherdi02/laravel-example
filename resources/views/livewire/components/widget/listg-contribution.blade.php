@@ -14,7 +14,6 @@ state([
 ]);
 
 mount(function (ComponentService $service) {
-    // dd($this->errorMessage);
     $items = array_to_object($service->getContributionList()->toArray());
     $this->items = $items;
 });
@@ -34,7 +33,7 @@ mount(function (ComponentService $service) {
                 <div class="scrollbar-container ps--active-y">
                     <div class="list-group px-1 w-100">
                         @foreach ($items as $key => $item)
-                            <label for="contribution-{{ $key }}" class="list-group-item list-group-item-action my-1 rounded" style="cursor: pointer;">
+                            <label for="contribution-{{ $key }}" class="list-group-item list-group-item-action my-1 rounded {{ in_array($item->id, (array) $value) ? 'active' : '' }}" style="cursor: pointer;">
                                 <div class="d-flex justify-content-between w-100">
                                     <div class="custom-control custom-checkbox d-none">
                                         <input type="checkbox" wire:model="value" class="custom-control-input contribution-listg" id="contribution-{{ $key }}" value="{{ $item->id }}" autocomplete="off">

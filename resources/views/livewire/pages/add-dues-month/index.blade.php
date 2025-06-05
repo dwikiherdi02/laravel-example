@@ -3,6 +3,7 @@
 use App\Dto\DuesMonthDto;
 use App\Services\ComponentService;
 use App\Services\DuesMonthService;
+use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
 
 use function Livewire\Volt\{layout, state, rules, title, mount};
@@ -48,12 +49,25 @@ $createDuesMonth = function (DuesMonthService $service) {
         $data = DuesMonthDto::from($validated);
         
         $service->create($data);
-        
-        // $this->dispatch('hideModalContributionJs');
+
+        $date = Carbon::createFromFormat('m-Y', $data->dues_date);
+        $params = [];
+
+        if ($date && $date->format('m-Y') === $data->dues_date) {
+            $params['year'] = $date->format('Y');
+            $params['month'] = $date->format('m');
+        }
+
+        $this->redirect(route(
+            'monthly-contribution-history', 
+            $params
+        ));
     } catch (ValidationException $e) {
+        // dd('masuk sini');
         $this->isError = true;
         throw $e;
     } catch (\Exception $e) {
+        // dd('masuk sana');
         $this->isError = true;
         $this->alertMessage = $e->getMessage();
         // $this->reset('dues_date', 'contribution_ids');
