@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             ImapSeeder::class,
             TransactionTypeSeeder::class,
             TransactionMethodSeeder::class,
+            TransactionStatusSeeder::class,
             SystemBalanceSeeder::class,
         ]);
     }

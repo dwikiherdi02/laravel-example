@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enum\RoleEnum;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class MenuShortcut extends Model
 {
@@ -27,38 +28,13 @@ class MenuShortcut extends Model
         ];
     }
 
-    /**
-     * The attributes that are mass assignable or accessible on the User model.
-     *
-     * This property defines which fields can be set via mass assignment,
-     * providing a safeguard against mass-assignment vulnerabilities.
-     * Typically, you should list only the fields that are safe to be filled
-     * by user input, such as 'name', 'email', and 'password'.
-     *
-     * @var array
-     */
-    public function roleValue(): string
+    public function menu(): HasOne
     {
-        return $this->role_id instanceof RoleEnum ? $this->role_id->value : $this->role;
+        return $this->hasOne(Menu::class, 'id', 'menu_id');
     }
 
-    public function isRole(RoleEnum $role): bool
+    public function role(): HasOne
     {
-        return $this->role_id === $role;
-    }
-
-    public function isAdmin(): bool
-    {
-        return $this->isRole(RoleEnum::Admin);
-    }
-
-    public function isBendahara(): bool
-    {
-        return $this->isRole(RoleEnum::Bendahara);
-    }
-
-    public function isWarga(): bool
-    {
-        return $this->isRole(RoleEnum::Warga);
+        return $this->hasOne(Role::class, 'id', 'role_id');
     }
 }

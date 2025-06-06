@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Enum\TransactionMethodEnum;
+use App\Enum\TransactionStatusEnum;
+use App\Enum\TransactionTypeEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -23,6 +26,7 @@ class Transaction extends Model
         'id',
         'transaction_method_id',
         'transaction_type_id',
+        'transaction_status_id',
         'dues_payment_id',
         'email_id',
         'account_name',
@@ -34,6 +38,20 @@ class Transaction extends Model
         'created_at',
         'updated_at',
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'transaction_method_id' => TransactionMethodEnum::class,
+            'transaction_type_id' => TransactionTypeEnum::class,
+            'transaction_status_id' => TransactionStatusEnum::class,
+        ];
+    }
 
     public function transactionMethod(): HasOne
     {

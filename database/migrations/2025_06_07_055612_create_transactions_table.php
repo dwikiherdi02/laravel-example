@@ -16,6 +16,10 @@ return new class extends Migration {
             $table->foreign('transaction_method_id')->references('id')->on('transaction_methods')->onDelete('cascade');
             $table->uuid('transaction_type_id')->index();
             $table->foreign('transaction_type_id')->references('id')->on('transaction_types')->onDelete('cascade');
+
+            $table->uuid('transaction_status_id')->index();
+            $table->foreign('transaction_status_id')->references('id')->on('transaction_statuses')->onDelete(action: 'cascade');
+
             $table->uuid('dues_payment_id')->nullable()->index();
             $table->foreign('dues_payment_id')->references('id')->on('dues_payments')->onDelete('set null');
             $table->uuid('email_id')->nullable()->index();

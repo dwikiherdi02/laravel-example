@@ -75,7 +75,7 @@ $setState = function (TextTemplateDto $item) {
     if ($item) {
         $this->id = $item->id;
         $this->name = $item->name;
-        $this->transaction_type_id = $item->transaction_type_id;
+        $this->transaction_type_id = $item->transaction_type_id->value ?? '';
         $this->email = $item->email;
         $this->email_subject = $item->email_subject;
         $this->template = $item->template;

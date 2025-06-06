@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\TransactionTypeEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -29,6 +30,18 @@ class TextTemplate extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'transaction_type_id' => TransactionTypeEnum::class,
+        ];
+    }
 
     public function transactionType(): HasOne
     {
