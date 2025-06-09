@@ -10,12 +10,12 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 100vh;
+    height: 100dvh;
     display: flex;
 }
 
 .modal-fullscreen > .modal-dialog > .modal-content {
-    height: 100vh;
+    height: 100dvh;
     border-radius: 0;
 }
 
@@ -23,7 +23,7 @@
     /* Set default heights if CSS variables are not set (Bootstrap 4.2.1 doesn't provide these by default) */
     --modal-header-height: 56px;
     --modal-footer-height: 76px;
-    height: calc(100vh - (var(--modal-header-height) + var(--modal-footer-height)));
+    height: calc(100dvh - (var(--modal-header-height) + var(--modal-footer-height)));
     overflow-y: auto;
 }
 
