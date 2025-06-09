@@ -167,17 +167,16 @@ $generatePage = function () {
                 <ul class="list-group list-group-flush">
                     @foreach ($list->data as $item)
                         <li class="list-group-item px-3">
-                            <div class="d-flex">
-                                <div class="text-left w-100 align-self-center">
-                                    <p class="h6 font-weight-bolder text-muted my-0">
+                            <div class="d-flex flex-row justify-content-between align-items-center">
+                                <div class="w-50">
+                                    <p class="w-100 fs-6 text-dark text-left text-truncate font-weight-bold my-0">
                                         {{ $item->name }}
                                     </p>
-                                    <div class="fsize-2 text-success">
-                                        <small class="opacity-5 pr-1">Rp</small>
-                                        {{ number_format($item->amount, 0, ',', '.') }}
-                                    </div>
                                 </div>
-                                <div class="text-right w-25 align-self-start">
+                                <div class="w-50 fs-5 text-success text-right font-weight-bold">
+                                    <span class="fs-7 opacity-7 font-weight-normal">Rp</span> {{ number_format($item->amount, 0, ',', '.') }}
+                                </div>
+                                <div class="text-right align-self-start ml-2">
                                     <div class="d-inline-block dropdown">
                                         <button
                                             wire:ignore.self

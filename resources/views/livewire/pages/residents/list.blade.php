@@ -168,11 +168,9 @@ $generatePage = function () {
                         <li class="list-group-item px-3">
                             <div class="d-flex justify-content-between">
                                 <div class="text-left w-75">
-                                    <p class="h6 text-dark my-0">
-                                        {{ __('resident.short_label_housing_block') }}:
+                                    <p class="fs-6 w-75 text-dark text-left text-truncate font-weight-bold my-0">
                                         {{ $item->housing_block }}
                                     </p>
-                                    {{-- <small class="text-muted">{{ $item->name }} | {{ $item->phone_number }} | {{ __('resident.short_label_unique_code') .': '. $item->unique_code }}</small> --}}
                                 </div>
                                 <div class="text-right w-25 align-self-start">
                                     <div class="d-inline-block dropdown">
