@@ -6,8 +6,8 @@ use Carbon\Carbon;
 
 use function Livewire\Volt\{state, mount, on, action};
 
-state('year')->url(as: 'year');
-state('month')->url(as: 'month');
+state('year')->url(as: 'year', keep: true);
+state('month')->url(as: 'month', keep: true);
 
 state([
     'isLoading' => true,
@@ -21,9 +21,9 @@ state([
             'max' => 0,
         ],
         'search' => (object) [
-            'dues_date' => Carbon::now()->format('m-Y'),
-            'year' => Carbon::now()->year,
-            'month' => Carbon::now()->month,
+            'dues_date' => null,
+            'year' => null,
+            'month' => null,
             'general' => '',
             'isPaid' => null,
 
@@ -41,6 +41,14 @@ mount(function () {
         $this->list->search->dues_date = $this->month . '-' . $this->year;
         $this->list->search->year = (int) $this->year;
         $this->list->search->month = (int) $this->month;
+    } else {
+        $now = Carbon::now();
+        $this->list->search->dues_date = $now->format('m-Y');
+        $this->list->search->year = $now->year;
+        $this->list->search->month = $now->month;
+
+        $this->year = $now->format('Y');
+        $this->month = $now->format('m');
     }
 });
 
@@ -268,8 +276,8 @@ $generatePage = function () {
             let search = $("#search").val();
             let duesDate = $("#dues-date").val();
             let [month, year] = duesDate.split('-');
-            month = parseInt(month);
-            year = parseInt(year);
+            // month = parseInt(month);
+            // year = parseInt(year);
 
             $wire.set('isLoading', true).then(() => {
                 if (search != "" || duesDate != "") {
@@ -277,10 +285,13 @@ $generatePage = function () {
                 } else {
                     $wire.set('isFilter', false);
                 }
+                $wire.set('year', year);
+                $wire.set('month', month);
+
                 $wire.set('list.search.general', search);
                 $wire.set('list.search.dues_date', duesDate);
-                $wire.set('list.search.year', year);
-                $wire.set('list.search.month', month);
+                $wire.set('list.search.year', parseInt(year));
+                $wire.set('list.search.month', parseInt(month));
                 $wire.dispatch('loadDataMonthlyDuesHistories', { page: 1});
             });
         });
