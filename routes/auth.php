@@ -46,8 +46,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Volt::route('add-transaction', 'pages.add-transaction.index')
                 ->name('add-transaction');
     
-            Volt::route('monthly-contribution-history', 'pages.monthly-contribution-history.index')
-                ->name('monthly-contribution-history');
+            Volt::route('monthly-dues-history', 'pages.monthly-dues-history.index')
+                ->name('monthly-dues-history');
     
             Volt::route('transaction-history', 'pages.transaction-history.index')
                 ->name('transaction-history');

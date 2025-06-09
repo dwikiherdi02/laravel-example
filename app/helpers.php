@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 if (!function_exists('auth_role')) {
@@ -20,6 +21,19 @@ if (!function_exists('array_to_object')) {
     }
 }
 
+if (!function_exists('format_month_year')) {
+    function format_month_year(int $month, int $year): string
+    {
+        // Set locale to Indonesian
+        Carbon::setLocale(env('APP_LOCALE', 'id'));
+        // Create Carbon date object
+        $date = Carbon::createFromDate($year, $month, 1);
+        // Format as "Jun 2025"
+        return $date->translatedFormat('M Y');
+    }
+
+}
+
 if (!function_exists('fix_html_encoding')) {
     function fix_html_encoding($text)
     {
@@ -33,7 +47,6 @@ if (!function_exists('fix_html_encoding')) {
         return $text;
     }
 }
-
 
 if (!function_exists('fix_html_mojibake')) {
     function fix_html_mojibake(string $text): string

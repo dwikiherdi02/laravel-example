@@ -41,8 +41,9 @@ $login = function () {
             id="username"
             type="text"
             name="username"
-            required autofocus
-            autocomplete="username"
+            required 
+            {{-- autofocus --}}
+            autocomplete="off"
             placeholder="{{ __('login.username_label') }}"
             aria-describedby="usernameHelp" />
             <x-input-label for="username" :value="__('login.username_label')" :isRequired="false" />

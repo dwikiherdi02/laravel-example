@@ -31,6 +31,7 @@ use App\Repositories\UserRepository;
 use App\Services\ComponentService;
 use App\Services\ContributionService;
 use App\Services\DuesMonthService;
+use App\Services\DuesPaymentService;
 use App\Services\ImapService;
 use App\Services\MenuRoleService;
 use App\Services\ResidentService;
@@ -110,6 +111,9 @@ class AppServiceProvider extends ServiceProvider
                 DuesPaymentDetailRepository::class,
                 DuesPaymentRepository::class,
                 ResidentRepository::class,
+            ],
+            DuesPaymentService::class => [
+                DuesPaymentRepository::class,
             ],
             ContributionService::class => [
                 ContributionRepository::class,

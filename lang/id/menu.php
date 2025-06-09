@@ -9,7 +9,7 @@ return [
     'contributions' => 'Daftar Iuran',
     'add_dues_month' => 'Tambah Iuran Bulanan',
     'add_transaction' => 'Input Pemasukan/Pengeluaran',
-    'monthly_contribution_history' => 'Riwayat Iuran Bulanan',
+    'monthly_dues_history' => 'Riwayat Iuran Bulanan',
     'transaction_history' => 'Riwayat Transaksi',
     'contribution_report' => 'Laporan Iuran',
     'financial_report' => 'Laporan Keuangan',

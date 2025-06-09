@@ -108,9 +108,9 @@ class MenuData
             [
                 'id' => '018f984f-5c4d-8812-910f-c8c19a51952f',
                 'name' => 'Riwayat Iuran Bulanan',
-                'name_lang_key' => 'menu.monthly_contribution_history',
-                'route_name' => 'monthly-contribution-history',
-                'slug' => '/monthly-contribution-history',
+                'name_lang_key' => 'menu.monthly_dues_history',
+                'route_name' => 'monthly-dues-history',
+                'slug' => '/monthly-dues-history',
                 'icon' => 'pe-7s-folder',
                 'menu_group_id' => '870509a1-faaf-41d8-a832-53e7a37dbf9a',
                 'sort' => 8,

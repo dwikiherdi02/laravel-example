@@ -13,6 +13,7 @@ return [
     'show_less' => 'Sembumyikan',
     'search' => 'Cari',
     'search_placeholder' => 'Cari...',
+    'search_date_placeholder' => 'Tanggal...',
 
     // button
     'button_ok' => 'Oke',

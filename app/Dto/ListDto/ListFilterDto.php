@@ -11,6 +11,11 @@ class ListFilterSearchDto extends Data
         public ?string $general,
         public ?string $role,
         public ?string $transactionType,
+        public ?int $year,
+        public ?int $month,
+        public ?string $authUserId,
+        public ?string $authUserRoleId,
+        public ?bool $isPaid,
     ) {
     }
 }
