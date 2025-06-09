@@ -61,7 +61,7 @@ $createDuesMonth = function (DuesMonthService $service) {
         }
 
         $this->redirect(route(
-            'monthly-contribution-history', 
+            'monthly-dues-history', 
             $params
         ));
     } catch (ValidationException $e) {
