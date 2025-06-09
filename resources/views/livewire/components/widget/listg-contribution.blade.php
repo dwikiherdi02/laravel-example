@@ -39,8 +39,8 @@ mount(function (ComponentService $service) {
                                         <input type="checkbox" wire:model="value" class="custom-control-input contribution-listg" id="contribution-{{ $key }}" value="{{ $item->id }}" autocomplete="off">
                                     </div>
                                     <h5 class="align-self-center m-0 text-truncate fs-6 font-weight-bold w-100" title="{{ $item->name }}">{{ $item->name }}</h5>
-                                    <div class="label-currency align-self-center fs-6 font-weight-bold {{ in_array($item->id, (array) $value) ? 'text-white' : 'text-success' }} text-right w-100">
-                                        <small class="opacity-7 pr-1">Rp</small>
+                                    <div class="label-currency align-self-center fs-5 font-weight-bold {{ in_array($item->id, (array) $value) ? 'text-white' : 'text-success' }} text-right w-100">
+                                        <small class="fs-7 opacity-7 font-weight-normal">Rp</small>
                                         {{ number_format($item->amount, 0, ',', '.') }}
                                     </div>
                                 </div>

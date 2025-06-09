@@ -203,10 +203,10 @@ $generatePage = function () {
                                     @endpersist
                                 </div>
                                 <div class="text-left w-100">
-                                    <p class="h6 text-dark my-0 mb-1">
+                                    <p class="fs-6 w-75 text-dark text-truncate text-left text-truncate font-weight-bold my-0 mb-1">
                                         {{ $item->name }}
                                     </p>
-                                    <div class="badge badge-focus fs-9">
+                                    <div class="badge badge-info fs-9">
                                         {{ $item->role->name }}
                                     </div>
                                 </div>
