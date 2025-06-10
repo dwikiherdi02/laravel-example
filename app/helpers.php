@@ -22,14 +22,14 @@ if (!function_exists('array_to_object')) {
 }
 
 if (!function_exists('format_month_year')) {
-    function format_month_year(int $month, int $year): string
+    function format_month_year(int $month, int $year, string $format = 'M Y'): string
     {
         // Set locale to Indonesian
         Carbon::setLocale(env('APP_LOCALE', 'id'));
         // Create Carbon date object
         $date = Carbon::createFromDate($year, $month, 1);
         // Format as "Jun 2025"
-        return $date->translatedFormat('M Y');
+        return $date->translatedFormat($format);
     }
 
 }

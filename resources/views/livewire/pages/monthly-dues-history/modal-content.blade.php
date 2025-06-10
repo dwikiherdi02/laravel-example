@@ -19,12 +19,12 @@ $setState = action(function (?string $type = null, ?string $id = null) {
 
 <div>
     @switch($type)
-        @case('add')
-            <livewire:pages.monthly-dues-history.modal-content.add lazy />
+        @case('detail')
+            <livewire:pages.monthly-dues-history.modal-content.detail :id="$id" lazy />
             @break
-
-        @case('edit')
-            <livewire:pages.monthly-dues-history.modal-content.edit :id="$id" lazy />
+            
+        @case('merge-monthly-dues')
+            <livewire:pages.monthly-dues-history.modal-content.merge-monthly-dues lazy />
             @break
 
         @default

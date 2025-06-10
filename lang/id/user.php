@@ -7,6 +7,8 @@ return [
     'label_name' => 'Nama',
     'label_username' => 'Nama Pengguna',
     'label_assigned_role' => 'Sebagai',
+    'label_detail_user_data' => 'Data Pengguna',
+    'label_detail_resident_data' => 'Data Warga',
 
     // form
     'label_form_role' => 'Peran Pengguna',

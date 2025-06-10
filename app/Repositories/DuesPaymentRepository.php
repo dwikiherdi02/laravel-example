@@ -30,9 +30,9 @@ class DuesPaymentRepository extends Repository
         ->with([
             'duesMonth:id,year,month,contributions',
             'resident:id,name,housing_block,phone_number,address,unique_code',
-            'parent:id,resident_id,dues_month_id,base_amount,unique_code,final_amount,is_paid',
-            'parent.duesMonth:id,year,month,contributions',
-            'parent.resident:id,name,housing_block,phone_number,address,unique_code',
+            'childs:id,resident_id,dues_month_id,base_amount,unique_code,final_amount,is_paid',
+            'childs.duesMonth:id,year,month,contributions',
+            'childs.resident:id,name,housing_block,phone_number,address,unique_code',
         ]);
 
         /* $query = $query->where(function ($q) {
@@ -75,6 +75,12 @@ class DuesPaymentRepository extends Repository
                     ->orWhereLike('unique_code', '%' . $gFilter . '%')
                     ->orWhereLike('final_amount', '%' . $gFilter . '%')
                     ->orWhereHas('resident', function ($q) use ($gFilter) {
+                        $q->whereLike('name', '%' . $gFilter . '%')
+                            ->orWhereLike('housing_block', '%' . $gFilter . '%')
+                            ->orWhereLike('phone_number', '%' . $gFilter . '%')
+                            ->orWhereLike('address', '%' . $gFilter . '%');
+                    })
+                    ->orWhereHas('childs.resident', function ($q) use ($gFilter) {
                         $q->whereLike('name', '%' . $gFilter . '%')
                             ->orWhereLike('housing_block', '%' . $gFilter . '%')
                             ->orWhereLike('phone_number', '%' . $gFilter . '%')

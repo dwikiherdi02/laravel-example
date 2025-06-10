@@ -56,6 +56,11 @@ class DuesPayment extends Model
         return $this->hasOne(DuesPayment::class, 'id', 'parent_id');
     }
 
+    public function childs(): HasMany
+    {
+        return $this->hasMany(DuesPayment::class, 'parent_id', 'id');
+    }
+
     public function detail(): HasMany
     {
         return $this->hasMany(DuesPaymentDetail::class, 'dues_payment_id', 'id');

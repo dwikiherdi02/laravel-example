@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Dto\DuesPaymentDto;
 use App\Dto\ListDto\ListFilterDto;
 use App\Enum\RoleEnum;
 use App\Repositories\DuesPaymentRepository;
@@ -20,5 +21,16 @@ class DuesPaymentService
             $filter->search->authUserId = auth()->id();
         };
         return $this->duesPaymentRepo->list($filter);
+    }
+
+    public function findById(string $id)
+    {
+        $item = $this->duesPaymentRepo->findById($id);
+
+        if ($item) {
+            return $item;
+        }
+
+        return null;
     }
 }

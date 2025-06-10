@@ -115,20 +115,20 @@ $generatePage = function () {
                     <i class="pe-7s-filter btn-icon-wrapper"></i>
                 </button>
 
-                {{-- <button
+                <button
                     type="button"
-                    class="d-none d-md-inline-block btn-icon btn btn-success btn-add"
+                    class="d-none d-md-inline-block btn-icon btn btn-success btn-merge-montly-dues"
                     data-refresh="true">
-                    <i class="pe-7s-plus btn-icon-wrapper"></i>
-                    {{ __('label.add') }}
+                    <i class="pe-7s-albums btn-icon-wrapper"></i>
+                    {{ __('Gabung Tagihan Rumah') }}
                 </button>
 
                 <button
                     type="button"
-                    class="d-inline-block d-md-none btn-icon btn-icon-only btn btn-success btn-add"
+                    class="d-inline-block d-md-none btn-icon btn-icon-only btn btn-success btn-merge-montly-dues"
                     data-refresh="true">
-                    <i class="pe-7s-plus btn-icon-wrapper"> </i>
-                </button> --}}
+                    <i class="pe-7s-albums btn-icon-wrapper"> </i>
+                </button>
             </div>
             <div class="float-right">
                 <small class="font-weight-bold text-primary">{{ $page }} / {{ $list->total }}</small>
@@ -166,6 +166,13 @@ $generatePage = function () {
                         value="{{ $list->search->general }}"
                         placeholder="{{  __('label.search_placeholder') }}" />
                 </div>
+                <div class="col-12 mb-2">
+                    <x-select-list :id="'is-paid'">
+                        <option value="">{{ __('Pilih Status') }}</option>
+                        <option value="0">{{ __('Belum Dibayar') }}</option>
+                        <option value="1">{{ __('Sudah Dibayar') }}</option>
+                    </x-select-list>
+                </div>
                 <div class="col-12">
                     <button id="btn-search" class="mb-2 mr-2 btn btn-dark w-100">
                         {{ __('label.search') }}
@@ -195,14 +202,31 @@ $generatePage = function () {
                                     </div>
                                     <div class="d-flex flex-row justify-content-between align-items-center">
                                         <div>
-                                            <span class="badge badge-{{ $item->is_paid ? 'success' : 'secondary' }}">{{ $item->is_paid ? __('Sudah dibayar') : __('Belum dibayar') }}</span>
+                                            <span class="badge badge-{{ $item->is_paid ? 'success' : 'danger' }}">{{ $item->is_paid ? __('Sudah dibayar') : __('Belum dibayar') }}</span>
                                             @if ($item->is_merge)
-                                                <span class="badge badge-info">{{ __('Digabung') }}</span>
+                                                <span class="badge badge-info">{{ __('Gabungan') }}</span>
                                             @endif
                                         </div>
-                                        <div>
+                                        <div class="text-right">
                                             <div class="fs-5 text-success font-weight-bold">
-                                                <span class="fs-7 opacity-7 font-weight-normal">Rp</span> {{ number_format($item->final_amount, 0, ',', '.') }}
+                                                <span class="fs-7 opacity-7 font-weight-normal">Rp</span>
+                                                {{-- @php
+                                                    $finalAmount = number_format($item->final_amount, 0, ',', '.');
+                                                    $uniqueCode = $item->unique_code;
+
+                                                    $pos = strrpos($finalAmount, $uniqueCode);
+
+                                                    if ($pos !== false) {
+                                                        $finalAmount = substr_replace(
+                                                            $finalAmount, 
+                                                            '<span class="text-primary">' . $uniqueCode . '</span>', 
+                                                            $pos,
+                                                            strlen($uniqueCode)); 
+                                                    }
+
+                                                @endphp
+                                                {!! $finalAmount !!}  --}}
+                                                {{ number_format($item->final_amount, 0, ',', '.') }}
                                             </div>
                                         </div>
                                     </div>
@@ -219,7 +243,13 @@ $generatePage = function () {
                                             <i class="fa fa-ellipsis-h"></i>
                                         </button>
                                         <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-                                            {{-- ... --}}
+                                            <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-detail" data-id="{{ $item->id }}">
+                                                <i class="dropdown-icon lnr-eye"></i><span>{{ __('Lihat Detail') }}</span>
+                                            </button>
+                                            <div tabindex="-1" class="dropdown-divider"></div>
+                                            <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-merge-dues-multimonth" data-id="{{ $item->id }}">
+                                                <i class="dropdown-icon lnr-layers"></i><span>{{ __('Gabung Tagihan Bulanan') }}</span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -258,7 +288,7 @@ $generatePage = function () {
             $("#filter-collapse").collapse("toggle");
         });
 
-        $(".btn-add").on("click", () => {
+        $(".btn-merge-montly-dues").on("click", () => {
             $('#modal-dues-history').modal({
                 backdrop: 'static',
                 keyboard: false,
@@ -268,7 +298,7 @@ $generatePage = function () {
             window.dispatchEvent(
                 new CustomEvent(
                     'fetchModalDuesHistoryContentJs',
-                    { detail: { type: 'add' } }
+                    { detail: { type: 'merge-monthly-dues' } }
                 ));
         });
 
@@ -276,8 +306,12 @@ $generatePage = function () {
             let search = $("#search").val();
             let duesDate = $("#dues-date").val();
             let [month, year] = duesDate.split('-');
-            // month = parseInt(month);
-            // year = parseInt(year);
+            let isPaid = $("#is-paid").val();
+            if (isPaid == "") {
+                isPaid = null;
+            } else {
+                isPaid = parseInt(isPaid);
+            }
 
             $wire.set('isLoading', true).then(() => {
                 if (search != "" || duesDate != "") {
@@ -292,6 +326,7 @@ $generatePage = function () {
                 $wire.set('list.search.dues_date', duesDate);
                 $wire.set('list.search.year', parseInt(year));
                 $wire.set('list.search.month', parseInt(month));
+                $wire.set('list.search.isPaid', isPaid);
                 $wire.dispatch('loadDataMonthlyDuesHistories', { page: 1});
             });
         });
@@ -310,7 +345,7 @@ $generatePage = function () {
             $btn.dropdown("show");
         });
 
-        $(document).on("click", ".btn-edit", (e) => {
+        $(document).on("click", ".btn-detail", (e) => {
             let $btn = $(e.currentTarget);
             let id = $btn.data("id");
 
@@ -323,7 +358,7 @@ $generatePage = function () {
             window.dispatchEvent(
                 new CustomEvent(
                     'fetchModalDuesHistoryContentJs',
-                    { detail: { type: 'edit', id: id } }
+                    { detail: { type: 'detail', id: id } }
                 ));
         });
 

@@ -28,7 +28,7 @@ mount(function (UserService $service) {
     <div class="modal-body scrollbar-container">
         <div class="card bg-transparent border-0 shadow-none">
             <div class="card-header d-flex px-0">
-                <i class="header-icon fas fa-address-card icon-gradient bg-happy-itmeo py-1 d-block"> </i> {{ __('Data Pengguna') }}
+                <i class="header-icon fas fa-address-card icon-gradient bg-happy-itmeo py-1 d-block"> </i> {{ __('user.label_detail_user_data') }}
             </div>
             <div class="card-body px-0">
                 @if ($user->role_id != RoleEnum::Warga->value)
@@ -50,7 +50,7 @@ mount(function (UserService $service) {
         @if ($user->role_id == RoleEnum::Warga->value)
         <div class="card bg-transparent border-0 shadow-none">
             <div class="card-header d-flex px-0">
-                <i class="header-icon fas fa-user icon-gradient bg-happy-itmeo py-1 d-block"> </i> {{ __('Data Warga') }}
+                <i class="header-icon fas fa-user icon-gradient bg-happy-itmeo py-1 d-block"> </i> {{ __('user.label_detail_resident_data') }}
             </div>
             <div class="card-body px-0">
                 <label class="font-weight-bold">{{ __('resident.short_label_name') }}</label>
