@@ -33,4 +33,9 @@ class DuesPaymentService
 
         return null;
     }
+
+    public function listMergedByYearAndMonth(int $year, int $month)
+    {
+        return $this->duesPaymentRepo->listMergedByYearAndMonth($year, $month);
+    }
 }

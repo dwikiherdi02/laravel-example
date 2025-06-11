@@ -4,7 +4,9 @@ namespace App\Repositories;
 
 use App\Dto\ListDto\ListDto;
 use App\Dto\ListDto\ListFilterDto;
+use App\Enum\IsMergeEnum;
 use App\Models\DuesPayment;
+use App\Models\Resident;
 use Carbon\Carbon;
 
 class DuesPaymentRepository extends Repository
@@ -104,5 +106,36 @@ class DuesPaymentRepository extends Repository
             'data' => $histories,
             'total' => $total,
         ]);
+    }
+
+    public function listMergedByYearAndMonth(int $year, int $month)
+    {
+        $query = $this->model->select([
+            'id',
+            'resident_id',
+            'dues_month_id',
+            'base_amount',
+            'unique_code',
+            'final_amount',
+            'is_paid',
+            'is_merge',
+        ])
+        ->with([
+            'duesMonth:id,year,month,contributions',
+            'resident:id,name,housing_block,phone_number,address,unique_code',
+        ])
+        ->where('is_paid', false)
+        ->where('is_merge', IsMergeEnum::NoMerge->value)
+        ->whereNull('parent_id')
+        ->whereHas(
+            'duesMonth', 
+            function ($q) use ($year, $month) {
+            $q->where('year', $year)
+                ->where('month', $month);
+        })
+        ->orderBy(Resident::selectRaw('MIN(housing_block)')
+            ->whereColumn('dues_payments.resident_id', 'residents.id'));
+
+        return $query->get();
     }
 }

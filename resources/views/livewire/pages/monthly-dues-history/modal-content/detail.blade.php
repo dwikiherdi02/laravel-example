@@ -15,6 +15,7 @@ state([
 
 mount(function (DuesPaymentService $service) {
     $this->item = $service->findById($this->id);
+    dd($this->item->toArray());
     // dd($this->item->detail);
 });
 

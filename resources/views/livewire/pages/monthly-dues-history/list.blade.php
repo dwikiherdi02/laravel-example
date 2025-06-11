@@ -296,10 +296,17 @@ $generatePage = function () {
                 show: true
             });
 
+            let duesDate = $("#dues-date").val();
+            let [month, year] = duesDate.split('-');
+
             window.dispatchEvent(
                 new CustomEvent(
                     'fetchModalDuesHistoryContentJs',
-                    { detail: { type: 'merge-monthly-dues' } }
+                    { detail: { 
+                        type: 'merge-monthly-dues',
+                        year: parseInt(year),
+                        month: parseInt(month),
+                    } }
                 ));
         });
 
