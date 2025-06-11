@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->integer('unique_code')->index();
             $table->decimal('final_amount', 10, 2)->default(0);
             $table->boolean('is_paid')->default(false);
-            $table->boolean('is_merge')->default(false);
+            $table->integer('is_merge')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

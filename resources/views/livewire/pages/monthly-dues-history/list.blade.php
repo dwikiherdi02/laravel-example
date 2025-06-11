@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\IsMergeEnum;
 use App\Dto\ListDto\ListFilterDto;
 use App\Services\DuesPaymentService;
 use Carbon\Carbon;
@@ -203,7 +204,7 @@ $generatePage = function () {
                                     <div class="d-flex flex-row justify-content-between align-items-center">
                                         <div>
                                             <span class="badge badge-{{ $item->is_paid ? 'success' : 'danger' }}">{{ $item->is_paid ? __('Sudah dibayar') : __('Belum dibayar') }}</span>
-                                            @if ($item->is_merge)
+                                            @if ($item->is_merge != IsMergeEnum::NoMerge)
                                                 <span class="badge badge-info">{{ __('Gabungan') }}</span>
                                             @endif
                                         </div>

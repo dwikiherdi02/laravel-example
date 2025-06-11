@@ -16,7 +16,7 @@ class DuesPaymentDto extends Data
         public ?int $unique_code,
         public ?float $final_amount,
         public ?bool $is_paid,
-        public ?bool $is_merge,
+        public ?int $is_merge,
 
         public ?CarbonImmutable $created_at = null,
         public ?CarbonImmutable $updated_at = null,

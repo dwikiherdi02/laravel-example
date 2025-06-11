@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\IsMergeEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -40,6 +41,18 @@ class DuesPayment extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'is_merge' => IsMergeEnum::class,
+        ];
+    }
 
     public function resident(): HasOne
     {
