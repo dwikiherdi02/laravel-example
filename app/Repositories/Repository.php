@@ -36,4 +36,18 @@ class Repository
     {
         return $this->model->insert($data);
     }
+
+    public function updateMany(array $conditions, array $data)
+    {
+        // return $this->model->where($conditions)->update($data);
+        $query = $this->model->newQuery();
+        foreach ($conditions as $field => $value) {
+            if (is_array($value)) {
+                $query->whereIn($field, $value);
+            } else {
+                $query->where($field, $value);
+            }
+        }
+        return $query->update($data);
+    }
 }

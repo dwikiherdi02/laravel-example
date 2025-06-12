@@ -27,6 +27,9 @@ return [
     // error
     'error_save' => 'Gagal menyimpan data, silahkan coba lagi.',
     'error_delete' => 'Gagal menghapus data, silahkan coba lagi atau hubungi admin.',
+    'error_not_selected_item' => 'Belum ada :attribute yang dipilih. Silakan pilih :attribute terlebih dahulu.',
+    'error_requested_data_not_found' => 'Data :attribute yang dicari tidak ditemukan. Silahkan coba lagi atau hubungi admin.',
+
 
     // widgets
     'widget_select_role_placeholder' => 'Pilih peran',

@@ -125,7 +125,7 @@ class DuesPaymentRepository extends Repository
             'resident:id,name,housing_block,phone_number,address,unique_code',
         ])
         ->where('is_paid', false)
-        ->where('is_merge', IsMergeEnum::NoMerge->value)
+        // ->where('is_merge', IsMergeEnum::NoMerge->value)
         ->whereNull('parent_id')
         ->whereHas(
             'duesMonth', 
@@ -137,5 +137,10 @@ class DuesPaymentRepository extends Repository
             ->whereColumn('dues_payments.resident_id', 'residents.id'));
 
         return $query->get();
+    }
+
+    public function findByIds(array $ids)
+    {
+        return $this->model->whereIn('id', $ids)->get();
     }
 }

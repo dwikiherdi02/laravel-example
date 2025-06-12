@@ -2,6 +2,7 @@
 
 namespace App\Dto;
 
+use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Data;
 
@@ -20,8 +21,8 @@ class DuesPaymentDto extends Data
 
         public ?CarbonImmutable $created_at = null,
         public ?CarbonImmutable $updated_at = null,
-
-        public ?array $dues_payment_ids = null,
     ) {
+        $this->created_at ??= CarbonImmutable::now();
+        $this->updated_at ??= CarbonImmutable::now();
     }
 }

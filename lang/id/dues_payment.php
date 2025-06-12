@@ -10,5 +10,4 @@ return [
     // success message
 
     // error message
-    'error_dues_payment_ids_required' => 'Belum ada :attribute yang dipilih. Silakan pilih :attribute terlebih dahulu.',
 ];

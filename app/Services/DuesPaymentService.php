@@ -4,8 +4,13 @@ namespace App\Services;
 
 use App\Dto\DuesPaymentDto;
 use App\Dto\ListDto\ListFilterDto;
+use App\Dto\MonthlyDuesHistoryDto;
+use App\Enum\IsMergeEnum;
 use App\Enum\RoleEnum;
 use App\Repositories\DuesPaymentRepository;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class DuesPaymentService
 {
@@ -41,8 +46,52 @@ class DuesPaymentService
         return $this->duesPaymentRepo->listMergedByYearAndMonth($year, $month);
     }
 
-    public function createHouseBillMerge(DuesPaymentDto $data)
+    public function createHouseBillMerge(MonthlyDuesHistoryDto $data)
     {
-        dd($data);
+        if (empty($data->dues_payment_ids)) {
+            throw new \Exception(trans('label.error_not_selected_item', ['attribute' => trans('dues_payment.label_bill_list')]));
+        }
+
+        $selectedDuesPayments = $this->duesPaymentRepo->findByIds($data->dues_payment_ids);
+        if ($selectedDuesPayments->count() < 1) {
+            throw new \Exception(trans('label.error_requested_data_not_found', ['attribute' => trans('dues_payment.label_bill_list')]));
+        }
+
+        DB::beginTransaction();
+        try {
+            // tambah data dues payment parent
+            $parentDuesPaymentData = DuesPaymentDto::from([
+                'resident_id' => null,
+                'dues_month_id' => $selectedDuesPayments->first()->dues_month_id,
+                'parent_id' => null,
+                'base_amount' => $selectedDuesPayments->pluck('base_amount')->sum(),
+                'unique_code' => $selectedDuesPayments->pluck('unique_code')->sum(),
+                'final_amount' => array_sum([
+                    $selectedDuesPayments->pluck('base_amount')->sum(),
+                    $selectedDuesPayments->pluck('unique_code')->sum()
+                ]),
+                'is_paid' => false,
+                'is_merge' => IsMergeEnum::HouseBillMerge->value,
+            ])->toArray();
+            
+            $parentDuesPayment = $this->duesPaymentRepo->create($parentDuesPaymentData);
+
+            //  update data dues payment yang sudah dipilih
+            $this->duesPaymentRepo->updateMany(
+                ['id' => $selectedDuesPayments->pluck('id')->toArray()],
+                [
+                    'parent_id' => $parentDuesPayment->id,
+                ]
+            );
+
+            DB::commit();
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            throw $e;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
+            throw new \Exception(trans('label.error_save'));
+        }
     }
 }

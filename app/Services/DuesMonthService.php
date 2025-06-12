@@ -78,8 +78,8 @@ class DuesMonthService
                     'final_amount' => array_sum([$contributions->sum('amount'), $resindent->unique_code]),
                     'is_paid' => false,
                     'is_merge' => false,
-                    'created_at' => $now,
-                    'updated_at' => $now,
+                    // 'created_at' => $now,
+                    // 'updated_at' => $now,
                 ])->toArray();
             }
 
@@ -95,8 +95,8 @@ class DuesMonthService
                         'dues_payment_id' => $payment->id,
                         'contribution_id' => $contribution->id,
                         'amount' => $contribution->amount,
-                        'created_at' => $now,
-                        'updated_at' => $now,
+                        // 'created_at' => $now,
+                        // 'updated_at' => $now,
                     ])->toArray();
                 }
             }

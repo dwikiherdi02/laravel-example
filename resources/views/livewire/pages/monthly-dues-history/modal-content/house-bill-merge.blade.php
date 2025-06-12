@@ -1,6 +1,6 @@
 <?php
 
-use App\Dto\DuesPaymentDto;
+use App\Dto\MonthlyDuesHistoryDto;
 use App\Services\DuesPaymentService;
 use Illuminate\Validation\ValidationException;
 
@@ -27,7 +27,7 @@ rules([
 ])->attributes([
     'dues_payment_ids' => __('dues_payment.label_bill_list'),
 ])->messages([
-    'dues_payment_ids.required' => __('dues_payment.error_dues_payment_ids_required', ['attribute' => __('dues_payment.label_bill_list')]),
+    'dues_payment_ids.required' => __('label.error_not_selected_item', ['attribute' => __('dues_payment.label_bill_list')]),
 ]);
 
 mount(function (DuesPaymentService $service) {
@@ -46,9 +46,9 @@ $createHouseBillMerge = function (DuesPaymentService $service) {
 
         $validated = $this->validate();
 
-        $data = DuesPaymentDto::from($validated);
+        $data = MonthlyDuesHistoryDto::from($validated);
 
-        // $service->createHouseBillMerge($data);
+        $service->createHouseBillMerge($data);
 
         $this->dispatch('hideModalDuesHistoryJs');
     } catch (ValidationException $e) {

@@ -212,22 +212,6 @@ $generatePage = function () {
                                         <div class="text-right">
                                             <div class="fs-5 text-success font-weight-bold">
                                                 <span class="fs-7 opacity-7 font-weight-normal">Rp</span>
-                                                {{-- @php
-                                                    $finalAmount = number_format($item->final_amount, 0, ',', '.');
-                                                    $uniqueCode = $item->unique_code;
-
-                                                    $pos = strrpos($finalAmount, $uniqueCode);
-
-                                                    if ($pos !== false) {
-                                                        $finalAmount = substr_replace(
-                                                            $finalAmount,
-                                                            '<span class="text-primary">' . $uniqueCode . '</span>',
-                                                            $pos,
-                                                            strlen($uniqueCode));
-                                                    }
-
-                                                @endphp
-                                                {!! $finalAmount !!}  --}}
                                                 {{ number_format($item->final_amount, 0, ',', '.') }}
                                             </div>
                                         </div>
