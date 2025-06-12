@@ -32,7 +32,7 @@ class DuesPaymentRepository extends Repository
         ->with([
             'duesMonth:id,year,month,contributions',
             'resident:id,name,housing_block,phone_number,address,unique_code',
-            'childs:id,resident_id,dues_month_id,base_amount,unique_code,final_amount,is_paid',
+            'childs:id,resident_id,dues_month_id,parent_id,base_amount,unique_code,final_amount,is_paid',
             'childs.duesMonth:id,year,month,contributions',
             'childs.resident:id,name,housing_block,phone_number,address,unique_code',
         ]);
@@ -91,7 +91,8 @@ class DuesPaymentRepository extends Repository
             });
         }
 
-        $query = $query->orderBy('created_at', 'desc');
+        // $query = $query->orderBy('created_at', 'desc');
+        $query = $query->orderBy('id', 'desc');
 
         // Clone query untuk total count
         $total = (clone $query)->count();
@@ -127,6 +128,7 @@ class DuesPaymentRepository extends Repository
         ->where('is_paid', false)
         // ->where('is_merge', IsMergeEnum::NoMerge->value)
         ->whereNull('parent_id')
+        ->where('is_merge', IsMergeEnum::NoMerge->value)
         ->whereHas(
             'duesMonth', 
             function ($q) use ($year, $month) {

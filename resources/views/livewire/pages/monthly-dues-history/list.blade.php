@@ -195,12 +195,34 @@ $generatePage = function () {
                             <div class="d-flex flex-row justify-content-between align-items-center">
                                 <div class="w-100 d-flex flex-column pr-3">
                                     <div class="d-flex flex-row justify-content-between align-items-center">
-                                        <p class="fs-6 w-75 text-dark text-left text-truncate font-weight-bold my-0">
-                                            {{ $item->resident->housing_block }}
-                                        </p>
-                                        <p class="fs-7 w-25 text-dark text-right my-0">
-                                            {{ format_month_year($item->duesMonth->month, $item->duesMonth->year) }}
-                                        </p>
+                                        @switch($item->is_merge)
+                                            @case(IsMergeEnum::HouseBillMerge)
+                                                <p class="fs-6 w-75 text-dark text-left text-truncate font-weight-bold my-0">
+                                                    {{ $item->childs->pluck('resident.housing_block')->implode(', ') }}
+                                                </p>
+                                                <p class="fs-7 w-25 text-dark text-right my-0">
+                                                    {{ format_month_year($item->duesMonth->month, $item->duesMonth->year) }}
+                                                </p>
+                                                @break
+
+                                            @case(IsMergeEnum::MonthlyBillMerge)
+                                                <p class="fs-6 w-75 text-dark text-left text-truncate font-weight-bold my-0">
+                                                    {{ $item->resident->housing_block }}
+                                                </p>
+                                                <p class="fs-7 w-25 text-dark text-right my-0">
+                                                    {{-- {{ format_month_year($item->duesMonth->month, $item->duesMonth->year) }} --}}
+                                                    -
+                                                </p>
+                                                @break
+                                        
+                                            @default
+                                                <p class="fs-6 w-75 text-dark text-left text-truncate font-weight-bold my-0">
+                                                    {{ $item->resident->housing_block }}
+                                                </p>
+                                                <p class="fs-7 w-25 text-dark text-right my-0">
+                                                    {{ format_month_year($item->duesMonth->month, $item->duesMonth->year) }}
+                                                </p>
+                                        @endswitch
                                     </div>
                                     <div class="d-flex flex-row justify-content-between align-items-center">
                                         <div>
@@ -232,10 +254,12 @@ $generatePage = function () {
                                             <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-detail" data-id="{{ $item->id }}">
                                                 <i class="dropdown-icon lnr-eye"></i><span>{{ __('Lihat Detail') }}</span>
                                             </button>
+                                            @if ($item->is_merge == IsMergeEnum::NoMerge)
                                             <div tabindex="-1" class="dropdown-divider"></div>
                                             <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-monthly-bill-merge" data-id="{{ $item->id }}">
                                                 <i class="dropdown-icon lnr-layers"></i><span>{{ __('Gabung Tagihan Bulanan') }}</span>
                                             </button>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
