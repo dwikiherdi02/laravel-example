@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Dto\ListDto\ListDto;
 use App\Dto\ListDto\ListFilterDto;
 use App\Enum\IsMergeEnum;
+use App\Models\DuesMonth;
 use App\Models\DuesPayment;
 use App\Models\Resident;
 use Carbon\Carbon;
@@ -54,9 +55,19 @@ class DuesPaymentRepository extends Repository
         }
 
         $query = $query->whereNull('parent_id')
-                        ->whereHas('duesMonth', function ($q) use ($year, $month) {
-                            $q->where('year', $year)
-                                ->where('month', $month);
+                        // ->whereHas('duesMonth', function ($q) use ($year, $month) {
+                        //     $q->where('year', $year)
+                        //         ->where('month', $month);
+                        // });
+                        ->where(function ($q) use ($year, $month) {
+                            $q->whereHas('duesMonth', function ($q) use ($year, $month) {
+                                $q->where('year', $year)
+                                    ->where('month', $month);
+                            })
+                            ->orWhereHas('childs.duesMonth', function ($q) use ($year, $month) {
+                                $q->where('year', $year)
+                                    ->where('month', $month);
+                            });
                         });
 
         if ($filter->search->isPaid !== null) {
@@ -137,6 +148,33 @@ class DuesPaymentRepository extends Repository
         })
         ->orderBy(Resident::selectRaw('MIN(housing_block)')
             ->whereColumn('dues_payments.resident_id', 'residents.id'));
+
+        return $query->get();
+    }
+
+    public function listMergeByResidentId(string $residentId) {
+        $query = $this->model->select([
+            'id',
+            'resident_id',
+            'dues_month_id',
+            'base_amount',
+            'unique_code',
+            'final_amount',
+            'is_paid',
+            'is_merge',
+        ])
+        ->with([
+            'duesMonth:id,year,month,contributions',
+            'resident:id,name,housing_block,phone_number,address,unique_code',
+        ])
+        ->where('is_paid', false)
+        ->where('resident_id', $residentId)
+        ->whereNull('parent_id')
+        ->where('is_merge', IsMergeEnum::NoMerge->value)
+        ->orderBy(DuesMonth::selectRaw('MIN(year)')
+            ->whereColumn('dues_payments.dues_month_id', 'dues_months.id'))
+        ->orderBy(DuesMonth::selectRaw('MIN(month)')
+            ->whereColumn('dues_payments.dues_month_id', 'dues_months.id'));
 
         return $query->get();
     }

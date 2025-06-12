@@ -10,4 +10,6 @@ return [
     // success message
 
     // error message
+    'error_minimum_selected' => 'Minimal 2 :attribute harus dipilih untuk digabungkan.',
+    'error_is_merge_not_found' => 'Tipe penggabungan tidak ditemukan.',
 ];

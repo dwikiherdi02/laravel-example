@@ -1,48 +1,65 @@
 <?php
 
-use App\Dto\ContributionDto;
-use App\Services\ContributionService;
+use App\Dto\MonthlyDuesHistoryDto;
+use App\Enum\IsMergeEnum;
+use App\Services\DuesPaymentService;
 use Illuminate\Validation\ValidationException;
 
-use function Livewire\Volt\{placeholder, state, rules};
+use function Livewire\Volt\{placeholder, state, rules, mount};
 
 placeholder('components.loading');
 
 state([
+    // attributes
+    'resident_id' => null,
+    'items' => null,
+
     // form
-    'name' => '',
-    'amount' => 0,
+    'dues_payment_ids' => [],
 
     // alert
-    'alertMessage' => ''
+    'alertMessage' => '',
+    'isError' => false,
 ]);
 
 rules([
-    'name' => ['required', 'string', 'max:100'],
-    'amount' => ['required', 'numeric', 'min:0'],
+    'dues_payment_ids' => ['required', 'array'],
 ])->attributes([
-    'name' => trans('contribution.label_name'),
-    'amount' => trans('contribution.label_amount'),
+    'dues_payment_ids' => __('dues_payment.label_bill_list'),
+])->messages([
+    'dues_payment_ids.required' => __('label.error_not_selected_item', ['attribute' => __('dues_payment.label_bill_list')]),
 ]);
 
-$createContribution = function (ContributionService $service) {
+mount(function (DuesPaymentService $service) {
+    // dd('resident_id: ' . $this->resident_id);
+    $items = $service->listMergeByResidentId($this->resident_id);
+    $this->items = $items;
+});
+
+$createMonthlyBillMerge = function (DuesPaymentService $service) {
     try {
+        $this->isError = false;
         $this->alertMessage = null;
 
         $this->resetErrorBag();
 
         $validated = $this->validate();
 
-        $data = ContributionDto::from($validated);
+        $data = MonthlyDuesHistoryDto::from($validated);
 
-        $service->create($data);
+        $data->is_merge = IsMergeEnum::MonthlyBillMerge;
+
+        $service->createMerge($data);
 
         $this->dispatch('hideModalDuesHistoryJs');
     } catch (ValidationException $e) {
-        throw $e;
-    } catch (\Exception $e) {
-        $this->reset('name', 'amount');
+        $this->isError = true;
         $this->alertMessage = $e->getMessage();
+        // throw $e;
+    } catch (\Exception $e) {
+        $this->isError = true;
+        $this->alertMessage = $e->getMessage();
+        // $this->reset('dues_date', 'contribution_ids');
     }
 };
 
@@ -50,45 +67,46 @@ $createContribution = function (ContributionService $service) {
 
 <div>
     <div class="modal-header bg-transparent border-0">
-        <h5 class="modal-title" id="modal-resident-title">{{ __('contribution.label_add') }}</h5>
-        <button type="button" class="close" aria-label="Close" data-dismiss="modal">
+        <h5 class="modal-title" id="modal-resident-title">{{ __('dues_payment.label_house_bill_merge') }}</h5>
+        <button wire:target="createMonthlyBillMerge" wire:loading.attr="disabled" type="button" class="close" aria-label="Close" data-dismiss="modal">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body scrollbar-container">
-        <div class="alert alert-danger alert-dismissible fade @if($alertMessage != null) d-block show @else d-none @endif"
-            role="alert">
+        <div class="alert @if($isError) alert-danger @else alert-success @endif alert-dismissible fade @if($alertMessage != null) d-block show @else d-none @endif" role="alert">
             {{ $alertMessage }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <form wire:submit="createContribution" id="user-form">
-            <div class="row">
-                <div class="form-group col-12 col-md-12 mb-3">
-                    <x-input-label for="name" :value="__('contribution.label_name')" :isRequired="true" />
-                    <x-text-input wire:model="name" id="name" type="text" name="name"
-                        aria-describedby="nameHelp" />
-                    <x-input-error id="nameHelp" :messages="$errors->get('name')" />
-                </div>
 
-                <div class="form-group col-12 col-md-12 mb-3">
-                    <x-input-label for="amount" :value="__('contribution.label_amount')" :isRequired="true" />
-
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-transparent border-right-0">Rp</span>
+        <form wire:submit="createMonthlyBillMerge" id="user-form">
+            <div class="list-group px-1 w-100">
+                @foreach ($items as $key => $item)
+                <label for="contribution-{{ $key }}" class="list-group-item list-group-item-action my-1 rounded {{ in_array($item->id, (array) $dues_payment_ids) ? 'active' : '' }}" style="cursor: pointer;">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <div class="w-50">
+                            <div class="custom-control custom-checkbox d-none">
+                                <input type="checkbox" wire:model="dues_payment_ids" class="custom-control-input bill-list" id="contribution-{{ $key }}" value="{{ $item->id }}" autocomplete="off">
+                            </div>
+                            <p class="fs-6 w-75 text-left text-truncate font-weight-bold my-0">
+                                {{ format_month_year($item->duesMonth->month, $item->duesMonth->year) }}
+                            </p>
                         </div>
-                        <x-text-input wire:model="amount" id="amount" class="form-number text-right border-left-0" type="number" name="amount" aria-describedby="amountHelp" />
+                        <div class="d-flex flex-column text-right w-50">
+                            <div class="label-currency fs-5 w-100 font-weight-bold {{ in_array($item->id, (array) $dues_payment_ids) ? 'text-white' : 'text-success' }}">
+                                <span class="fs-7 opacity-7 font-weight-normal">Rp</span>
+                                {{ number_format($item->final_amount, 0, ',', '.') }}
+                            </div>
+                        </div>
                     </div>
-
-                    <x-input-error id="amountHelp" :messages="$errors->get('amount')" />
-                </div>
+                </label>
+                @endforeach
             </div>
         </form>
     </div>
     <div class="modal-footer bg-transparent d-flex justify-content-between w-100 px-0 pb-0 border-0">
-        <button wire:target="createContribution" wire:loading.attr="disabled" type="button" class="btn btn-lg btn-danger font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0" data-dismiss="modal">
+        <button wire:target="createMonthlyBillMerge" wire:loading.attr="disabled" type="button" class="btn btn-lg btn-danger font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0" data-dismiss="modal">
             {{ __('label.cancel') }}
         </button>
 
@@ -105,6 +123,19 @@ $createContribution = function (ContributionService $service) {
 <script>
     $(function () {
         generateScrollbar();
+    });
+
+    $(document).on("change", ".bill-list", function (e) {
+        let t = $(e.currentTarget);
+        let isChecked = t.prop("checked");
+        let listGroup = t.closest(".list-group-item");
+        if (isChecked) {
+            listGroup.addClass("active");
+            listGroup.find(".label-currency").removeClass("text-success").addClass("text-white");
+        } else {
+            listGroup.removeClass("active");
+            listGroup.find(".label-currency").removeClass("text-white").addClass("text-success");
+        }
     });
 </script>
 @endscript

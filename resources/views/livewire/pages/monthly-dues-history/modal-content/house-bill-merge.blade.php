@@ -1,6 +1,7 @@
 <?php
 
 use App\Dto\MonthlyDuesHistoryDto;
+use App\Enum\IsMergeEnum;
 use App\Services\DuesPaymentService;
 use Illuminate\Validation\ValidationException;
 
@@ -48,7 +49,9 @@ $createHouseBillMerge = function (DuesPaymentService $service) {
 
         $data = MonthlyDuesHistoryDto::from($validated);
 
-        $service->createHouseBillMerge($data);
+        $data->is_merge = IsMergeEnum::HouseBillMerge;
+
+        $service->createMerge($data);
 
         $this->dispatch('hideModalDuesHistoryJs');
     } catch (ValidationException $e) {
@@ -56,7 +59,6 @@ $createHouseBillMerge = function (DuesPaymentService $service) {
         $this->alertMessage = $e->getMessage();
         // throw $e;
     } catch (\Exception $e) {
-        dd('error', $e->getMessage());
         $this->isError = true;
         $this->alertMessage = $e->getMessage();
         // $this->reset('dues_date', 'contribution_ids');

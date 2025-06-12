@@ -206,12 +206,21 @@ $generatePage = function () {
                                                 @break
 
                                             @case(IsMergeEnum::MonthlyBillMerge)
-                                                <p class="fs-6 w-75 text-dark text-left text-truncate font-weight-bold my-0">
+                                                <p class="fs-6 w-50 text-dark text-left text-truncate font-weight-bold my-0">
                                                     {{ $item->resident->housing_block }}
                                                 </p>
-                                                <p class="fs-7 w-25 text-dark text-right my-0">
-                                                    {{-- {{ format_month_year($item->duesMonth->month, $item->duesMonth->year) }} --}}
-                                                    -
+                                                <p class="fs-7 w-50 text-dark text-right my-0">
+                                                    @php
+                                                        $sortedBills = $item->childs->pluck('duesMonth')->sortBy(function($duesMonth) {
+                                                            return sprintf('%04d-%02d', $duesMonth->year, $duesMonth->month);
+                                                        });
+                                                        $firstBill = $sortedBills->first();
+                                                        $lastBill = $sortedBills->last();
+                                                    @endphp
+                                                    {{ format_month_year($firstBill->month, $firstBill->year) }}
+                                                    @if($firstBill != $lastBill)
+                                                        s/d {{ format_month_year($lastBill->month, $lastBill->year) }}
+                                                    @endif
                                                 </p>
                                                 @break
                                         
@@ -256,7 +265,7 @@ $generatePage = function () {
                                             </button>
                                             @if ($item->is_merge == IsMergeEnum::NoMerge)
                                             <div tabindex="-1" class="dropdown-divider"></div>
-                                            <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-monthly-bill-merge" data-id="{{ $item->id }}">
+                                            <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-monthly-bill-merge" data-resident-id="{{ $item->resident_id }}">
                                                 <i class="dropdown-icon lnr-layers"></i><span>{{ __('Gabung Tagihan Bulanan') }}</span>
                                             </button>
                                             @endif
@@ -312,7 +321,7 @@ $generatePage = function () {
                 new CustomEvent(
                     'fetchModalDuesHistoryContentJs',
                     { detail: {
-                        type: 'merge-monthly-dues',
+                        type: 'houes-bill-merge',
                         year: parseInt(year),
                         month: parseInt(month),
                     } }
@@ -376,6 +385,23 @@ $generatePage = function () {
                 new CustomEvent(
                     'fetchModalDuesHistoryContentJs',
                     { detail: { type: 'detail', id: id } }
+                ));
+        });
+
+        $(document).on("click", ".btn-monthly-bill-merge", (e) => {
+            let $btn = $(e.currentTarget);
+            let resident_id = $btn.data("resident-id");            
+
+            $('#modal-dues-history').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
+
+            window.dispatchEvent(
+                new CustomEvent(
+                    'fetchModalDuesHistoryContentJs',
+                    { detail: { type: 'monthly-bill-merge', resident_id: resident_id } }
                 ));
         });
 

@@ -46,10 +46,23 @@ class DuesPaymentService
         return $this->duesPaymentRepo->listMergedByYearAndMonth($year, $month);
     }
 
-    public function createHouseBillMerge(MonthlyDuesHistoryDto $data)
+    public function listMergeByResidentId(string $residentId)
+    {
+        return $this->duesPaymentRepo->listMergeByResidentId($residentId);
+    }
+
+    public function createMerge(MonthlyDuesHistoryDto $data)
     {
         if (empty($data->dues_payment_ids)) {
             throw new \Exception(trans('label.error_not_selected_item', ['attribute' => trans('dues_payment.label_bill_list')]));
+        }
+
+        if (count($data->dues_payment_ids) < 2) {
+            throw new \Exception(trans( 'dues_payment.error_minimum_selected', ['attribute' => trans('dues_payment.label_bill_list') ]));
+        }
+
+        if ($data->is_merge == null) {
+            throw new \Exception('dues_payment.error_is_merge_not_found');
         }
 
         $selectedDuesPayments = $this->duesPaymentRepo->findByIds($data->dues_payment_ids);
@@ -59,19 +72,25 @@ class DuesPaymentService
 
         DB::beginTransaction();
         try {
+            $baseAmount = $selectedDuesPayments->pluck('base_amount')->sum();
+            $uniqueCode = $selectedDuesPayments->first()->unique_code;
+            if ($data->is_merge == IsMergeEnum::HouseBillMerge) {
+                $uniqueCode = $selectedDuesPayments->pluck('unique_code')->sum();
+            }
+
             // tambah data dues payment parent
             $parentDuesPaymentData = DuesPaymentDto::from([
-                'resident_id' => null,
-                'dues_month_id' => $selectedDuesPayments->first()->dues_month_id,
+                'resident_id' => $data->is_merge == IsMergeEnum::MonthlyBillMerge ? $selectedDuesPayments->first()->resident_id : null,
+                'dues_month_id' => $data->is_merge == IsMergeEnum::HouseBillMerge ? $selectedDuesPayments->first()->dues_month_id : null,
                 'parent_id' => null,
-                'base_amount' => $selectedDuesPayments->pluck('base_amount')->sum(),
-                'unique_code' => $selectedDuesPayments->pluck('unique_code')->sum(),
+                'base_amount' => $baseAmount,
+                'unique_code' => $uniqueCode,
                 'final_amount' => array_sum([
-                    $selectedDuesPayments->pluck('base_amount')->sum(),
-                    $selectedDuesPayments->pluck('unique_code')->sum()
+                    $baseAmount,
+                    $uniqueCode
                 ]),
                 'is_paid' => false,
-                'is_merge' => IsMergeEnum::HouseBillMerge->value,
+                'is_merge' => $data->is_merge->value,
             ])->toArray();
             
             $parentDuesPayment = $this->duesPaymentRepo->create($parentDuesPaymentData);

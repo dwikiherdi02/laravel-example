@@ -7,15 +7,17 @@ state([
     'id' => null,
     'year' => null,
     'month' => null,
+    'resident_id' => null,
 ]);
 
 on(['setState']);
 
-$setState = action(function (?string $type = null, ?string $id = null, ?int $year = null, ?int $month = null) {
+$setState = action(function (?string $type = null, ?string $id = null, ?int $year = null, ?int $month = null, ?string $resident_id = null) {
     $this->id = $id;
     $this->type = $type;
     $this->year = $year;
     $this->month = $month;
+    $this->resident_id = $resident_id;
 });
 
 ?>
@@ -27,12 +29,12 @@ $setState = action(function (?string $type = null, ?string $id = null, ?int $yea
             <livewire:pages.monthly-dues-history.modal-content.detail :id="$id" lazy />
             @break
 
-        @case('merge-monthly-dues')
+        @case('houes-bill-merge')
             <livewire:pages.monthly-dues-history.modal-content.house-bill-merge :year="$year" :month="$month" lazy />
             @break
 
-        @case('merge-mutli-month-dues')
-            <livewire:pages.monthly-dues-history.modal-content.monthly-bill-merge lazy />
+        @case('monthly-bill-merge')
+            <livewire:pages.monthly-dues-history.modal-content.monthly-bill-merge :resident_id="$resident_id" lazy />
             @break
 
         @default
@@ -46,12 +48,14 @@ $setState = action(function (?string $type = null, ?string $id = null, ?int $yea
             const id = e.detail != undefined ? e.detail.id : null;
             const year = e.detail != undefined ? e.detail.year : null;
             const month = e.detail != undefined ? e.detail.month : null;
+            const resident_id = e.detail != undefined ? e.detail.resident_id : null;
 
             let opt = {
                 type: type,
                 id: id,
                 year: year,
-                month: month
+                month: month,
+                resident_id: resident_id,
             };
             $wire.dispatch("setState", opt);
         });
