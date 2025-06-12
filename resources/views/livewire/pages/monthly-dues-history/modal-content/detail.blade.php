@@ -1,8 +1,7 @@
 <?php
 
-use App\Dto\DuesPaymentDto;
+use App\Enum\IsMergeEnum;
 use App\Services\DuesPaymentService;
-// use Illuminate\Validation\ValidationException;
 
 use function Livewire\Volt\{placeholder, state, mount};
 
@@ -15,8 +14,6 @@ state([
 
 mount(function (DuesPaymentService $service) {
     $this->item = $service->findById($this->id);
-    dd($this->item->toArray());
-    // dd($this->item->detail);
 });
 
 ?>
@@ -36,7 +33,7 @@ mount(function (DuesPaymentService $service) {
                     <i class="header-icon fas fa-list icon-gradient bg-happy-itmeo py-1 d-block"> </i> {{ __('Data Tagihan') }}
                 </section>
                 <section>
-                    @if ($item->is_merge)
+                    @if ($item->is_merge != IsMergeEnum::NoMerge)
                         <span class="badge badge-info">{{ __('Gabungan') }}</span>
                     @endif
                     <span class="badge badge-{{ $item->is_paid ? 'success' : 'danger' }}">{{ $item->is_paid ? __('Sudah dibayar') : __('Belum dibayar') }}</span>
@@ -45,11 +42,18 @@ mount(function (DuesPaymentService $service) {
             <div class="card-body px-0">
                 <table class="mb-0 table table-borderless">
                     <tbody>
-                        @if ($item->is_merge)
-                        <livewire:pages.monthly-dues-history.modal-content.detail.merge-dues-bill :item="$item" />
-                        @else
-                        <livewire:pages.monthly-dues-history.modal-content.detail.default :item="$item" />
-                        @endif
+                        @switch($item->is_merge)
+                            @case(IsMergeEnum::HouseBillMerge)
+                                <livewire:pages.monthly-dues-history.modal-content.detail.house-bill-merge :item="$item" />
+                                @break
+
+                            @case(IsMergeEnum::MonthlyBillMerge)
+                                <livewire:pages.monthly-dues-history.modal-content.detail.monthly-bill-merge :item="$item" />
+                                @break
+
+                            @default
+                                <livewire:pages.monthly-dues-history.modal-content.detail.default :item="$item" />
+                        @endswitch
                     </tbody>
                 </table>
             </div>
@@ -63,22 +67,6 @@ mount(function (DuesPaymentService $service) {
         @endif
     </div>
     <div class="modal-footer bg-transparent d-flex justify-content-between w-100 px-0 pb-0 border-0">
-        {{-- @if($id != null)
-        <button wire:target="updateContribution" wire:loading.attr="disabled" type="button" class="btn btn-lg btn-danger font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0" data-dismiss="modal">
-            {{ __('label.cancel') }}
-        </button>
-
-        <button wire:loading.remove type="submit" form="user-form" class="btn btn-lg btn-primary font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0">
-            {{ __('label.save') }}
-        </button>
-        <button wire:loading class="btn btn-lg btn-primary font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0">
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        </button>
-        @else
-        <button wire:target="updateContribution" wire:loading.attr="disabled" type="button" class="btn btn-lg btn-danger font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0" data-dismiss="modal">
-            {{ __('label.cancel') }}
-        </button>
-        @endif --}}
         <button type="button" class="btn btn-lg btn-danger font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0" data-dismiss="modal">
             {{ __('label.cancel') }}
         </button>

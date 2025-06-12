@@ -1,5 +1,6 @@
 <?php
 
+use App\Dto\DuesPaymentDto;
 use App\Services\DuesPaymentService;
 use Illuminate\Validation\ValidationException;
 
@@ -17,13 +18,16 @@ state([
     'dues_payment_ids' => [],
 
     // alert
-    'alertMessage' => ''
+    'alertMessage' => '',
+    'isError' => false,
 ]);
 
 rules([
     'dues_payment_ids' => ['required', 'array'],
 ])->attributes([
-    'dues_payment_ids' => __('Daftar Tagihan'),
+    'dues_payment_ids' => __('dues_payment.label_bill_list'),
+])->messages([
+    'dues_payment_ids.required' => __('dues_payment.error_dues_payment_ids_required', ['attribute' => __('dues_payment.label_bill_list')]),
 ]);
 
 mount(function (DuesPaymentService $service) {
@@ -33,28 +37,50 @@ mount(function (DuesPaymentService $service) {
     // dd($items->toArray());
 });
 
-$createMergeMonthlyDues = function () {
-    dd('createMergeMonthlyDues called', $this->all());
+$createHouseBillMerge = function (DuesPaymentService $service) {
+    try {
+        $this->isError = false;
+        $this->alertMessage = null;
+
+        $this->resetErrorBag();
+
+        $validated = $this->validate();
+
+        $data = DuesPaymentDto::from($validated);
+
+        // $service->createHouseBillMerge($data);
+
+        $this->dispatch('hideModalDuesHistoryJs');
+    } catch (ValidationException $e) {
+        $this->isError = true;
+        $this->alertMessage = $e->getMessage();
+        // throw $e;
+    } catch (\Exception $e) {
+        dd('error', $e->getMessage());
+        $this->isError = true;
+        $this->alertMessage = $e->getMessage();
+        // $this->reset('dues_date', 'contribution_ids');
+    }
 };
 
 ?>
 
 <div>
     <div class="modal-header bg-transparent border-0">
-        <h5 class="modal-title" id="modal-resident-title">{{ __('Gabung Tagihan Rumah') }}</h5>
-        <button wire:target="createMergeMonthlyDues" wire:loading.attr="disabled" type="button" class="close" aria-label="Close" data-dismiss="modal">
+        <h5 class="modal-title" id="modal-resident-title">{{ __('dues_payment.label_house_bill_merge') }}</h5>
+        <button wire:target="createHouseBillMerge" wire:loading.attr="disabled" type="button" class="close" aria-label="Close" data-dismiss="modal">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body scrollbar-container">
-        <div class="alert alert-danger alert-dismissible fade @if($alertMessage != null) d-block show @else d-none @endif"
-            role="alert">
+        <div class="alert @if($isError) alert-danger @else alert-success @endif alert-dismissible fade @if($alertMessage != null) d-block show @else d-none @endif" role="alert">
             {{ $alertMessage }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <form wire:submit="createMergeMonthlyDues" id="user-form">
+
+        <form wire:submit="createHouseBillMerge" id="user-form">
             <div class="list-group px-1 w-100">
                 @foreach ($items as $key => $item)
                 <label for="contribution-{{ $key }}" class="list-group-item list-group-item-action my-1 rounded {{ in_array($item->id, (array) $dues_payment_ids) ? 'active' : '' }}" style="cursor: pointer;">
@@ -83,7 +109,7 @@ $createMergeMonthlyDues = function () {
         </form>
     </div>
     <div class="modal-footer bg-transparent d-flex justify-content-between w-100 px-0 pb-0 border-0">
-        <button wire:target="createMergeMonthlyDues" wire:loading.attr="disabled" type="button" class="btn btn-lg btn-danger font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0" data-dismiss="modal">
+        <button wire:target="createHouseBillMerge" wire:loading.attr="disabled" type="button" class="btn btn-lg btn-danger font-weight-bolder text-uppercase text-decoration-none w-100 m-0 py-3 rounded-0" data-dismiss="modal">
             {{ __('label.cancel') }}
         </button>
 

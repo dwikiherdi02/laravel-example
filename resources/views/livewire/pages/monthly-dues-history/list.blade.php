@@ -62,8 +62,9 @@ $loadDataMonthlyDuesHistories = action(function (?int $page = null, ?bool $clear
         $this->list->npage->next = $page + 1;
     }
 
-    if($clearFilter) {
-        $this->list->search->general = '';
+    if ($clearFilter) {
+        $this->list->search->general = null;
+        $this->list->search->isPaid = null;
         $this->isFilter = false;
     }
 
@@ -118,7 +119,7 @@ $generatePage = function () {
 
                 <button
                     type="button"
-                    class="d-none d-md-inline-block btn-icon btn btn-success btn-merge-montly-dues"
+                    class="d-none d-md-inline-block btn-icon btn btn-success btn-house-bill-merge"
                     data-refresh="true">
                     <i class="pe-7s-albums btn-icon-wrapper"></i>
                     {{ __('Gabung Tagihan Rumah') }}
@@ -126,7 +127,7 @@ $generatePage = function () {
 
                 <button
                     type="button"
-                    class="d-inline-block d-md-none btn-icon btn-icon-only btn btn-success btn-merge-montly-dues"
+                    class="d-inline-block d-md-none btn-icon btn-icon-only btn btn-success btn-house-bill-merge"
                     data-refresh="true">
                     <i class="pe-7s-albums btn-icon-wrapper"> </i>
                 </button>
@@ -154,9 +155,9 @@ $generatePage = function () {
         <div class="card-body collapse @if($isFilter) show @endif" id="filter-collapse">
             <div class="row">
                 <div class="col-12 mb-2">
-                    <x-text-input 
-                        id="dues-date" 
-                        type="text" 
+                    <x-text-input
+                        id="dues-date"
+                        type="text"
                         value="{{ $list->search->dues_date }}"
                         placeholder="{{  __('label.search_date_placeholder') }}" />
                 </div>
@@ -219,10 +220,10 @@ $generatePage = function () {
 
                                                     if ($pos !== false) {
                                                         $finalAmount = substr_replace(
-                                                            $finalAmount, 
-                                                            '<span class="text-primary">' . $uniqueCode . '</span>', 
+                                                            $finalAmount,
+                                                            '<span class="text-primary">' . $uniqueCode . '</span>',
                                                             $pos,
-                                                            strlen($uniqueCode)); 
+                                                            strlen($uniqueCode));
                                                     }
 
                                                 @endphp
@@ -248,7 +249,7 @@ $generatePage = function () {
                                                 <i class="dropdown-icon lnr-eye"></i><span>{{ __('Lihat Detail') }}</span>
                                             </button>
                                             <div tabindex="-1" class="dropdown-divider"></div>
-                                            <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-merge-dues-multimonth" data-id="{{ $item->id }}">
+                                            <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-monthly-bill-merge" data-id="{{ $item->id }}">
                                                 <i class="dropdown-icon lnr-layers"></i><span>{{ __('Gabung Tagihan Bulanan') }}</span>
                                             </button>
                                         </div>
@@ -289,7 +290,7 @@ $generatePage = function () {
             $("#filter-collapse").collapse("toggle");
         });
 
-        $(".btn-merge-montly-dues").on("click", () => {
+        $(".btn-house-bill-merge").on("click", () => {
             $('#modal-dues-history').modal({
                 backdrop: 'static',
                 keyboard: false,
@@ -302,7 +303,7 @@ $generatePage = function () {
             window.dispatchEvent(
                 new CustomEvent(
                     'fetchModalDuesHistoryContentJs',
-                    { detail: { 
+                    { detail: {
                         type: 'merge-monthly-dues',
                         year: parseInt(year),
                         month: parseInt(month),
@@ -375,6 +376,7 @@ $generatePage = function () {
             $wire.set('isLoading', true).then(() => {
                 $("#modal-dues-history").modal("hide");
                 $("#search").val("");
+                $("#is-paid").val("");
 
                 $wire.dispatch('loadDataMonthlyDuesHistories', { page: 1, clearFilter: true });
             });

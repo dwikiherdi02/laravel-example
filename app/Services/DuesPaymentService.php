@@ -11,7 +11,8 @@ class DuesPaymentService
 {
     function __construct(
         protected DuesPaymentRepository $duesPaymentRepo,
-    ) { }
+    ) {
+    }
 
     public function list(ListFilterDto $filter)
     {
@@ -19,7 +20,8 @@ class DuesPaymentService
         // jika user login adalah admin atau bendahara, tampilkan semua data
         if (auth_role() === RoleEnum::Warga) {
             $filter->search->authUserId = auth()->id();
-        };
+        }
+        ;
         return $this->duesPaymentRepo->list($filter);
     }
 
@@ -37,5 +39,10 @@ class DuesPaymentService
     public function listMergedByYearAndMonth(int $year, int $month)
     {
         return $this->duesPaymentRepo->listMergedByYearAndMonth($year, $month);
+    }
+
+    public function createHouseBillMerge(DuesPaymentDto $data)
+    {
+        dd($data);
     }
 }

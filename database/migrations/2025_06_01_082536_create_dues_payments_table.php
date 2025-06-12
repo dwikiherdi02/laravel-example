@@ -12,9 +12,9 @@ return new class extends Migration {
     {
         Schema::create('dues_payments', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('resident_id')->index();
+            $table->uuid('resident_id')->nullable()->index();
             $table->foreign('resident_id')->references('id')->on('residents')->onDelete('cascade');
-            $table->uuid('dues_month_id')->index();
+            $table->uuid('dues_month_id')->nullable()->index();
             $table->foreign('dues_month_id')->references('id')->on('dues_months')->onDelete('cascade');
             $table->uuid('parent_id')->nullable()->index();
             $table->foreign('parent_id')->references('id')->on('dues_payments')->onDelete('cascade');

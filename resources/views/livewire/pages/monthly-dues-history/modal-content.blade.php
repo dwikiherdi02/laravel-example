@@ -28,11 +28,11 @@ $setState = action(function (?string $type = null, ?string $id = null, ?int $yea
             @break
 
         @case('merge-monthly-dues')
-            <livewire:pages.monthly-dues-history.modal-content.merge-monthly-dues :year="$year" :month="$month" lazy />
+            <livewire:pages.monthly-dues-history.modal-content.house-bill-merge :year="$year" :month="$month" lazy />
             @break
 
         @case('merge-mutli-month-dues')
-            <livewire:pages.monthly-dues-history.modal-content.merge-mutli-month lazy />
+            <livewire:pages.monthly-dues-history.modal-content.monthly-bill-merge lazy />
             @break
 
         @default
