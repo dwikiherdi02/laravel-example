@@ -5,14 +5,15 @@ namespace App\Services;
 use App\Dto\ContributionDto;
 use App\Dto\ResidentDto;
 use App\Dto\RoleDto;
+use App\Dto\TransactionMethodDto;
 use App\Dto\TransactionTypeDto;
 use App\Repositories\ContributionRepository;
 use App\Repositories\MenuGroupRepository;
 use App\Repositories\MenuRepository;
 use App\Repositories\ResidentRepository;
 use App\Repositories\RoleRepository;
+use App\Repositories\TransactionMethodRepository;
 use App\Repositories\TransactionTypeRepository;
-use function Livewire\Volt\protect;
 
 class ComponentService
 {
@@ -23,7 +24,8 @@ class ComponentService
         protected RoleRepository $roleRepo,
         protected ResidentRepository $residentRepo,
         protected TransactionTypeRepository $transactionTypeRepo,
-        protected ContributionRepository $contributionRepo
+        protected ContributionRepository $contributionRepo,
+        protected TransactionMethodRepository $transactionMethodRepo
     ) {
         //
     }
@@ -90,6 +92,18 @@ class ComponentService
                     id: $item->id,
                     name: $item->name,
                     amount: $item->amount,
+                );
+            });
+    }
+
+    public function getTransactionMethodOptions()
+    {
+        return $this->transactionMethodRepo->listOptions()
+            ->map(function ($item) {
+                return new TransactionMethodDto(
+                    id: $item->id,
+                    name: $item->name,
+                    name_lang_key: $item->name_lang_key
                 );
             });
     }

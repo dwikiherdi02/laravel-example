@@ -1,6 +1,7 @@
 <?php
 
 use App\Enum\IsMergeEnum;
+use App\Enum\RoleEnum;
 use App\Dto\ListDto\ListFilterDto;
 use App\Services\DuesPaymentService;
 use Carbon\Carbon;
@@ -263,11 +264,20 @@ $generatePage = function () {
                                             <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-detail" data-id="{{ $item->id }}">
                                                 <i class="dropdown-icon lnr-eye"></i><span>{{ __('Lihat Detail') }}</span>
                                             </button>
-                                            @if ($item->is_merge == IsMergeEnum::NoMerge)
-                                            <div tabindex="-1" class="dropdown-divider"></div>
-                                            <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-monthly-bill-merge" data-resident-id="{{ $item->resident_id }}">
-                                                <i class="dropdown-icon lnr-layers"></i><span>{{ __('Gabung Tagihan Bulanan') }}</span>
-                                            </button>
+                                            @if (auth_role() != RoleEnum::Warga)    
+                                                @if ($item->is_merge == IsMergeEnum::NoMerge)
+                                                <div tabindex="-1" class="dropdown-divider"></div>
+                                                <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-monthly-bill-merge" data-resident-id="{{ $item->resident_id }}">
+                                                    <i class="dropdown-icon lnr-layers"></i><span>{{ __('Gabung Tagihan Bulanan') }}</span>
+                                                </button>
+                                                @endif
+
+                                                @if ($item->is_paid == false)
+                                                <div tabindex="-1" class="dropdown-divider"></div>
+                                                <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-mark-as-paid" data-id="{{ $item->id }}">
+                                                    <i class="dropdown-icon lnr-tag"></i><span>{{ __('Tandai Sudah Bayar') }}</span>
+                                                </button>
+                                                @endif
                                             @endif
                                         </div>
                                     </div>
@@ -405,6 +415,23 @@ $generatePage = function () {
                 ));
         });
 
+        $(document).on("click", ".btn-mark-as-paid", (e) => {
+            let $btn = $(e.currentTarget);
+            let id = $btn.data("id");            
+
+            $('#modal-dues-history').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
+
+            window.dispatchEvent(
+                new CustomEvent(
+                    'fetchModalDuesHistoryContentJs',
+                    { detail: { type: 'mark-as-paid', id: id } }
+                ));
+        });
+        
         // Javascript hanlder
         window.addEventListener("hideModalDuesHistoryJs", function (e) {
             $wire.set('isLoading', true).then(() => {

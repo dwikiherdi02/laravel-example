@@ -37,6 +37,10 @@ $setState = action(function (?string $type = null, ?string $id = null, ?int $yea
             <livewire:pages.monthly-dues-history.modal-content.monthly-bill-merge :resident_id="$resident_id" lazy />
             @break
 
+        @case('mark-as-paid')
+            <livewire:pages.monthly-dues-history.modal-content.mark-as-paid :id="$id" lazy />
+            @break
+
         @default
     @endswitch
 </div>

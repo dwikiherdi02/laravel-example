@@ -35,4 +35,5 @@ return [
     'widget_select_role_placeholder' => 'Pilih peran',
     'widget_select_resident_placeholder' => 'Pilih Warga',
     'widget_select_transaction_type_placeholder' => 'Pilih Tipe Transaksi',
+    'widget_select_transaction_method_placeholder' => 'Pilih Metode Transaksi',
 ];

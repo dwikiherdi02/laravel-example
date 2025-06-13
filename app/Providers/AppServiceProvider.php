@@ -13,6 +13,7 @@ use App\Models\MenuRole;
 use App\Models\Resident;
 use App\Models\Role;
 use App\Models\TextTemplate;
+use App\Models\TransactionMethod;
 use App\Models\TransactionType;
 use App\Models\User;
 use App\Repositories\ContributionRepository;
@@ -26,6 +27,7 @@ use App\Repositories\MenuRoleRepository;
 use App\Repositories\ResidentRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\TextTemplateRepository;
+use App\Repositories\TransactionMethodRepository;
 use App\Repositories\TransactionTypeRepository;
 use App\Repositories\UserRepository;
 use App\Services\ComponentService;
@@ -84,6 +86,7 @@ class AppServiceProvider extends ServiceProvider
             RoleRepository::class => Role::class,
             TextTemplateRepository::class => TextTemplate::class,
             TransactionTypeRepository::class => TransactionType::class,
+            TransactionMethodRepository::class => TransactionMethod::class,
             UserRepository::class => User::class,
         ];
 
@@ -105,6 +108,7 @@ class AppServiceProvider extends ServiceProvider
                 ResidentRepository::class,
                 TransactionTypeRepository::class,
                 ContributionRepository::class,
+                TransactionMethodRepository::class,
             ],
             DuesMonthService::class => [
                 DuesMonthRepository::class,
