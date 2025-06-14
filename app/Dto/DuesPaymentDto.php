@@ -22,7 +22,7 @@ class DuesPaymentDto extends Data
         public ?CarbonImmutable $created_at = null,
         public ?CarbonImmutable $updated_at = null,
     ) {
-        $this->created_at ??= CarbonImmutable::now();
-        $this->updated_at ??= CarbonImmutable::now();
+        $this->created_at ??= CarbonImmutable::now()->format('Y-m-d H:i:s');
+        $this->updated_at ??= CarbonImmutable::now()->format('Y-m-d H:i:s');
     }
 }

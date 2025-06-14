@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\BalanceCalculationRequested;
+use App\Listeners\HandleBalanceCalculation;
 use App\Models\Contribution;
 use App\Models\DuesMonth;
 use App\Models\DuesPayment;
@@ -12,10 +14,13 @@ use App\Models\MenuGroup;
 use App\Models\MenuRole;
 use App\Models\Resident;
 use App\Models\Role;
+use App\Models\SystemBalance;
 use App\Models\TextTemplate;
+use App\Models\Transaction;
 use App\Models\TransactionMethod;
 use App\Models\TransactionType;
 use App\Models\User;
+use App\Models\UserPoint;
 use App\Repositories\ContributionRepository;
 use App\Repositories\DuesMonthRepository;
 use App\Repositories\DuesPaymentDetailRepository;
@@ -26,9 +31,12 @@ use App\Repositories\MenuRepository;
 use App\Repositories\MenuRoleRepository;
 use App\Repositories\ResidentRepository;
 use App\Repositories\RoleRepository;
+use App\Repositories\SystemBalanceRepository;
 use App\Repositories\TextTemplateRepository;
 use App\Repositories\TransactionMethodRepository;
+use App\Repositories\TransactionRepository;
 use App\Repositories\TransactionTypeRepository;
+use App\Repositories\UserPointRepository;
 use App\Repositories\UserRepository;
 use App\Services\ComponentService;
 use App\Services\ContributionService;
@@ -37,8 +45,10 @@ use App\Services\DuesPaymentService;
 use App\Services\ImapService;
 use App\Services\MenuRoleService;
 use App\Services\ResidentService;
+use App\Services\SystemBalanceService;
 use App\Services\TextTemplateService;
 use App\Services\UserService;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Webklex\PHPIMAP\ClientManager;
 
@@ -50,7 +60,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->registerLibraries();
-        
+
         $this->registerRepositories();
 
         $this->registerServices();
@@ -61,7 +71,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Event::listen(
+            BalanceCalculationRequested::class,
+            HandleBalanceCalculation::class,
+        );
     }
 
     protected function registerLibraries()
@@ -84,9 +97,12 @@ class AppServiceProvider extends ServiceProvider
             MenuRoleRepository::class => MenuRole::class,
             ResidentRepository::class => Resident::class,
             RoleRepository::class => Role::class,
+            SystemBalanceRepository::class => SystemBalance::class,
             TextTemplateRepository::class => TextTemplate::class,
             TransactionTypeRepository::class => TransactionType::class,
             TransactionMethodRepository::class => TransactionMethod::class,
+            TransactionRepository::class => Transaction::class,
+            UserPointRepository::class => UserPoint::class,
             UserRepository::class => User::class,
         ];
 
@@ -132,6 +148,11 @@ class AppServiceProvider extends ServiceProvider
             ResidentService::class => [
                 ResidentRepository::class,
                 UserRepository::class,
+            ],
+            SystemBalanceService::class => [
+                SystemBalanceRepository::class,
+                TransactionRepository::class,
+                UserPointRepository::class,
             ],
             TextTemplateService::class => [
                 TextTemplateRepository::class,
