@@ -30,13 +30,13 @@ class DuesPaymentRepository extends Repository
             'is_paid',
             'is_merge',
         ])
-        ->with([
-            'duesMonth:id,year,month,contributions',
-            'resident:id,name,housing_block,phone_number,address,unique_code',
-            'childs:id,resident_id,dues_month_id,parent_id,base_amount,unique_code,final_amount,is_paid',
-            'childs.duesMonth:id,year,month,contributions',
-            'childs.resident:id,name,housing_block,phone_number,address,unique_code',
-        ]);
+            ->with([
+                'duesMonth:id,year,month,contributions',
+                'resident:id,name,housing_block,phone_number,address,unique_code',
+                'childs:id,resident_id,dues_month_id,parent_id,base_amount,unique_code,final_amount,is_paid',
+                'childs.duesMonth:id,year,month,contributions',
+                'childs.resident:id,name,housing_block,phone_number,address,unique_code',
+            ]);
 
         /* $query = $query->where(function ($q) {
             $q->whereNull('parent_id')
@@ -55,20 +55,16 @@ class DuesPaymentRepository extends Repository
         }
 
         $query = $query->whereNull('parent_id')
-                        // ->whereHas('duesMonth', function ($q) use ($year, $month) {
-                        //     $q->where('year', $year)
-                        //         ->where('month', $month);
-                        // });
-                        ->where(function ($q) use ($year, $month) {
-                            $q->whereHas('duesMonth', function ($q) use ($year, $month) {
-                                $q->where('year', $year)
-                                    ->where('month', $month);
-                            })
-                            ->orWhereHas('childs.duesMonth', function ($q) use ($year, $month) {
-                                $q->where('year', $year)
-                                    ->where('month', $month);
-                            });
-                        });
+            ->where(function ($q) use ($year, $month) {
+                $q->whereHas('duesMonth', function ($q) use ($year, $month) {
+                    $q->where('year', $year)
+                        ->where('month', $month);
+                })
+                    ->orWhereHas('childs.duesMonth', function ($q) use ($year, $month) {
+                        $q->where('year', $year)
+                            ->where('month', $month);
+                    });
+            });
 
         if ($filter->search->isPaid !== null) {
             $query = $query->where('is_paid', $filter->search->isPaid);
@@ -76,8 +72,12 @@ class DuesPaymentRepository extends Repository
 
         if ($filter->search->authUserId) {
             $authUserId = $filter->search->authUserId;
-            $query = $query->whereHas('resident.user', function ($q) use ($authUserId) {
-                $q->where('id', $authUserId);
+            $query = $query->where(function ($q) use ($authUserId) {
+                $q->whereHas('resident.user', function ($q) use ($authUserId) {
+                    $q->where('id', $authUserId);
+                })->orWhereHas('childs.resident.user', function ($q) use ($authUserId) {
+                    $q->where('id', $authUserId);
+                });
             });
         }
 
@@ -108,6 +108,8 @@ class DuesPaymentRepository extends Repository
         // Clone query untuk total count
         $total = (clone $query)->count();
 
+        // dd($query->toSql(), $query->getBindings());
+
         // Ambil data paginasi
         $histories = $query
             ->limit($filter->perpage)
@@ -132,27 +134,29 @@ class DuesPaymentRepository extends Repository
             'is_paid',
             'is_merge',
         ])
-        ->with([
-            'duesMonth:id,year,month,contributions',
-            'resident:id,name,housing_block,phone_number,address,unique_code',
-        ])
-        ->where('is_paid', false)
-        // ->where('is_merge', IsMergeEnum::NoMerge->value)
-        ->whereNull('parent_id')
-        ->where('is_merge', IsMergeEnum::NoMerge->value)
-        ->whereHas(
-            'duesMonth', 
-            function ($q) use ($year, $month) {
-            $q->where('year', $year)
-                ->where('month', $month);
-        })
-        ->orderBy(Resident::selectRaw('MIN(housing_block)')
-            ->whereColumn('dues_payments.resident_id', 'residents.id'));
+            ->with([
+                'duesMonth:id,year,month,contributions',
+                'resident:id,name,housing_block,phone_number,address,unique_code',
+            ])
+            ->where('is_paid', false)
+            // ->where('is_merge', IsMergeEnum::NoMerge->value)
+            ->whereNull('parent_id')
+            ->where('is_merge', IsMergeEnum::NoMerge->value)
+            ->whereHas(
+                'duesMonth',
+                function ($q) use ($year, $month) {
+                    $q->where('year', $year)
+                        ->where('month', $month);
+                }
+            )
+            ->orderBy(Resident::selectRaw('MIN(housing_block)')
+                ->whereColumn('dues_payments.resident_id', 'residents.id'));
 
         return $query->get();
     }
 
-    public function listMergeByResidentId(string $residentId) {
+    public function listMergeByResidentId(string $residentId)
+    {
         $query = $this->model->select([
             'id',
             'resident_id',
@@ -163,18 +167,18 @@ class DuesPaymentRepository extends Repository
             'is_paid',
             'is_merge',
         ])
-        ->with([
-            'duesMonth:id,year,month,contributions',
-            'resident:id,name,housing_block,phone_number,address,unique_code',
-        ])
-        ->where('is_paid', false)
-        ->where('resident_id', $residentId)
-        ->whereNull('parent_id')
-        ->where('is_merge', IsMergeEnum::NoMerge->value)
-        ->orderBy(DuesMonth::selectRaw('MIN(year)')
-            ->whereColumn('dues_payments.dues_month_id', 'dues_months.id'))
-        ->orderBy(DuesMonth::selectRaw('MIN(month)')
-            ->whereColumn('dues_payments.dues_month_id', 'dues_months.id'));
+            ->with([
+                'duesMonth:id,year,month,contributions',
+                'resident:id,name,housing_block,phone_number,address,unique_code',
+            ])
+            ->where('is_paid', false)
+            ->where('resident_id', $residentId)
+            ->whereNull('parent_id')
+            ->where('is_merge', IsMergeEnum::NoMerge->value)
+            ->orderBy(DuesMonth::selectRaw('MIN(year)')
+                ->whereColumn('dues_payments.dues_month_id', 'dues_months.id'))
+            ->orderBy(DuesMonth::selectRaw('MIN(month)')
+                ->whereColumn('dues_payments.dues_month_id', 'dues_months.id'));
 
         return $query->get();
     }

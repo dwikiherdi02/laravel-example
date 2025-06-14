@@ -23,10 +23,9 @@ class DuesPaymentService
     {
         // jika user login adalah warga, data  yang ditampilkan hanya yang sesuai dengan user tersebut
         // jika user login adalah admin atau bendahara, tampilkan semua data
-        if (auth_role() === RoleEnum::Warga) {
+        if (auth_role() === RoleEnum::Warga->value) {
             $filter->search->authUserId = auth()->id();
         }
-        ;
         return $this->duesPaymentRepo->list($filter);
     }
 
@@ -58,7 +57,7 @@ class DuesPaymentService
         }
 
         if (count($data->dues_payment_ids) < 2) {
-            throw new \Exception(trans( 'dues_payment.error_minimum_selected', ['attribute' => trans('dues_payment.label_bill_list') ]));
+            throw new \Exception(trans('dues_payment.error_minimum_selected', ['attribute' => trans('dues_payment.label_bill_list')]));
         }
 
         if ($data->is_merge == null) {
@@ -92,7 +91,7 @@ class DuesPaymentService
                 'is_paid' => false,
                 'is_merge' => $data->is_merge->value,
             ])->toArray();
-            
+
             $parentDuesPayment = $this->duesPaymentRepo->create($parentDuesPaymentData);
 
             //  update data dues payment yang sudah dipilih

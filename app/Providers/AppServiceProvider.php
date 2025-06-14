@@ -47,6 +47,7 @@ use App\Services\MenuRoleService;
 use App\Services\ResidentService;
 use App\Services\SystemBalanceService;
 use App\Services\TextTemplateService;
+use App\Services\TransactionService;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
@@ -157,6 +158,10 @@ class AppServiceProvider extends ServiceProvider
             TextTemplateService::class => [
                 TextTemplateRepository::class,
                 \App\Libraries\Imap::class,
+            ],
+            TransactionService::class => [
+                TransactionRepository::class,
+                DuesPaymentRepository::class,
             ],
             UserService::class => [
                 UserRepository::class,

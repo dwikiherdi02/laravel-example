@@ -17,8 +17,6 @@ class TransactionService
     function __construct(
         protected TransactionRepository $transactionRepo,
         protected DuesPaymentRepository $duesPaymentRepo,
-
-        // protected SystemBalanceService $systemBalanceService,
     ) {
     }
 
@@ -34,7 +32,7 @@ class TransactionService
         DB::beginTransaction();
         try {
             $now = Carbon::now();
-            $data->name = 'Bayar Iuran';
+            $data->name = 'Bayar Iuran (Manual)';
             $data->transaction_type_id = TransactionTypeEnum::Credit;
             $data->transaction_status_id = TransactionStatusEnum::Pending;
             $data->base_amount = $duesPayment->base_amount;
