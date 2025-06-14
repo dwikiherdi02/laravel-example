@@ -6,9 +6,9 @@ use App\Dto\TransactionDto;
 use App\Enum\IsMergeEnum;
 use App\Enum\TransactionStatusEnum;
 use App\Enum\TransactionTypeEnum;
+use App\Repositories\ResidentPointRepository;
 use App\Repositories\SystemBalanceRepository;
 use App\Repositories\TransactionRepository;
-use App\Repositories\UserPointRepository;
 use Illuminate\Support\Facades\DB;
 
 class SystemBalanceService
@@ -16,7 +16,7 @@ class SystemBalanceService
     function __construct(
         protected SystemBalanceRepository $systemBalanceRepo,
         protected TransactionRepository $transactionRepo,
-        protected UserPointRepository $userPointRepo,
+        protected ResidentPointRepository $residentPointRepo,
     ) {
     }
 
@@ -50,16 +50,16 @@ class SystemBalanceService
                             $duesPaymentChild->save();
 
                             if ($duesPayment->is_merge == IsMergeEnum::HouseBillMerge) {
-                                $user = $duesPaymentChild->resident->user;
-                                $this->saveUserPoint($user->id, $duesPaymentChild->unique_code);
+                                $resident = $duesPaymentChild->resident;
+                                $this->saveResidentPoint($resident->id, $duesPaymentChild->unique_code);
                             }
                         }
                     }
 
                     // jika iuran ini bukan merge dari beberapa rumah
                     if ($duesPayment->is_merge != IsMergeEnum::HouseBillMerge) {
-                        $user = $duesPayment->resident->user;
-                        $this->saveUserPoint($user->id, $duesPayment->unique_code);
+                        $resident = $duesPayment->resident;
+                        $this->saveResidentPoint($resident->id, $duesPayment->unique_code);
                     }
 
                     // update status pembayaran iuran
@@ -75,16 +75,16 @@ class SystemBalanceService
         });
     }
 
-    private function saveUserPoint($userId, $point)
+    private function saveResidentPoint($residentId, $point)
     {
-        $userPoint = $this->userPointRepo->findById($userId);
+        $residentPoint = $this->residentPointRepo->findById($residentId);
         // simpan point ke user
-        if ($userPoint) {
-            $userPoint->total_point += $point;
-            $userPoint->save();
+        if ($residentPoint) {
+            $residentPoint->total_point += $point;
+            $residentPoint->save();
         } else {
-            $this->userPointRepo->create([
-                'user_id' => $userId,
+            $this->residentPointRepo->create([
+                'resident_id' => $residentId,
                 'total_point' => $point,
             ]);
         }

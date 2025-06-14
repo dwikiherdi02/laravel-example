@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-class UserPoint extends Model
+class ResidentPoint extends Model
 {
     use HasUuids;
 
@@ -20,7 +20,7 @@ class UserPoint extends Model
      */
     protected $fillable = [
         'id',
-        'user_id',
+        'resident_id',
         'total_point',
     ];
 

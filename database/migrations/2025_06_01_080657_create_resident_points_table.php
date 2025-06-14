@@ -10,10 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('user_points', function (Blueprint $table) {
+        Schema::create('resident_points', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('user_id')->index();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->uuid('resident_id')->index();
+            $table->foreign('resident_id')->references('id')->on('residents')->onDelete('cascade');
             $table->unsignedInteger('total_point')->default(0);
             $table->timestamps();
         });
@@ -24,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_points');
+        Schema::dropIfExists('resident_points');
     }
 };

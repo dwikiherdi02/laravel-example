@@ -13,6 +13,7 @@ use App\Models\Menu;
 use App\Models\MenuGroup;
 use App\Models\MenuRole;
 use App\Models\Resident;
+use App\Models\ResidentPoint;
 use App\Models\Role;
 use App\Models\SystemBalance;
 use App\Models\TextTemplate;
@@ -20,7 +21,6 @@ use App\Models\Transaction;
 use App\Models\TransactionMethod;
 use App\Models\TransactionType;
 use App\Models\User;
-use App\Models\UserPoint;
 use App\Repositories\ContributionRepository;
 use App\Repositories\DuesMonthRepository;
 use App\Repositories\DuesPaymentDetailRepository;
@@ -29,6 +29,7 @@ use App\Repositories\ImapRepository;
 use App\Repositories\MenuGroupRepository;
 use App\Repositories\MenuRepository;
 use App\Repositories\MenuRoleRepository;
+use App\Repositories\ResidentPointRepository;
 use App\Repositories\ResidentRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\SystemBalanceRepository;
@@ -36,7 +37,6 @@ use App\Repositories\TextTemplateRepository;
 use App\Repositories\TransactionMethodRepository;
 use App\Repositories\TransactionRepository;
 use App\Repositories\TransactionTypeRepository;
-use App\Repositories\UserPointRepository;
 use App\Repositories\UserRepository;
 use App\Services\ComponentService;
 use App\Services\ContributionService;
@@ -102,7 +102,7 @@ class AppServiceProvider extends ServiceProvider
             TransactionTypeRepository::class => TransactionType::class,
             TransactionMethodRepository::class => TransactionMethod::class,
             TransactionRepository::class => Transaction::class,
-            UserPointRepository::class => UserPoint::class,
+            ResidentPointRepository::class => ResidentPoint::class,
             UserRepository::class => User::class,
         ];
 
@@ -152,7 +152,7 @@ class AppServiceProvider extends ServiceProvider
             SystemBalanceService::class => [
                 SystemBalanceRepository::class,
                 TransactionRepository::class,
-                UserPointRepository::class,
+                ResidentPointRepository::class,
             ],
             TextTemplateService::class => [
                 TextTemplateRepository::class,
