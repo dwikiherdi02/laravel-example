@@ -30,9 +30,15 @@ class SystemBalanceService
                 $balance = $this->systemBalanceRepo->getLockedBalance();
 
                 if ($transaction->transaction_type_id == TransactionTypeEnum::Credit) {
-                    $balance->amount += $transaction->amount;
+                    // $balance->amount += $transaction->amount;
+                    $balance->total_balance += $transaction->base_amount;
+                    $balance->total_point += $transaction->point;
+                    $balance->final_balance += $transaction->final_amount;
                 } elseif ($transaction->transaction_type_id == TransactionTypeEnum::Debit) {
-                    $balance->amount -= $transaction->amount;
+                    // $balance->amount -= $transaction->amount;
+                    $balance->total_balance -= $transaction->base_amount;
+                    $balance->total_point -= $transaction->point;
+                    $balance->final_balance -= $transaction->final_amount;
                 }
 
                 // simpan saldo terbaru
@@ -77,7 +83,7 @@ class SystemBalanceService
 
     private function saveResidentPoint($residentId, $point)
     {
-        $residentPoint = $this->residentPointRepo->findById($residentId);
+        $residentPoint = $this->residentPointRepo->findByResidentId($residentId);
         // simpan point ke user
         if ($residentPoint) {
             $residentPoint->total_point += $point;

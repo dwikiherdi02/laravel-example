@@ -5,9 +5,10 @@ namespace App\Listeners;
 use App\Dto\TransactionDto;
 use App\Events\BalanceCalculationRequested;
 use App\Services\SystemBalanceService;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class HandleBalanceCalculation
+class HandleBalanceCalculation implements ShouldQueue
 {
     use InteractsWithQueue;
 

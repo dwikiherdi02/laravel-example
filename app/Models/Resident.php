@@ -53,4 +53,9 @@ class Resident extends Model
     {
         return $this->hasOne(User::class, 'resident_id', 'id');
     }
+
+    public function point(): HasOne
+    {
+        return $this->hasOne(ResidentPoint::class, 'resident_id', 'id');
+    }
 }

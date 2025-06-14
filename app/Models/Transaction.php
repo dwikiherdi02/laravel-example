@@ -27,10 +27,13 @@ class Transaction extends Model
         'transaction_method_id',
         'transaction_type_id',
         'transaction_status_id',
+        'name',
         'dues_payment_id',
         'email_id',
         'account_name',
-        'amount',
+        'base_amount',
+        'point',
+        'final_amount',
         'date',
     ];
 

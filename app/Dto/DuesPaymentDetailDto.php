@@ -2,6 +2,7 @@
 
 namespace App\Dto;
 
+use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Data;
 
@@ -13,10 +14,11 @@ class DuesPaymentDetailDto extends Data
         public ?string $contribution_id,
         public ?float $amount,
 
-        public ?CarbonImmutable $created_at = null,
-        public ?CarbonImmutable $updated_at = null,
+        public ?string $created_at = null,
+        public ?string $updated_at = null,
     ) {
-        $this->created_at ??= CarbonImmutable::now()->format('Y-m-d H:i:s');
-        $this->updated_at ??= CarbonImmutable::now()->format('Y-m-d H:i:s');
+        $now = CarbonImmutable::now();
+        $this->created_at ??= $now->toDateTimeString();
+        $this->updated_at ??= $now->toDateTimeString();
     }
 }

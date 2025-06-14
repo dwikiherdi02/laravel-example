@@ -19,10 +19,11 @@ class DuesPaymentDto extends Data
         public ?bool $is_paid,
         public ?int $is_merge,
 
-        public ?CarbonImmutable $created_at = null,
-        public ?CarbonImmutable $updated_at = null,
+        public ?string $created_at = null,
+        public ?string $updated_at = null,
     ) {
-        $this->created_at ??= CarbonImmutable::now()->format('Y-m-d H:i:s');
-        $this->updated_at ??= CarbonImmutable::now()->format('Y-m-d H:i:s');
+        $now = CarbonImmutable::now();
+        $this->created_at ??= $now->toDateTimeString();
+        $this->updated_at ??= $now->toDateTimeString();
     }
 }

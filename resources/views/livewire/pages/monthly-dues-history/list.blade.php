@@ -224,7 +224,7 @@ $generatePage = function () {
                                                     @endif
                                                 </p>
                                                 @break
-                                        
+
                                             @default
                                                 <p class="fs-6 w-75 text-dark text-left text-truncate font-weight-bold my-0">
                                                     {{ $item->resident->housing_block }}
@@ -264,8 +264,8 @@ $generatePage = function () {
                                             <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-detail" data-id="{{ $item->id }}">
                                                 <i class="dropdown-icon lnr-eye"></i><span>{{ __('Lihat Detail') }}</span>
                                             </button>
-                                            @if (auth_role() != RoleEnum::Warga)    
-                                                @if ($item->is_merge == IsMergeEnum::NoMerge)
+                                            @if (auth_role() != RoleEnum::Warga)
+                                                @if ($item->is_merge == IsMergeEnum::NoMerge && $item->is_paid == false)
                                                 <div tabindex="-1" class="dropdown-divider"></div>
                                                 <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-monthly-bill-merge" data-resident-id="{{ $item->resident_id }}">
                                                     <i class="dropdown-icon lnr-layers"></i><span>{{ __('Gabung Tagihan Bulanan') }}</span>
@@ -400,7 +400,7 @@ $generatePage = function () {
 
         $(document).on("click", ".btn-monthly-bill-merge", (e) => {
             let $btn = $(e.currentTarget);
-            let resident_id = $btn.data("resident-id");            
+            let resident_id = $btn.data("resident-id");
 
             $('#modal-dues-history').modal({
                 backdrop: 'static',
@@ -417,7 +417,7 @@ $generatePage = function () {
 
         $(document).on("click", ".btn-mark-as-paid", (e) => {
             let $btn = $(e.currentTarget);
-            let id = $btn.data("id");            
+            let id = $btn.data("id");
 
             $('#modal-dues-history').modal({
                 backdrop: 'static',
@@ -431,7 +431,7 @@ $generatePage = function () {
                     { detail: { type: 'mark-as-paid', id: id } }
                 ));
         });
-        
+
         // Javascript hanlder
         window.addEventListener("hideModalDuesHistoryJs", function (e) {
             $wire.set('isLoading', true).then(() => {

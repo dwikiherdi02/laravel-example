@@ -2,6 +2,10 @@
 
 namespace App\Dto;
 
+use App\Enum\TransactionMethodEnum;
+use App\Enum\TransactionStatusEnum;
+use App\Enum\TransactionTypeEnum;
+use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Data;
 
@@ -9,14 +13,18 @@ class TransactionDto extends Data
 {
     public function __construct(
         public ?string $id,
-        public ?string $transaction_method_id,
-        public ?string $transaction_type_id,
-        public ?string $transaction_status_id,
+        public ?TransactionMethodEnum $transaction_method_id,
+        public ?TransactionTypeEnum $transaction_type_id,
+        public ?TransactionStatusEnum $transaction_status_id,
+        public ?string $name,
         public ?string $dues_payment_id,
         public ?string $email_id,
         public ?string $account_name,
-        public ?float $amount,
-        public ?CarbonImmutable $date,
+        // public ?float $amount,
+        public ?float $base_amount,
+        public ?int $point,
+        public ?float $final_amount,
+        public ?string $date,
 
         // public ?CarbonImmutable $created_at = null,
         // public ?CarbonImmutable $updated_at = null,

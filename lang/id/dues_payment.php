@@ -12,4 +12,5 @@ return [
     // error message
     'error_minimum_selected' => 'Minimal 2 :attribute harus dipilih untuk digabungkan.',
     'error_is_merge_not_found' => 'Tipe penggabungan tidak ditemukan.',
+    'error_payment_not_found' => 'Data tagihan tidak ditemukan. silahkan coba lagi atau hubungi admin.',
 ];

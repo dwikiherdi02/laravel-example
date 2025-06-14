@@ -13,4 +13,9 @@ class ResidentPointRepository extends Repository
     {
         parent::__construct($model);
     }
+
+    public function findByResidentId(string $residentId): ?ResidentPoint
+    {
+        return $this->model->where('resident_id', $residentId)->first();
+    }
 }
