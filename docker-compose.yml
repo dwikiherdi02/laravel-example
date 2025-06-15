@@ -5,22 +5,9 @@ services:
     container_name: iuranku
     build:
       context: .
-      dockerfile: Dockerfile
-      args:
-        - SERVER_NAME=${SERVER_NAME}
-        - APP_ENV=${APP_ENV}
-        - APP_URL=${APP_URL}
-        - APP_DEBUG=${APP_DEBUG}
-        - DB_HOST=${DB_HOST}
-        - DB_PORT=${DB_PORT}
-        - DB_DATABASE=${DB_DATABASE}
-        - DB_USERNAME=${DB_USERNAME}
-        - DB_PASSWORD=${DB_PASSWORD}
-    restart: always
-    env_file:
-      - .docker/.env
+      dockerfile: .docker/Dockerfile
     ports:
-      - "${APP_PORT}:80" # HTTP
+      - "8003:80" # HTTP
       # - "443:443" # HTTPS
       # - "443:443/udp" # HTTP/3
     # volumes:
@@ -29,8 +16,17 @@ services:
       # - caddy_config:/config
     # comment the following line in production, it allows to have nice human-readable logs in dev
     # tty: true
+    networks:
+      - app
+      - database_mysql
 
 # Volumes needed for Caddy certificates and configuration
 # volumes:
 #   caddy_data:
 #   caddy_config:
+
+networks:
+  app:
+    driver: "bridge"
+  database_mysql:
+    external: true
