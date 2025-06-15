@@ -135,7 +135,7 @@ class DuesPaymentRepository extends Repository
             'is_merge',
         ])
             ->with([
-                'duesMonth:id,year,month,contributions',
+                'duesMonth:id,year,month,contribution_ids',
                 'resident:id,name,housing_block,phone_number,address,unique_code',
             ])
             ->where('is_paid', false)
@@ -168,7 +168,7 @@ class DuesPaymentRepository extends Repository
             'is_merge',
         ])
             ->with([
-                'duesMonth:id,year,month,contributions',
+                'duesMonth:id,year,month,contribution_ids',
                 'resident:id,name,housing_block,phone_number,address,unique_code',
             ])
             ->where('is_paid', false)
