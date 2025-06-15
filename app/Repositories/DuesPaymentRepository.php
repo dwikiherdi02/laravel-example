@@ -31,10 +31,10 @@ class DuesPaymentRepository extends Repository
             'is_merge',
         ])
             ->with([
-                'duesMonth:id,year,month,contributions',
+                'duesMonth:id,year,month,contribution_ids',
                 'resident:id,name,housing_block,phone_number,address,unique_code',
                 'childs:id,resident_id,dues_month_id,parent_id,base_amount,unique_code,final_amount,is_paid',
-                'childs.duesMonth:id,year,month,contributions',
+                'childs.duesMonth:id,year,month,contribution_ids',
                 'childs.resident:id,name,housing_block,phone_number,address,unique_code',
             ]);
 
