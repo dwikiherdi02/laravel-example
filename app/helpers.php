@@ -34,6 +34,29 @@ if (!function_exists('format_month_year')) {
 
 }
 
+if (!function_exists('format_date')) {
+    /**
+     * Format tanggal dengan locale sesuai APP_LOCALE (default: id).
+     *
+     * @param string|\DateTimeInterface $date Tanggal dalam format string atau objek DateTime
+     * @param string $format Format output, default 'd M Y'
+     * @return string
+     */
+    function format_date($date, string $format = 'd M Y'): string
+    {
+        // Set locale ke Indonesian (atau sesuai APP_LOCALE)
+        Carbon::setLocale(env('APP_LOCALE', 'id'));
+
+        // Buat objek Carbon dari input
+        $carbon = $date instanceof \DateTimeInterface
+            ? Carbon::instance($date)
+            : Carbon::parse($date);
+
+        // Format tanggal dengan translatedFormat
+        return $carbon->translatedFormat($format);
+    }
+}
+
 if (!function_exists('fix_html_encoding')) {
     function fix_html_encoding($text)
     {

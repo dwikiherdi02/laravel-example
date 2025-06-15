@@ -56,14 +56,19 @@ class Transaction extends Model
         ];
     }
 
-    public function transactionMethod(): HasOne
+    public function method(): HasOne
     {
         return $this->hasOne(TransactionMethod::class, 'id', 'transaction_method_id');
     }
 
-    public function transactionType(): HasOne
+    public function type(): HasOne
     {
         return $this->hasOne(TransactionType::class, 'id', 'transaction_type_id');
+    }
+
+    public function status(): HasOne
+    {
+        return $this->hasOne(TransactionStatus::class, 'id', 'transaction_status_id');
     }
 
     public function duesPayment(): HasOne

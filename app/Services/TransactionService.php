@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Dto\ListDto\ListFilterDto;
 use App\Dto\TransactionDto;
 use App\Enum\TransactionStatusEnum;
 use App\Enum\TransactionTypeEnum;
@@ -18,6 +19,11 @@ class TransactionService
         protected TransactionRepository $transactionRepo,
         protected DuesPaymentRepository $duesPaymentRepo,
     ) {
+    }
+
+    public function list(ListFilterDto $filter)
+    {
+        return $this->transactionRepo->list($filter);
     }
 
     public function create(TransactionDto $data)

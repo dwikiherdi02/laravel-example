@@ -36,6 +36,7 @@ use App\Repositories\SystemBalanceRepository;
 use App\Repositories\TextTemplateRepository;
 use App\Repositories\TransactionMethodRepository;
 use App\Repositories\TransactionRepository;
+use App\Repositories\TransactionStatusRepository;
 use App\Repositories\TransactionTypeRepository;
 use App\Repositories\UserRepository;
 use App\Services\ComponentService;
@@ -126,6 +127,7 @@ class AppServiceProvider extends ServiceProvider
                 TransactionTypeRepository::class,
                 ContributionRepository::class,
                 TransactionMethodRepository::class,
+                TransactionStatusRepository::class,
             ],
             DuesMonthService::class => [
                 DuesMonthRepository::class,
