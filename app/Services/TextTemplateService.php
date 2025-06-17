@@ -43,7 +43,7 @@ class TextTemplateService
         }
 
         try {
-            $body = $this->imapLib->generateBodyMail($item->email, $item->email_subject);
+            $body = $this->imapLib->generateTemplate($item->email, $item->email_subject);
 
             if ($body == null) {
                 throw new \Exception(trans('Body email tidak ditemukan. Silahkan coba lagi.'));
@@ -57,8 +57,11 @@ class TextTemplateService
             report($e);
             throw $e;
         }
+    }
 
-
+    public function getPaymentDuesEmailBody()
+    {
+        dd('test ea');
     }
 
     public function create(TextTemplateDto $data)

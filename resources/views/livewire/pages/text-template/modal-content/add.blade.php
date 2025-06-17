@@ -58,7 +58,7 @@ $createTextTemplate = function (TextTemplateService $service) {
 $generateTemplate = function (\App\Libraries\Imap $imapLib) {
     try {
         $this->alertMessage = null;
-        $this->template = $imapLib->generateBodyMail($this->email, $this->email_subject);
+        $this->template = $imapLib->generateTemplate($this->email, $this->email_subject);
     } catch (\Exception $e) {
         $this->alertMessage = $e->getMessage();
     }

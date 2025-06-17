@@ -75,10 +75,10 @@ class Imap
         }
     }
 
-    public function generateBodyMail(string $email = null, string $subject = null)
+    public function generateTemplate(string $email = null, string $subject = null)
     {
         if ($email == null || $subject == null) {
-            throw new \Exception(trans('Pastikan email dan subjek tidak boleh kosong'));
+            throw new \Exception(trans('imap.error_required_email_and_subject'));
         }
 
         $client = $this->getClient();
@@ -99,7 +99,7 @@ class Imap
                 $body = html_to_text($message->getHtmlBody());
                 return $body;
             } else {
-                return throw new \Exception(trans('Email tidak ditemukan'));
+                return throw new \Exception(trans('imap.error_email_not_found'));
             }
         } catch (\Exception $e) {
             // throw new \Exception('Gagal terhubung ke server IMAP: ' . $e->getMessage());

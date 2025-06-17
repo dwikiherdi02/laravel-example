@@ -22,4 +22,6 @@ return [
     // error message
     'error_check_connection' => 'Gagal terhubung ke server IMAP: :message',
     'error_imap_config_notfound' => 'Konfigurasi IMAP tidak ditemukan.',
+    'error_required_email_and_subject' => 'Pastikan email dan subjek tidak boleh kosong',
+    'error_email_not_found' => 'Email tidak ditemukan.',
 ];
