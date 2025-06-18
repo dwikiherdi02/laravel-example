@@ -37,6 +37,7 @@ class FetchPaymentDues extends Command
     public function handle()
     {
         // $this->info('Fetching payment dues...');
-        $this->textTemplateService->getPaymentDuesEmailBody();
+        $templates = $this->textTemplateService->getIncomeTemplates();
+        dd($templates);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Dto\ListDto\ListDto;
 use App\Dto\ListDto\ListFilterDto;
+use App\Enum\TransactionTypeEnum;
 use App\Models\TextTemplate;
 
 class TextTemplateRepository extends Repository
@@ -58,5 +59,18 @@ class TextTemplateRepository extends Repository
             'data' => $templates,
             'total' => $total,
         ]);
+    }
+
+    public function getIncomeTemplates() {
+        return $this->model->where('transaction_type_id', TransactionTypeEnum::Credit)
+            ->orderBy('name')
+            ->get([
+                'id',
+                'name',
+                'transaction_type_id',
+                'email',
+                'email_subject',
+                'template',
+            ]);
     }
 }

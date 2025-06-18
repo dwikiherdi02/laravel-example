@@ -58,9 +58,12 @@ class TextTemplateService
         }
     }
 
-    public function getPaymentDuesEmailBody()
+    public function getIncomeTemplates()
     {
-        dd('test ea');
+        $templates = $this->textTemplateRepo->getIncomeTemplates();
+        return $templates->map(function ($item) {
+            return TextTemplateDto::from($item);
+        });
     }
 
     public function create(TextTemplateDto $data)
