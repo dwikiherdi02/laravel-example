@@ -40,6 +40,7 @@ state([
 mount(function () {
     $now = Carbon::now();
     $this->list->transactionDate = $now->format('d-m-Y');
+    $this->list->search->transactionDate = $now->format('Y-m-d');
 });
 
 on(['loadDataTransactionDuesHistories', 'loadFilterTransactionDuesHistories']);
@@ -147,7 +148,7 @@ $generatePage = function () {
             <div class="row">
                 <div class="col-12 mb-2">
                     <x-text-input id="search-date" type="text" value="{{ $list->transactionDate }}"
-                        placeholder="{{  __('label.search_date_placeholder') }}" />
+                        placeholder="{{  __('label.search_date_placeholder') }}" readonly />
                 </div>
                 <div class="col-12 mb-2">
                     <x-text-input id="search" type="text" value="{{ $list->search->general }}"

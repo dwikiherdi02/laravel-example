@@ -160,7 +160,7 @@ $generatePage = function () {
                         id="dues-date"
                         type="text"
                         value="{{ $list->search->dues_date }}"
-                        placeholder="{{  __('label.search_date_placeholder') }}" />
+                        placeholder="{{  __('label.search_date_placeholder') }}" readonly />
                 </div>
                 <div class="col-12 mb-2">
                     <x-text-input

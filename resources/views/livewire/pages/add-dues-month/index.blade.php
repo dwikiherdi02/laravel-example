@@ -98,7 +98,7 @@ $createDuesMonth = function (DuesMonthService $service) {
                         <div class="form-group row mb-4">
                             <x-input-label for="host" class="col-sm-4 col-form-label h6 font-weight-bolder" :value="__('dues_month.label_dues_date')" :isRequired="true" />
                             <div class="col-sm-8">
-                                <x-text-input wire:model="dues_date" id="dues-date" type="text" name="dues_date" autocomplete="off" aria-describedby="duesDateHelp" />
+                                <x-text-input wire:model="dues_date" id="dues-date" type="text" name="dues_date" autocomplete="off" aria-describedby="duesDateHelp" readonly />
                                 <x-input-error class="text-left" id="duesDateHelp" :messages="$errors->get('dues_date')" />
                             </div>
                         </div>

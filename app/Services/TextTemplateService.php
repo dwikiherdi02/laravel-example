@@ -51,8 +51,7 @@ class TextTemplateService
 
 
             $data = extract_by_template($item->template, $body);
-            // dd($body, $item->template, $data);
-            return 'Pengirim/Penerima: ' . $data['TF_FROM_TO'] . ', Nominal: ' . $data['TF_NOMINAL'] . ', Tanggal Kirim/Terima: ' . $data['TF_DATE'];
+            return 'Pengirim/Penerima: ' . $data['TF_FROM_TO'] . ', Nominal: ' . $data['TF_NOMINAL'] . ', Tanggal Kirim/Terima: ' . $data['TF_DATE'] ;//. ', Jam Kirim/Terima: ' . $data['TF_TIME'] ?? '-';
         } catch (\Exception $e) {
             report($e);
             throw $e;
