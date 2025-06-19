@@ -61,7 +61,7 @@ class TextTemplateRepository extends Repository
         ]);
     }
 
-    public function getIncomeTemplates() {
+    public function getCreditTemplates() {
         return $this->model->where('transaction_type_id', TransactionTypeEnum::Credit)
             ->orderBy('name')
             ->get([

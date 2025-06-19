@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Email extends Model
 {
@@ -31,4 +32,8 @@ class Email extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function template(): HasOne {
+        return $this->hasOne(TextTemplate::class, 'id', 'text_template_id');
+    }
 }

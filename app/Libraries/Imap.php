@@ -131,9 +131,10 @@ class Imap
                     'text'    => $message->getTextBody(),
                 ]; */
 
-                $data[] = CollectionDto::from(
+                $data[] = new CollectionDto(
                     body: $message->getHTMLBody(),
-                    text: $message->getTextBody(),
+                    // text: $message->getTextBody(),
+                    text: html_to_text($message->getHTMLBody()),
                     date: $message->getDate()[0]->toDateTimeString()
                 );
 
@@ -163,7 +164,8 @@ class Imap
             if ($message) {
                 return new CollectionDto(
                     body: $message->getHTMLBody(),
-                    text: $message->getTextBody(),
+                    // text: $message->getTextBody(),
+                    text: html_to_text($message->getHTMLBody()),
                     date: $message->getDate()[0]->toDateTimeString()
                 );
             } else {

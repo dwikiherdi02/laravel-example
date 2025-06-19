@@ -49,18 +49,25 @@ class TextTemplateService
                 throw new \Exception(trans('Body email tidak ditemukan. Silahkan coba lagi.'));
             }
 
-
             $data = extract_by_template($item->template, $body);
-            return 'Pengirim/Penerima: ' . $data['TF_FROM_TO'] . ', Nominal: ' . $data['TF_NOMINAL'] . ', Tanggal Kirim/Terima: ' . $data['TF_DATE'] ;//. ', Jam Kirim/Terima: ' . $data['TF_TIME'] ?? '-';
+            
+            $lines = [];
+
+            foreach ($data as $field => $value) {
+                $lines[] = "{$field}: {$value}";
+            }
+
+            return implode(", ", $lines);
+
         } catch (\Exception $e) {
             report($e);
             throw $e;
         }
     }
 
-    public function getIncomeTemplates()
+    public function getCreditTemplates()
     {
-        $templates = $this->textTemplateRepo->getIncomeTemplates();
+        $templates = $this->textTemplateRepo->getCreditTemplates();
         return $templates->map(function ($item) {
             return TextTemplateDto::from($item);
         });

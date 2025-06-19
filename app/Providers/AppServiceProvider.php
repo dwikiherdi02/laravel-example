@@ -8,6 +8,7 @@ use App\Models\Contribution;
 use App\Models\DuesMonth;
 use App\Models\DuesPayment;
 use App\Models\DuesPaymentDetail;
+use App\Models\Email;
 use App\Models\Imap;
 use App\Models\Menu;
 use App\Models\MenuGroup;
@@ -25,6 +26,7 @@ use App\Repositories\ContributionRepository;
 use App\Repositories\DuesMonthRepository;
 use App\Repositories\DuesPaymentDetailRepository;
 use App\Repositories\DuesPaymentRepository;
+use App\Repositories\EmailRepository;
 use App\Repositories\ImapRepository;
 use App\Repositories\MenuGroupRepository;
 use App\Repositories\MenuRepository;
@@ -43,6 +45,7 @@ use App\Services\ComponentService;
 use App\Services\ContributionService;
 use App\Services\DuesMonthService;
 use App\Services\DuesPaymentService;
+use App\Services\EmailService;
 use App\Services\ImapService;
 use App\Services\MenuRoleService;
 use App\Services\ResidentService;
@@ -93,6 +96,7 @@ class AppServiceProvider extends ServiceProvider
             DuesMonthRepository::class => DuesMonth::class,
             DuesPaymentDetailRepository::class => DuesPaymentDetail::class,
             DuesPaymentRepository::class => DuesPayment::class,
+            EmailRepository::class => Email::class,
             ImapRepository::class => Imap::class,
             MenuGroupRepository::class => MenuGroup::class,
             MenuRepository::class => Menu::class,
@@ -137,6 +141,10 @@ class AppServiceProvider extends ServiceProvider
             ],
             DuesPaymentService::class => [
                 DuesPaymentRepository::class,
+            ],
+            EmailService::class => [
+                \App\Libraries\Imap::class,
+                EmailRepository::class,
             ],
             ContributionService::class => [
                 ContributionRepository::class,
