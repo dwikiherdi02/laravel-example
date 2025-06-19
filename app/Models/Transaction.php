@@ -24,6 +24,7 @@ class Transaction extends Model
      */
     protected $fillable = [
         'id',
+        'parent_id',
         'transaction_method_id',
         'transaction_type_id',
         'transaction_status_id',
@@ -34,6 +35,7 @@ class Transaction extends Model
         'base_amount',
         'point',
         'final_amount',
+        'system_balance',
         'date',
     ];
 
@@ -54,6 +56,16 @@ class Transaction extends Model
             'transaction_type_id' => TransactionTypeEnum::class,
             'transaction_status_id' => TransactionStatusEnum::class,
         ];
+    }
+
+    public function parent(): HasOne
+    {
+        return $this->hasOne(Transaction::class, 'id', 'parent_id');
+    }
+
+    public function child(): HasOne
+    {
+        return $this->hasOne(Transaction::class, 'parent_id', 'id');
     }
 
     public function method(): HasOne

@@ -75,6 +75,7 @@ class SystemBalanceService
 
                 // update status transaksi
                 $transaction->transaction_status_id = TransactionStatusEnum::Success;
+                $transaction->system_balance = $balance->final_balance;
                 $transaction->save();
             }
 

@@ -13,6 +13,7 @@ class TransactionDto extends Data
 {
     public function __construct(
         public ?string $id,
+        public ?string $parent_id,
         public ?TransactionMethodEnum $transaction_method_id,
         public ?TransactionTypeEnum $transaction_type_id,
         public ?TransactionStatusEnum $transaction_status_id,
@@ -24,6 +25,7 @@ class TransactionDto extends Data
         public ?float $base_amount,
         public ?int $point,
         public ?float $final_amount,
+        public ?float $system_balance = 0,
         public ?string $date,
 
         // public ?CarbonImmutable $created_at = null,
