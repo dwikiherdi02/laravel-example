@@ -114,17 +114,17 @@ class EmailService
                     'transaction_status_id' => TransactionStatusEnum::Pending,
                     'email_id' => $email->id,
                     'info' => $transactionInfo,
-                    // 'date' => '',
+                    'date' => Carbon::now(),
                 ]);
 
-                if ($transactionInfo->datetime) {
-                    $transactionData->date = Carbon::parse($transactionInfo->datetime)->format('Y-m-d H:i:s');
-                } else {
-                    $transactionData->date = Carbon::now()->format('Y-m-d H:i:s');
-                    if ($transactionInfo->date && $transactionInfo->time) {
-                        $transactionData->date = Carbon::parse($transactionInfo->date . ' ' . $transactionInfo->time)->format('Y-m-d H:i:s');
-                    }
-                }
+                // if ($transactionInfo->datetime) {
+                //     $transactionData->date = Carbon::parse($transactionInfo->datetime)->format('Y-m-d H:i:s');
+                // } else {
+                //     $transactionData->date = Carbon::now()->format('Y-m-d H:i:s');
+                //     if ($transactionInfo->date && $transactionInfo->time) {
+                //         $transactionData->date = Carbon::parse($transactionInfo->date . ' ' . $transactionInfo->time)->format('Y-m-d H:i:s');
+                //     }
+                // }
                 
                 if ($duesPayment)  {
                     $transactionData->name = 'Saldo Masuk - Bayar Iuran';
