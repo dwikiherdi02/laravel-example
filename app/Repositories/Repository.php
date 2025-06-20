@@ -32,7 +32,7 @@ class Repository
                 $query->where($field, $value);
             }
         }
-        
+
         foreach ($orderBy as $field => $direction) {
             $query->orderBy($field, $direction);
         }
@@ -47,9 +47,10 @@ class Repository
         return $this->model->all();
     }
 
-    public function get(array $conditions = [], array $columns = ['*'])
+    public function get(array $conditions = [], array $columns = ['*'], array $orderBy = [])
     {
         $query = $this->model->newQuery();
+
         foreach ($conditions as $field => $value) {
             if (is_array($value)) {
                 $query->whereIn($field, $value);
@@ -57,6 +58,11 @@ class Repository
                 $query->where($field, $value);
             }
         }
+
+        foreach ($orderBy as $field => $direction) {
+            $query->orderBy($field, $direction);
+        }
+
         return $query->get($columns);
     }
 

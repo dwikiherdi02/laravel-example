@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\BalanceCalculationRequested;
+use App\Events\ProcessUnseenRequested;
 use App\Listeners\HandleBalanceCalculation;
+use App\Listeners\HandleProcessUnseen;
 use App\Models\Contribution;
 use App\Models\DuesMonth;
 use App\Models\DuesPayment;
@@ -79,6 +81,11 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(
             BalanceCalculationRequested::class,
             HandleBalanceCalculation::class,
+        );
+
+        Event::listen(
+            ProcessUnseenRequested::class,
+            HandleProcessUnseen::class,
         );
     }
 

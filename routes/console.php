@@ -8,4 +8,6 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('email:fetch-credits')->everyMinute();
+Schedule::command('email:fetch-debits')->cron('*/2 * * * *');
 Schedule::command('email:process-unseen-credits')->cron('*/2 * * * *');
+Schedule::command('email:process-unseen-debits')->cron('*/3 * * * *');
