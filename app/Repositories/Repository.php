@@ -22,6 +22,26 @@ class Repository
         return null;
     }
 
+    public function first(array $conditions = [], array $columns = ['*'], array $orderBy = [])
+    {
+        $query = $this->model->newQuery();
+        foreach ($conditions as $field => $value) {
+            if (is_array($value)) {
+                $query->whereIn($field, $value);
+            } else {
+                $query->where($field, $value);
+            }
+        }
+        
+        foreach ($orderBy as $field => $direction) {
+            $query->orderBy($field, $direction);
+        }
+
+        $query->limit(1);
+
+        return $query->first($columns);
+    }
+
     public function getAll()
     {
         return $this->model->all();

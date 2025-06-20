@@ -59,7 +59,7 @@ class TransactionService
         DB::beginTransaction();
         try {
             $now = Carbon::now();
-            $data->name = 'Bayar Iuran (Manual)';
+            $data->name = 'Saldo Masuk - Bayar Iuran (Manual)';
             $data->transaction_type_id = TransactionTypeEnum::Credit;
             $data->transaction_status_id = TransactionStatusEnum::Pending;
             $data->base_amount = $duesPayment->base_amount;

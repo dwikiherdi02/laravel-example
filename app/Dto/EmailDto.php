@@ -12,6 +12,9 @@ class EmailDto extends Data
         public ?string $body_text,
         public ?string $body_html,
         public ?bool $is_read,
+
+        public ?string $created_at = null,
+        public ?string $updated_at = null,
     ) {
     }
 }

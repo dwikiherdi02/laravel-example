@@ -7,4 +7,5 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Schedule::command('app:fetch-payment-dues')->everyMinute();
+Schedule::command('email:fetch-credits')->everyMinute();
+Schedule::command('email:process-unseen-credits')->cron('*/2 * * * *');

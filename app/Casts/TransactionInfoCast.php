@@ -29,6 +29,6 @@ class TransactionInfoCast implements CastsAttributes
         if ($value instanceof TransactionInfoDto) {
             return json_encode($value->toArray());
         }
-        return $value ? $value : null;
+        return $value ? json_encode($value) : null;
     }
 }
