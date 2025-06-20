@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\TransactionInfoCast;
 use App\Enum\TransactionMethodEnum;
 use App\Enum\TransactionStatusEnum;
 use App\Enum\TransactionTypeEnum;
@@ -31,12 +32,13 @@ class Transaction extends Model
         'name',
         'dues_payment_id',
         'email_id',
-        'account_name',
+        // 'account_name',
         'base_amount',
         'point',
         'final_amount',
         'system_balance',
         'date',
+        'info',
     ];
 
     protected $hidden = [
@@ -55,6 +57,7 @@ class Transaction extends Model
             'transaction_method_id' => TransactionMethodEnum::class,
             'transaction_type_id' => TransactionTypeEnum::class,
             'transaction_status_id' => TransactionStatusEnum::class,
+            'info' => TransactionInfoCast::class,
         ];
     }
 

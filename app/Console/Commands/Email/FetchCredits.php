@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Console\Commands\Transaction;
+namespace App\Console\Commands\Email;
 
 use App\Services\EmailService;
-use App\Services\TextTemplateService;
-use App\Services\TransactionService;
 use Illuminate\Console\Command;
 use Log;
 
@@ -13,8 +11,6 @@ class FetchCredits extends Command
 
     function __construct(
         protected EmailService $emailService,
-        protected TextTemplateService $textTemplateService,
-        protected TransactionService $transactionService,
     ) {
         parent::__construct();
     }
@@ -24,7 +20,7 @@ class FetchCredits extends Command
      *
      * @var string
      */
-    protected $signature = 'transaction:fetch-credits';
+    protected $signature = 'email:fetch-credits';
 
     /**
      * The console command description.
@@ -38,15 +34,18 @@ class FetchCredits extends Command
      */
     public function handle()
     {
-        try {
+        $this->info('Fetching credit transactions...');
+        $this->emailService->fetchCredits();
+        $this->info('Fetching credit transactions success...');
+        /* try {
             $this->info('Fetching credit transactions...');
-            $templates = $this->textTemplateService->getCreditTemplates();
-            $this->emailService->generateCreditEmail($templates);
+            $this->emailService->fetchCredits();
+            $this->info('Fetching credit transactions success...');
         } catch (\Exception $e) {
             Log::error('Error fetching credit transactions: ' . $e->getMessage(), [
                 'exception' => $e,
             ]);
             $this->error('An error occurred while fetching credit transactions: ' . $e->getMessage());
-        }
+        } */
     }
 }

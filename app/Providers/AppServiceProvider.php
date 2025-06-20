@@ -143,8 +143,11 @@ class AppServiceProvider extends ServiceProvider
                 DuesPaymentRepository::class,
             ],
             EmailService::class => [
-                \App\Libraries\Imap::class,
+                DuesPaymentRepository::class,
                 EmailRepository::class,
+                \App\Libraries\Imap::class,
+                TextTemplateRepository::class,
+                TransactionRepository::class,
             ],
             ContributionService::class => [
                 ContributionRepository::class,

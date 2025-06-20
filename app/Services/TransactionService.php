@@ -78,9 +78,4 @@ class TransactionService
             throw new \Exception(trans('label.error_save'));
         }
     }
-
-    public function createPaymentDues()
-    {
-        
-    }
 }

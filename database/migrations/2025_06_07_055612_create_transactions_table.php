@@ -30,12 +30,13 @@ return new class extends Migration {
             $table->foreign('dues_payment_id')->references('id')->on('dues_payments')->onDelete('set null');
             $table->uuid('email_id')->nullable()->index();
             $table->foreign('email_id')->references('id')->on('emails')->onDelete('set null');
-            $table->string('account_name')->nullable();
+            // $table->string('account_name')->nullable();
             $table->decimal('base_amount', 10, 2)->default(0);
             $table->integer('point')->default(0);
             $table->decimal('final_amount', 10, 2)->default(0);
             $table->decimal('system_balance', 10, 2)->nullable()->default(0);
             $table->dateTime('date')->nullable();
+            $table->json('info')->nullable();
             $table->timestamps();
         });
     }

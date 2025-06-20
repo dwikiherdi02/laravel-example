@@ -14,6 +14,7 @@ return [
     'search' => 'Cari',
     'search_placeholder' => 'Cari...',
     'search_date_placeholder' => 'Tanggal...',
+    'note' => 'Catatan',
 
     // button
     'button_ok' => 'Oke',

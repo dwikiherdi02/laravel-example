@@ -12,6 +12,8 @@ class FilterDto extends Data
         public ?string $subject = null,
         public ?bool $unseen = false,
         public ?bool $onToday = null,
+        public ?bool $onThisMonth = null,
+        public ?bool $onLastSevenDays = null,
         public ?bool $isOrderDesc = false,
         public ?int $limit = null,
         public ?bool $setFlagToSeen = false,

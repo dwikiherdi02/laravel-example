@@ -1,5 +1,7 @@
 <?php
 
+use App\Dto\TransactionInfoDto;
+use App\Enum\TransactionInfoEnum;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -189,7 +191,7 @@ if (!function_exists('extract_by_template')) {
      * @param string $emailText
      * @return array
      */
-    function extract_by_template(string $template, string $emailText, bool $toText = false): array
+    function extract_by_template(string $template, string $emailText, bool $toText = false): ?TransactionInfoDto
     {
         // Normalisasi newline: jika user pakai "\n" secara literal
         $template = str_replace('\n', "\n", $template);
@@ -216,13 +218,43 @@ if (!function_exists('extract_by_template')) {
         $pattern = '/^' . $pattern . '$/s';
 
         if (preg_match($pattern, $emailText, $result)) {
-            return array_filter(
+            // Filter hasil berdasarkan fields yang ada di template
+            $data = array_filter(
                 $result,
                 fn($key) => in_array($key, $fields),
                 ARRAY_FILTER_USE_KEY
             );
+
+            
+            $dto = [];
+            foreach (TransactionInfoEnum::cases() as $enum) {
+                if (isset($data[$enum->name])) {
+                    switch ($enum) {
+                        case TransactionInfoEnum::TF_AMOUNT:
+                            $dto[$enum->value] = parse_to_float($data[$enum->name]) ?? 0.0;
+                            break;
+                        case TransactionInfoEnum::TF_DATETIME:
+                            $dto[$enum->value] = Carbon::parse($data[$enum->name])->toDateTimeString() ?? null;
+                            break;
+                        case TransactionInfoEnum::TF_DATE:
+                            $dto[$enum->value] = Carbon::parse($data[$enum->name])->toDateString() ?? null;
+                            break;
+                        case TransactionInfoEnum::TF_TIME:
+                            $dto[$enum->value] = Carbon::parse($data[$enum->name])->toTimeString() ?? null;
+                            break;
+                        default:
+                            $dto[$enum->value] = trim($data[$enum->name]) ?? null;
+                    }
+                }
+            }
+
+            if (count($dto) > 0) {
+                return TransactionInfoDto::from($dto);
+            }
+
+            return TransactionInfoDto::from([]); // Tidak ada field yang cocok
         }
 
-        return []; // Tidak match
+        return TransactionInfoDto::from([]); // Tidak match
     }
 }

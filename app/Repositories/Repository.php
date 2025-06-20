@@ -27,6 +27,19 @@ class Repository
         return $this->model->all();
     }
 
+    public function get(array $conditions = [], array $columns = ['*'])
+    {
+        $query = $this->model->newQuery();
+        foreach ($conditions as $field => $value) {
+            if (is_array($value)) {
+                $query->whereIn($field, $value);
+            } else {
+                $query->where($field, $value);
+            }
+        }
+        return $query->get($columns);
+    }
+
     public function create(array $data)
     {
         return $this->model->create($data);
@@ -37,8 +50,12 @@ class Repository
         return $this->model->insert($data);
     }
 
-    public function updateMany(array $conditions, array $data)
+    public function updateMany(array $conditions = [], array $data = [])
     {
+        if (empty($conditions) || empty($data)) {
+            return 0; // No conditions or data to update
+        }
+
         // return $this->model->where($conditions)->update($data);
         $query = $this->model->newQuery();
         foreach ($conditions as $field => $value) {

@@ -120,6 +120,9 @@ $generateTemplate = function (\App\Libraries\Imap $imapLib) {
                     <x-input-error id="templateHelp" :messages="$errors->get('template')" />
                 </div>
 
+                <div class="col-12 mb-3">
+                    <livewire:pages.text-template.modal-content.note />
+                </div>
             </div>
         </form>
     </div>

@@ -13,6 +13,14 @@ return [
     'label_email_subject' => 'Subjek Email',
     'label_template' => 'Template',
     'label_generate_template' => 'Generate Template',
+    'label_tf_sender_name' => 'Nama Pengirim',
+    'label_tf_sender_account' => 'Nomor Rekening Pengirim',
+    'label_tf_recipient_name' => 'Nama Penerima',
+    'label_tf_recipient_account' => 'Nomor Rekening Penerima',
+    'label_tf_amount' => 'Nominal Transaksi',
+    'label_tf_datetime' => 'Tanggal dan Waktu Transaksi',
+    'label_tf_date' => 'Tanggal Transaksi',
+    'label_tf_time' => 'Waktu Transaksi',
 
     // error messages
     'error_notfound' => 'Data template tidak ditemukan. silahkan coba lagi atau hubungi admin.',

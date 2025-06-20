@@ -53,7 +53,7 @@ class TextTemplateService
             
             $lines = [];
 
-            foreach ($data as $field => $value) {
+            foreach ($data->toArray() as $field => $value) {
                 $lines[] = "{$field}: {$value}";
             }
 

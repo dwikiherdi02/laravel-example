@@ -81,6 +81,8 @@ class Imap
     }
 
     public function setConfiguration(Client $client, FilterDto $filter) {
+        $now = Carbon::now();
+        
         $folder = $client->getFolder($filter->folder ?? 'INBOX');
 
         $conf = $folder->messages();
@@ -99,6 +101,16 @@ class Imap
 
         if ($filter->onToday) {
             $conf = $conf->on(Carbon::today());
+        }
+
+        if ($filter->onLastSevenDays) {
+            $since = $now->subDays(7)->format('d M Y');
+            $before = $now->subDays(1)->format('d M Y'); // Tambahkan 1 hari untuk memastikan tidak ada yang terlewat
+            $conf = $conf->since($since)->before($before);
+        }
+
+        if ($filter->onThisMonth) {
+            $conf = $conf->on($now->format('F Y'));
         }
 
         if ($filter->isOrderDesc) {
