@@ -118,6 +118,7 @@ $generatePage = function () {
                     <i class="pe-7s-filter btn-icon-wrapper"></i>
                 </button>
 
+                @if (auth_role() != RoleEnum::Warga->value)
                 <button
                     type="button"
                     class="d-none d-md-inline-block btn-icon btn btn-success btn-house-bill-merge"
@@ -132,6 +133,7 @@ $generatePage = function () {
                     data-refresh="true">
                     <i class="pe-7s-albums btn-icon-wrapper"> </i>
                 </button>
+                @endif
             </div>
             <div class="float-right">
                 <small class="font-weight-bold text-primary">{{ $page }} / {{ $list->total }}</small>
@@ -264,7 +266,7 @@ $generatePage = function () {
                                             <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-detail" data-id="{{ $item->id }}">
                                                 <i class="dropdown-icon lnr-eye"></i><span>{{ __('Lihat Detail') }}</span>
                                             </button>
-                                            @if (auth_role() != RoleEnum::Warga)
+                                            @if (auth_role() != RoleEnum::Warga->value)
                                                 @if ($item->is_merge == IsMergeEnum::NoMerge && $item->is_paid == false)
                                                 <div tabindex="-1" class="dropdown-divider"></div>
                                                 <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-monthly-bill-merge" data-resident-id="{{ $item->resident_id }}">
