@@ -24,11 +24,11 @@ class TransactionRepository extends Repository
             'name',
             'dues_payment_id',
             'email_id',
-            'account_name',
             'base_amount',
             'point',
             'final_amount',
             'date',
+            'info',
         ])
             ->with([
                 'method:id,name,name_lang_key',
