@@ -2,6 +2,7 @@
 
 return [
 
-    'logout_label' => 'Keluar',
+    'label_logout' => 'Keluar',
+    'label_welcome' => 'Selamat Datang',
 
 ];

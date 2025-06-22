@@ -48,7 +48,8 @@ $logout = function (Logout $logout) {
         <div class="logo-src"></div>
         <div class="header__pane ml-auto">
             <div>
-                <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
+                <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
+                    data-class="closed-sidebar">
                     <span class="hamburger-box">
                         <span class="hamburger-inner"></span>
                     </span>
@@ -86,14 +87,14 @@ $logout = function (Logout $logout) {
                                     <img width="35" class="rounded-circle" src="{{ $avatar }}" alt="">
                                     <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                 </a>
-                                <div tabindex="-1" role="menu" aria-hidden="true" class="rm-pointers dropdown-menu-lg dropdown-menu dropdown-menu-right">
+                                <div tabindex="-1" role="menu" aria-hidden="true"
+                                    class="rm-pointers dropdown-menu-lg dropdown-menu dropdown-menu-right">
                                     <div class="dropdown-menu-header mb-0">
                                         <div class="dropdown-menu-header-inner bg-focus">
                                             <div class="menu-header-content btn-pane-right">
                                                 <div class="avatar-icon-wrapper mr-2 avatar-icon-xl">
                                                     <div class="avatar-icon rounded">
-                                                        <img src="{{ $avatarSquare }}"
-                                                            alt="Avatar">
+                                                        <img src="{{ $avatarSquare }}" alt="Avatar">
                                                     </div>
                                                 </div>
                                                 <div>
@@ -101,7 +102,11 @@ $logout = function (Logout $logout) {
                                                     <h6 class="menu-header-subtitle">{{ $authRoleName }}</h6>
                                                 </div>
                                                 <div class="menu-header-btn-pane">
-                                                    <button wire:click="logout" class="ladda-button btn btn-pill btn-primary" data-style="slide-right"><span class="ladda-label">{{ __('widget.logout_label') }}</span><span class="ladda-spinner"></span></button>
+                                                    <button wire:click="logout"
+                                                        class="ladda-button btn btn-pill btn-primary"
+                                                        data-style="slide-right"><span
+                                                            class="ladda-label">{{ __('widget.label_logout') }}</span><span
+                                                            class="ladda-spinner"></span></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -112,7 +117,10 @@ $logout = function (Logout $logout) {
                                                 <div class="no-gutters row">
                                                     @foreach ($menuShortcut as $menu)
                                                         <div class="col-sm-6">
-                                                            <a href="{{ $menu->slug }}" class="btn-icon-vertical btn-square btn-transition btn btn-outline-link"><i class="{{ $menu->icon }} btn-icon-wrapper btn-icon-lg mb-3"> </i>{{ __($menu->name_lang_key) }}</a>
+                                                            <a href="{{ $menu->slug }}"
+                                                                class="btn-icon-vertical btn-square btn-transition btn btn-outline-link"><i
+                                                                    class="{{ $menu->icon }} btn-icon-wrapper btn-icon-lg mb-3">
+                                                                </i>{{ __($menu->name_lang_key) }}</a>
                                                         </div>
                                                     @endforeach
                                                 </div>

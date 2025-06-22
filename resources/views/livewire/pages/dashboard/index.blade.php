@@ -1,7 +1,7 @@
 <?php
 use App\Services\ComponentService;
 
-use function Livewire\Volt\{ layout, state, title };
+use function Livewire\Volt\{layout, state, title};
 
 
 layout('layouts.app');
@@ -25,10 +25,13 @@ title(function (ComponentService $service) {
 
 <div>
     <x-page-heading :title="$title" :icon="$icon"></x-page-heading>
-    
-    <div class="row">
-        <div class="col-md-12">
 
+    <div class="row">
+        <div class="col-md-6 col-lg-8 mb-3">
+            <livewire:components.widget.card-welcome />
+        </div>
+        <div class="col-md-6 col-lg-4 mb-3">
+            <livewire:components.widget.card-balance />
         </div>
     </div>
 </div>

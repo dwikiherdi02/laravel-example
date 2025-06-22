@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Dto\SystemBalanceDto;
 use App\Dto\TransactionDto;
 use App\Enum\IsMergeEnum;
 use App\Enum\TransactionStatusEnum;
@@ -18,6 +19,15 @@ class SystemBalanceService
         protected TransactionRepository $transactionRepo,
         protected ResidentPointRepository $residentPointRepo,
     ) {
+    }
+
+    public function getBalance()
+    {
+        $balance = $this->systemBalanceRepo->first([], ['*'], ['id' => 'desc']);
+        if ($balance) {
+            return SystemBalanceDto::from($balance);
+        }
+        return null;
     }
 
     public function reCalculateBalance(TransactionDto $transactionData): void
