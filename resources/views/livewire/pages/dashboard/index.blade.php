@@ -1,5 +1,6 @@
 <?php
 use App\Services\ComponentService;
+use App\Enum\RoleEnum;
 
 use function Livewire\Volt\{layout, state, title};
 
@@ -31,7 +32,11 @@ title(function (ComponentService $service) {
             <livewire:components.widget.card-welcome />
         </div>
         <div class="col-md-6 col-lg-4 mb-3">
-            <livewire:components.widget.card-balance />
+            @if (auth_role() != RoleEnum::Warga->value)
+                <livewire:components.widget.card-balance />
+            @else
+                <livewire:components.widget.card-resident-point />
+            @endif
         </div>
     </div>
 </div>

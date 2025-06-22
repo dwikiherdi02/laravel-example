@@ -50,6 +50,7 @@ use App\Services\DuesPaymentService;
 use App\Services\EmailService;
 use App\Services\ImapService;
 use App\Services\MenuRoleService;
+use App\Services\ResidentPointService;
 use App\Services\ResidentService;
 use App\Services\SystemBalanceService;
 use App\Services\TextTemplateService;
@@ -108,6 +109,7 @@ class AppServiceProvider extends ServiceProvider
             MenuGroupRepository::class => MenuGroup::class,
             MenuRepository::class => Menu::class,
             MenuRoleRepository::class => MenuRole::class,
+            ResidentPointRepository::class => ResidentPoint::class,
             ResidentRepository::class => Resident::class,
             RoleRepository::class => Role::class,
             SystemBalanceRepository::class => SystemBalance::class,
@@ -115,7 +117,6 @@ class AppServiceProvider extends ServiceProvider
             TransactionTypeRepository::class => TransactionType::class,
             TransactionMethodRepository::class => TransactionMethod::class,
             TransactionRepository::class => Transaction::class,
-            ResidentPointRepository::class => ResidentPoint::class,
             UserRepository::class => User::class,
         ];
 
@@ -185,6 +186,9 @@ class AppServiceProvider extends ServiceProvider
             ],
             UserService::class => [
                 UserRepository::class,
+            ],
+            ResidentPointService::class => [
+                ResidentPointRepository::class,
             ],
         ];
 
