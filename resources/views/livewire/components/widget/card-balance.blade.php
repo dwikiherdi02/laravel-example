@@ -22,7 +22,7 @@ mount(function (SystemBalanceService $service) {
         <div class="card-body p-3">
             <div class="d-flex flex-column">
                 <div class="fs-6 text-muted p-0 m-0">
-                    {{ __('Saldo') }}
+                    {{ __('widget.balance') }}
                 </div>
                 <div class="fs-5 text-success p-0 m-0">
                     <span class="fs-6 opacity-5">Rp</span>
