@@ -118,7 +118,8 @@ $generatePage = function () {
                     <i class="pe-7s-filter btn-icon-wrapper"></i>
                 </button>
 
-                @if (auth_role() != RoleEnum::Warga->value)
+                {{-- @if (auth_role() != RoleEnum::Warga->value) --}}
+                @if (auth_role() == RoleEnum::Bendahara->value)
                 <button
                     type="button"
                     class="d-none d-md-inline-block btn-icon btn btn-success btn-house-bill-merge"
@@ -267,7 +268,7 @@ $generatePage = function () {
                                                 <i class="dropdown-icon lnr-eye"></i><span>{{ __('Lihat Detail') }}</span>
                                             </button>
                                             @if (auth_role() != RoleEnum::Warga->value)
-                                                @if ($item->is_merge == IsMergeEnum::NoMerge && $item->is_paid == false)
+                                                @if (auth_role() == RoleEnum::Bendahara->value && $item->is_merge == IsMergeEnum::NoMerge && $item->is_paid == false)
                                                 <div tabindex="-1" class="dropdown-divider"></div>
                                                 <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-monthly-bill-merge" data-resident-id="{{ $item->resident_id }}">
                                                     <i class="dropdown-icon lnr-layers"></i><span>{{ __('Gabung Tagihan Bulanan') }}</span>
