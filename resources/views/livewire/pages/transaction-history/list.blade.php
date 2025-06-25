@@ -202,21 +202,21 @@ $generatePage = function () {
                                             @endif --}}
 
                                             @php
-            $badgeType = 'primary';
-            switch ($item->transaction_status_id) {
-                case TransactionStatusEnum::Pending:
-                    $badgeType = 'secondary';
-                    break;
+                                                $badgeType = 'primary';
+                                                switch ($item->transaction_status_id) {
+                                                    case TransactionStatusEnum::Pending:
+                                                        $badgeType = 'secondary';
+                                                        break;
 
 
-                case TransactionStatusEnum::Success:
-                    $badgeType = 'success';
-                    break;
+                                                    case TransactionStatusEnum::Success:
+                                                        $badgeType = 'success';
+                                                        break;
 
-                case TransactionStatusEnum::Failed:
-                    $badgeType = 'danger';
-                    break;
-            }
+                                                    case TransactionStatusEnum::Failed:
+                                                        $badgeType = 'danger';
+                                                        break;
+                                                }
                                             @endphp
 
                                             <span class="badge badge-{{ $badgeType }}">{{ $item->status->name }}</span>
@@ -234,15 +234,23 @@ $generatePage = function () {
                                 </div>
                                 <div class="text-right align-self-start">
                                     <div class="d-inline-block dropdown">
-                                        <button wire:ignore.self type="button" data-toggle="dropdown" aria-haspopup="true"
+                                        <button 
+                                            wire:ignore.self type="button" 
+                                            data-toggle="dropdown" 
+                                            aria-haspopup="true"
                                             aria-expanded="false"
-                                            class="border-0 btn-transition btn btn-sm btn-link btn-act p-0 d-none">
+                                            class="border-0 btn-transition btn btn-sm btn-link btn-act p-0">
                                             <i class="fa fa-ellipsis-h"></i>
                                         </button>
                                         <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
                                             <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-detail"
                                                 data-id="{{ $item->id }}">
                                                 <i class="dropdown-icon lnr-eye"></i><span>{{ __('Lihat Detail') }}</span>
+                                            </button>
+                                            <div tabindex="-1" class="dropdown-divider"></div>
+                                            <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-detail"
+                                                data-id="{{ $item->id }}">
+                                                <i class="dropdown-icon lnr-cross"></i><span>{{ __('Batalkan Transaksi') }}</span>
                                             </button>
                                         </div>
                                     </div>
@@ -320,6 +328,23 @@ $generatePage = function () {
         $btn.dropdown("show");
     });
 
+    $(document).on("click", ".btn-detail", (e) => {
+        let $btn = $(e.currentTarget);
+        let id = $btn.data("id");
+
+        $('#modal-transaction-history').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true
+        });
+
+        window.dispatchEvent(
+            new CustomEvent(
+                'fetchModalTransactionHistoryContentJs',
+                { detail: { type: 'detail', id: id } }
+            ));
+    });
+    
     // Javascript hanlder
     window.addEventListener("hideModalTransactionHistoryJs", function (e) {
         $wire.set('isLoading', true).then(() => {

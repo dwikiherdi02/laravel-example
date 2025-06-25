@@ -26,6 +26,18 @@ class TransactionService
         return $this->transactionRepo->list($filter);
     }
 
+    public function findById(string $id, bool $isRaw = false) 
+    {
+        $item = $this->transactionRepo->findById($id);
+        if ($item != null) {
+            if ($isRaw) {
+                return $item;
+            }
+            return TransactionDto::from($item->toArray());
+        }
+        return null;
+    }
+
     public function create(TransactionDto $data)
     {
         DB::beginTransaction();
