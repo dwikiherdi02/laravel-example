@@ -66,7 +66,7 @@ RUN chown -R www-data:www-data /app/public /app/storage /app/bootstrap/cache
 
 RUN composer install --ignore-platform-reqs --no-dev -a
 
-RUN php artisan optimize
+# RUN php artisan optimize
 
 # RUN php artisan key:generate --force
 
