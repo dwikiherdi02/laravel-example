@@ -43,3 +43,13 @@ title(function (ComponentService $service) {
         </div>
     @endpush
 </div>
+
+@script
+    <script>
+        $(function () {
+            $("#modal-transaction-history").on("hidden.bs.modal", function (e) {
+                window.dispatchEvent(new CustomEvent('fetchModalTransactionHistoryContentJs'));
+            });
+        });
+    </script>
+@endscript
