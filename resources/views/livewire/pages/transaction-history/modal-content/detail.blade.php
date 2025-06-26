@@ -34,7 +34,7 @@ mount(function (TransactionService $service) {
         @if($id != null && $item != null)
         <div id="accordion" class="accordion-wrapper border-0 mb-3">
             <div class="card">
-                <div id="transaction" class="card-header">
+                <div id="transaction" class="card-header px-0">
                     <button type="button" data-toggle="collapse" data-target="#collapse-transaction" aria-expanded="true" aria-controls="collapseOne" class="text-left m-0 p-0 btn btn-link btn-block d-flex align-items-center fs-6 text-secondary font-weight-bold">
                         <i class="header-icon pe-7s-cash icon-gradient bg-happy-itmeo py-1 d-block"> </i> {{ __('Transaksi') }}
                     </button>
@@ -84,7 +84,7 @@ mount(function (TransactionService $service) {
 
             @if ($item->duesPayment != null)
             <div class="card">
-                <div id="bill" class="b-radius-0 card-header">
+                <div id="bill" class="b-radius-0 card-header px-0">
                     <button type="button" data-toggle="collapse" data-target="#collapse-bill" aria-expanded="false" aria-controls="collapseTwo" class="text-left m-0 p-0 btn btn-link btn-block d-flex align-items-center fs-6 text-secondary font-weight-bold">
                         <i class="header-icon pe-7s-calculator icon-gradient bg-happy-itmeo py-1 d-block"> </i> {{ __('Tagihan') }}
                     </button>
@@ -114,7 +114,7 @@ mount(function (TransactionService $service) {
 
             @if ($item->email != null)
             <div class="card">
-                <div id="email" class="card-header">
+                <div id="email" class="card-header px-0">
                     <button type="button" data-toggle="collapse" data-target="#collapse-email" aria-expanded="false" aria-controls="collapseThree" class="text-left m-0 p-0 btn btn-link btn-block d-flex align-items-center fs-6 text-secondary font-weight-bold">
                         <i class="header-icon pe-7s-mail icon-gradient bg-happy-itmeo py-1 d-block"> </i> {{ __('Email') }}
                     </button>
