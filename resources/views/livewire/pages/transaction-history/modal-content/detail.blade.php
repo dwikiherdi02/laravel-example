@@ -32,50 +32,6 @@ mount(function (TransactionService $service) {
     </div>
     <div class="modal-body scrollbar-container">
         @if($id != null && $item != null)
-        {{-- <div class="card bg-transparent border-0 shadow-none">
-            <div class="card-header d-flex px-0">
-                <i class="header-icon pe-7s-cash icon-gradient bg-happy-itmeo py-1 d-block"> </i> {{ __('Transaksi') }}
-            </div>
-            <div class="card-body px-0">
-                <label class="font-weight-bold">{{ __('Nama Transaksi') }}</label>
-                <p>{{ $item->name }}</p>
-
-                <label class="font-weight-bold">{{ __('Nominal') }}</label>
-                <p>
-                    <span class="fs-7 opacity-7 font-weight-normal">Rp</span>
-                    {{ number_format($item->final_amount, 0, ',', '.') }}
-                </p>
-
-                <label class="font-weight-bold">{{ __('Tipe Transaksi') }}</label>
-                <p>{{ $item->type->name }}</p>
-
-                <label class="font-weight-bold">{{ __('Metode') }}</label>
-                <p>{{ $item->method->name }}</p>
-
-                <label class="font-weight-bold">{{ __('Status') }}</label>
-                <p>
-                    @php
-                        $badgeType = 'primary';
-                        switch ($item->transaction_status_id) {
-                            case TransactionStatusEnum::Pending:
-                                $badgeType = 'secondary';
-                                break;
-
-
-                            case TransactionStatusEnum::Success:
-                                $badgeType = 'success';
-                                break;
-
-                            case TransactionStatusEnum::Failed:
-                                $badgeType = 'danger';
-                                break;
-                        }
-                    @endphp
-
-                    <span class="badge badge-{{ $badgeType }}">{{ $item->status->name }}</span>
-                </p>
-            </div>
-        </div> --}}
         <div id="accordion" class="accordion-wrapper border-0 mb-3">
             <div class="card">
                 <div id="transaction" class="card-header">
