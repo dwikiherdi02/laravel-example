@@ -18,6 +18,7 @@ class TransactionRepository extends Repository
     {
         $query = $this->model->select([
             'id',
+            'parent_id',
             'transaction_method_id',
             'transaction_type_id',
             'transaction_status_id',
@@ -34,6 +35,8 @@ class TransactionRepository extends Repository
                 'method:id,name,name_lang_key',
                 'type:id,name,name_lang_key,code',
                 'status:id,name,name_lang_key',
+                'child:id,transaction_id,name,base_amount,point,final_amount,date',
+                'parent:id,transaction_id,name,base_amount,point,final_amount,date',
             ]);
 
         if ($filter->search->general) {

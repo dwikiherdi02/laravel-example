@@ -4,6 +4,7 @@ namespace Database\Seeders\Data;
 
 use App\Enum\TransactionStatusEnum;
 use Carbon\Carbon;
+use Str;
 
 class TransactionStatusData
 {
@@ -33,6 +34,13 @@ class TransactionStatusData
                 'id' => TransactionStatusEnum::Failed->value,
                 'name' => 'Gagal',
                 'name_lang_key' => 'transaction_status.failed',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'id' => TransactionStatusEnum::Canceled->value,
+                'name' => 'Batal',
+                'name_lang_key' => 'transaction_status.canceled',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]

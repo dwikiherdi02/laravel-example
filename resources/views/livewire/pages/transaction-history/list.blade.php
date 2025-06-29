@@ -43,7 +43,7 @@ mount(function () {
     $this->list->search->transactionDate = $now->format('Y-m-d');
 });
 
-on(['loadDataTransactionDuesHistories', 'loadFilterTransactionDuesHistories']);
+on(['loadDataTransactionDuesHistories', 'loadFilterTransactionDuesHistories', 'cancelTransaction']);
 
 $loadDataTransactionDuesHistories = action(function (?int $page = null, ?bool $clearFilter = null) {
     if ($page != null) {
@@ -53,8 +53,13 @@ $loadDataTransactionDuesHistories = action(function (?int $page = null, ?bool $c
     }
 
     if ($clearFilter) {
-        $this->list->search->general = null;
-        $this->list->search->isPaid = null;
+        $now = Carbon::now();
+        $this->list->search->transactionDate = $now->format('Y-m-d');
+        $this->list->transactionDate = $now->format('d-m-Y');
+        $this->list->general = null;
+        $this->list->transactionType = null;
+        $this->list->transactionMethod = null;
+        $this->list->transactionStatus = null;
         $this->isFilter = false;
     }
 
@@ -83,6 +88,22 @@ $loadFilterTransactionDuesHistories = action(function (?string $trdate = null, ?
     $this->isFilter = !empty($date) || !empty($general) || !empty($type) || !empty($method) || !empty($status) ? true : false;
 
     $this->load();
+});
+
+$cancelTransaction = action(function (string $id) {
+    try {
+        $service = app(TransactionService::class);
+        $service->cancel($id);
+
+        $this->isLoading = true;
+
+        $this->dispatch('transactionCanceledJs', isSuccess: true);
+
+        $this->dispatch('loadDataTransactionDuesHistories', page: 1, clearFilter: true);
+    } catch (\Exception $e) {
+        $this->dispatch('transactionCanceledJs', isSuccess: false, message: $e->getMessage());
+    }
+
 });
 
 $load = function () {
@@ -214,6 +235,7 @@ $generatePage = function () {
                                                         break;
 
                                                     case TransactionStatusEnum::Failed:
+                                                    case TransactionStatusEnum::Canceled:
                                                         $badgeType = 'danger';
                                                         break;
                                                 }
@@ -234,12 +256,8 @@ $generatePage = function () {
                                 </div>
                                 <div class="text-right align-self-start">
                                     <div class="d-inline-block dropdown">
-                                        <button 
-                                            wire:ignore.self type="button" 
-                                            data-toggle="dropdown" 
-                                            aria-haspopup="true"
-                                            aria-expanded="false"
-                                            class="border-0 btn-transition btn btn-sm btn-link btn-act p-0">
+                                        <button wire:ignore.self type="button" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false" class="border-0 btn-transition btn btn-sm btn-link btn-act p-0">
                                             <i class="fa fa-ellipsis-h"></i>
                                         </button>
                                         <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
@@ -247,11 +265,13 @@ $generatePage = function () {
                                                 data-id="{{ $item->id }}">
                                                 <i class="dropdown-icon lnr-eye"></i><span>{{ __('Lihat Detail') }}</span>
                                             </button>
-                                            <div tabindex="-1" class="dropdown-divider"></div>
-                                            <button wire:ignore.self type="button" tabindex="0" class="dropdown-item btn-detail"
-                                                data-id="{{ $item->id }}">
-                                                <i class="dropdown-icon lnr-cross"></i><span>{{ __('Batalkan Transaksi') }}</span>
-                                            </button>
+                                            @if ($item->transaction_status_id == TransactionStatusEnum::Success && $item->parent == null && $item->child == null)
+                                                <div tabindex="-1" class="dropdown-divider"></div>
+                                                <button wire:ignore.self type="button" tabindex="0"
+                                                    class="dropdown-item btn-cancel-transaction" data-id="{{ $item->id }}">
+                                                    <i class="dropdown-icon lnr-cross"></i><span>{{ __('Batalkan Transaksi') }}</span>
+                                                </button>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -344,7 +364,37 @@ $generatePage = function () {
                 { detail: { type: 'detail', id: id } }
             ));
     });
-    
+
+    $(document).on("click", ".btn-cancel-transaction", (e) => {
+        let $btn = $(e.currentTarget);
+        let id = $btn.data("id");
+
+        showConfirmAlert({
+            title: "{{  __('Batalkan Transaksi') }}",
+            text: "{{  __('Apakah Anda yakin ingin membatalkan data transaksi ini?') }}",
+            confirmButtonText: "{{ __('label.button_delete_confirm') }}",
+            cancelButtonText: "{{ __('label.button_cancel') }}",
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve) => {
+                    $wire.dispatch('cancelTransaction', { id: id });
+                    window.addEventListener('transactionCanceledJs', function handler(e) {
+                        resolve({ isSuccess: e.detail.isSuccess, message: e.detail.message ?? "" });
+                        window.removeEventListener('transactionCanceledJs', handler);
+                    });
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed && !result.value.isSuccess) {
+                showInfoAlert({
+                    text: result.value.message,
+                    confirmButtonText: "{{ __('label.button_ok') }}",
+                });
+            }
+        });
+    });
+
     // Javascript hanlder
     window.addEventListener("hideModalTransactionHistoryJs", function (e) {
         $wire.set('isLoading', true).then(() => {

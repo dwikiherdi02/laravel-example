@@ -4,9 +4,12 @@ namespace App\Services;
 
 use App\Dto\ListDto\ListFilterDto;
 use App\Dto\TransactionDto;
+use App\Enum\TransactionMethodEnum;
 use App\Enum\TransactionStatusEnum;
 use App\Enum\TransactionTypeEnum;
 use App\Events\BalanceCalculationRequested;
+use App\Events\CancellationBalanceRequested;
+use App\Models\TransactionMethod;
 use App\Repositories\DuesPaymentRepository;
 use App\Repositories\TransactionRepository;
 use Carbon\Carbon;
@@ -26,7 +29,7 @@ class TransactionService
         return $this->transactionRepo->list($filter);
     }
 
-    public function findById(string $id, bool $isRaw = false) 
+    public function findById(string $id, bool $isRaw = false)
     {
         $item = $this->transactionRepo->findById($id);
         if ($item != null) {
@@ -84,6 +87,62 @@ class TransactionService
         } catch (ValidationException $e) {
             DB::rollBack();
             throw $e;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
+            throw new \Exception(trans('label.error_save'));
+        }
+    }
+
+    public function cancel(string $id)
+    {
+        $transaction = $this->transactionRepo->findById($id);
+
+        if (!$transaction) {
+            throw new \Exception(trans('Transaksi tidak ditemukan'));
+        }
+
+        if ($transaction->transaction_status_id == TransactionStatusEnum::Canceled) {
+            throw new \Exception(trans('Transaksi sudah dibatalkan'));
+        }
+
+        DB::beginTransaction();
+        try {
+            $now = Carbon::now();
+
+            $type = $transaction->transaction_type_id == TransactionTypeEnum::Credit
+                ? TransactionTypeEnum::Debit
+                : TransactionTypeEnum::Credit;
+
+            $name = $type == TransactionTypeEnum::Credit
+                ? 'Pengembalian Saldo - Pembatalan Transaksi'
+                : 'Pengurangan saldo - Pembatalan Transaksi';
+
+            // Buat transaksi pembatalan (mengembalikan / mengurangi saldo)
+            $cancellationData = [
+                'parent_id' => $transaction->id,
+                'transaction_method_id' => TransactionMethodEnum::Transfer,
+                'transaction_type_id' => $type,
+                'transaction_status_id' => TransactionStatusEnum::Pending,
+                'name' => $name,
+                'dues_payment_id' => $transaction->dues_payment_id ?? null,
+                'base_amount' => $transaction->base_amount,
+                'point' => $transaction->point,
+                'final_amount' => $transaction->final_amount,
+                'date' => $now,
+            ];
+
+            $cancellationTransaction = $this->transactionRepo->create($cancellationData);
+
+            // dd(TransactionDto::from($cancellationTransaction));
+
+            // Ubah status transaksi menjadi dibatalkan
+            $transaction->transaction_status_id = TransactionStatusEnum::Canceled;
+            $transaction->save();
+
+            DB::commit();
+
+            CancellationBalanceRequested::dispatch($cancellationTransaction);
         } catch (\Exception $e) {
             DB::rollBack();
             report($e);

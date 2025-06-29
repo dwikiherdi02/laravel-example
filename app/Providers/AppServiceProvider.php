@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Events\BalanceCalculationRequested;
+use App\Events\CancellationBalanceRequested;
 use App\Events\ProcessUnseenRequested;
 use App\Listeners\HandleBalanceCalculation;
+use App\Listeners\HandleCancellationBalance;
 use App\Listeners\HandleProcessUnseen;
 use App\Models\Contribution;
 use App\Models\DuesMonth;
@@ -87,6 +89,11 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(
             ProcessUnseenRequested::class,
             HandleProcessUnseen::class,
+        );
+
+        Event::listen(
+            CancellationBalanceRequested::class,
+            HandleCancellationBalance::class,
         );
     }
 
