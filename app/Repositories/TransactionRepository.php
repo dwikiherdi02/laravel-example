@@ -35,8 +35,8 @@ class TransactionRepository extends Repository
                 'method:id,name,name_lang_key',
                 'type:id,name,name_lang_key,code',
                 'status:id,name,name_lang_key',
-                'child:id,transaction_id,name,base_amount,point,final_amount,date',
-                'parent:id,transaction_id,name,base_amount,point,final_amount,date',
+                'child:id,parent_id,transaction_method_id,transaction_type_id,transaction_status_id,name,dues_payment_id,email_id,base_amount,point,final_amount,date,info',
+                'parent:id,parent_id,transaction_method_id,transaction_type_id,transaction_status_id,name,dues_payment_id,email_id,base_amount,point,final_amount,date,info',
             ]);
 
         if ($filter->search->general) {
